@@ -8,6 +8,7 @@
 
 
 import UIKit
+import Alamofire
 import BRYXBanner
 
 class CustomerSales: UIViewController, SalesParams  {
@@ -15,6 +16,9 @@ class CustomerSales: UIViewController, SalesParams  {
     @IBOutlet weak var menuButton: UIBarButtonItem!
     var Products = [custProd]()
     var embededViewController: ConTable? = nil
+    var notConnectedBanner: Banner?
+    var isLoading = false
+
     
     @IBOutlet weak var lblCustomer: UILabel!
     @IBOutlet weak var lblType: UILabel!
@@ -34,13 +38,25 @@ class CustomerSales: UIViewController, SalesParams  {
     
     @IBAction func GetCustProds(sender: AnyObject)    {
         
-        let type = lblType.text == "true" ? true : false
-        let cust = lblCustomer.text != "" ? lblCustomer.text : ""
-        let whse = lblWhse.text != "" ? lblWhse.text : ""
+        var custid: String = ""
+        var whse: String = ""
+        
+        let type = lblType.text != "All" ? true : false
+        custid = lblCustomer.text != "" ? lblCustomer.text! : ""
+        whse = lblWhse.text != "" ? lblWhse.text! : ""
         
         
+        custid = "60004"
+        whse = "A/G"
+        if let custnum = Int(custid)
+        {
+            GetCustProducts(custnum, type: type, whse: whse);
+        } else
+        {
+            // display an alert and return
+            return
+        }
         
-        GetCustProducts(cust!, type: type, whse: whse!);
     }
     
     override func viewDidLoad() {
@@ -51,6 +67,8 @@ class CustomerSales: UIViewController, SalesParams  {
         lblCustomer.text = ""
         lblType.text = ""
         lblWhse.text = ""
+        Products.removeAll()
+        embededViewController!.items = Products
         
         if  self.revealViewController() != nil
         {
@@ -62,22 +80,77 @@ class CustomerSales: UIViewController, SalesParams  {
         
     }
     
-    func GetCustProducts(cust: String, type: Bool, whse: String)
+    // MARK: GET API DATA
+    
+    func GetCustProducts(cust: Int, type: Bool, whse: String)
     {
-        // call api and load products array.
-        
         // TESTING
-        for i in 0...250 {
-            let prod: custProd = custProd()
-            prod._prod = "BP20003" + String(i)
-            prod._descrip1 = "This is"
-            prod._descrip2 = " item \(i)"
+//        for i in 0...250 {
+//            let prod: custProd = custProd()
+//            prod._prod = "BP20003" + String(i)
+//            prod._descrip1 = "This is"
+//            prod._descrip2 = " item \(i)"
+//            
+//            Products.append(prod)
+//        }
+//        
+//        embededViewController!.items = Products
+        
+        isLoading = true
+        
+        let completionHandler: (Result<[custProd], NSError>) -> Void =
+        { (result) in
             
-            Products.append(prod)
+            self.isLoading = false
+            
+            // Test if error is from no Internet conn
+            guard result.error == nil else
+            {
+                print(result.error)
+                
+                self.isLoading = false
+                if let error = result.error
+                {
+                    if error.domain == NSURLErrorDomain
+                    {
+                         if error.code == NSURLErrorNotConnectedToInternet {
+                            
+                            // show not connected error & tell em to try again when they do have a connection
+                            // check for existing banner
+                            
+                            // If we already are showing a banner, dismiss it and create new
+                            if let existingBanner = self.notConnectedBanner
+                            {
+                                existingBanner.dismiss()
+                            }
+                            
+                            self.notConnectedBanner = Banner(title: "No Internet Connection",
+                                subtitle: "Could not load data." +
+                                " Try again when you're connected to the internet",
+                                image: nil,
+                                backgroundColor: UIColor.redColor())
+                        }
+                        
+                        self.notConnectedBanner?.dismissesOnSwipe = true
+                        self.notConnectedBanner?.show(duration: nil)
+                    }
+            
+                }
+                return
+            }
+            
+            // No Errors Load Data
+            if let fetchedResults = result.value {
+                self.Products = fetchedResults
+                self.embededViewController!.items = self.Products
+
+            }
+            
+            
         }
         
-        embededViewController!.items = Products
-
+        APIManager.sharedInstance.getCustSales(cust, type: type, whse: whse, completionHandler: completionHandler)
+        
     }
     
     func haveAddedSearchParams(customer: Int, type: Bool, whse: String)

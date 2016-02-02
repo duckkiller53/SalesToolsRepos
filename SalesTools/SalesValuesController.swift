@@ -125,8 +125,38 @@ class SalesValuesController: XLFormViewController
     self.navigationController?.popViewControllerAnimated(true)
    
   }
+   
     
    
+  // MARK: Validation:
+    
+    override func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        var result = true
+        let prospectiveText = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
+        
+        
+        if textField == form.formRowWithTag(Tags.customer)?.tag! {
+            if string.characters.count > 0 {
+                let disallowedCharacterSet = NSCharacterSet(charactersInString: "0123456789").invertedSet
+                let replacementStringIsLegal = string.rangeOfCharacterFromSet(disallowedCharacterSet) == nil
+                
+                let resultingStringLengthIsLegal = prospectiveText.characters.count <= 9
+                
+                let scanner = NSScanner(string: prospectiveText)
+                let resultingTextIsNumeric = scanner.scanDecimal(nil) && scanner.atEnd
+                
+                result = replacementStringIsLegal &&
+                    resultingStringLengthIsLegal &&
+                resultingTextIsNumeric
+            }
+        } else if textField == form.formRowWithTag(Tags.warehouse)?.tag!
+        {
+            textField.text = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string.uppercaseString)
+    
+            result = false
+        }
+        return result
+    }
     
     func validateForm() -> Bool
     {
