@@ -46,12 +46,27 @@ class ConTable: UIViewController, UITableViewDataSource, UITableViewDelegate {
             {
                 let r = items[indexPath.row]
         
-                cell.textLabel?.text = r._prod
-                cell.detailTextLabel!.text = r._descrip1! + " " + r._descrip2!
+                cell.textLabel?.text = r.prod
+                cell.detailTextLabel!.text = r.descrip1! + " " + r.descrip2!
             }
             
             return cell
         }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        if segue.identifier == "showDetail"
+        {
+            if let destinationVC = segue.destinationViewController as? CustomerSalesDetail
+            {
+                let selectedRow = tableView.indexPathForSelectedRow!.row
+                destinationVC.Product = items[selectedRow]
+            }
+            
+            
+            
+        }
+    }
 
 
 }

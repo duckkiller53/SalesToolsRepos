@@ -79,17 +79,17 @@ class SalesValuesController: XLFormViewController
     row.addValidator(XLFormRegexValidator(msg: "Numbers Only", andRegexString: "^\\d+$"))
     section.addFormRow(row)
     
+    // Warehosue
+    row = XLFormRowDescriptor(tag: Tags.warehouse, rowType: XLFormRowDescriptorTypeText,
+        title: "Warehouse:")
+    row.required = true
+    section.addFormRow(row)
+    
     // Report Type
     row = XLFormRowDescriptor(tag: Tags.type, rowType: XLFormRowDescriptorTypeBooleanSwitch,
         title: "Six Months Only:")
     row.required = false
     row.value = true
-    section.addFormRow(row)
-    
-    // Warehosue
-    row = XLFormRowDescriptor(tag: Tags.warehouse, rowType: XLFormRowDescriptorTypeText,
-        title: "Warehouse:")
-    row.required = true
     section.addFormRow(row)
     
     
@@ -121,7 +121,7 @@ class SalesValuesController: XLFormViewController
     let whse = form.formRowWithTag(Tags.warehouse)?.value as? String ?? ""
    
     
-    self.delegate.haveAddedSearchParams(cust, type: type, whse: whse)
+    self.delegate.haveAddedSearchParams(cust, type: type, whse: whse.uppercaseString)
     self.navigationController?.popViewControllerAnimated(true)
    
   }
@@ -130,33 +130,72 @@ class SalesValuesController: XLFormViewController
    
   // MARK: Validation:
     
-    override func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        var result = true
-        let prospectiveText = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
-        
-        
-        if textField == form.formRowWithTag(Tags.customer)?.tag! {
-            if string.characters.count > 0 {
-                let disallowedCharacterSet = NSCharacterSet(charactersInString: "0123456789").invertedSet
-                let replacementStringIsLegal = string.rangeOfCharacterFromSet(disallowedCharacterSet) == nil
-                
-                let resultingStringLengthIsLegal = prospectiveText.characters.count <= 9
-                
-                let scanner = NSScanner(string: prospectiveText)
-                let resultingTextIsNumeric = scanner.scanDecimal(nil) && scanner.atEnd
-                
-                result = replacementStringIsLegal &&
-                    resultingStringLengthIsLegal &&
-                resultingTextIsNumeric
-            }
-        } else if textField == form.formRowWithTag(Tags.warehouse)?.tag!
-        {
-            textField.text = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string.uppercaseString)
+//    func filterOutBadCharacters(s:String?, disallowedCharacterSet:NSCharacterSet)->String?{
+//        let components = s?.componentsSeparatedByCharactersInSet(disallowedCharacterSet)
+//        let result = components?.joinWithSeparator("")
+//        return result
+//    }
+//    
+//    func replacementRemovingNonNumeric(textField:UITextField)->String?{
+//        let disallowedCharacterSet = NSCharacterSet(charactersInString: "0123456789").invertedSet
+//        return filterOutBadCharacters(textField.text, disallowedCharacterSet: disallowedCharacterSet)
+//    }
+//    
+//    func associatedXLForm(textField:UITextField?)-> XLFormRowDescriptor?{
+//        var current: UIView? = textField
+//        while(current.dynamicType != XLFormRowDescriptor().dynamicType &&
+//            current != nil){
+//                current = current?.superview
+//                
+//                if current == nil { return nil }
+//        }
+//        return current as? XLFormRowDescriptor
+//    }
+//    
+//    override func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+//        
+//        if associatedXLForm(textField)?.tag  == form.formRowWithTag(Tags.customer)?.tag {
+//            textField.text = replacementRemovingNonNumeric(textField)
+//        } else if associatedXLForm(textField)?.tag  == form.formRowWithTag(Tags.warehouse)?.tag {
+//            textField.text = textField.text?.uppercaseString
+//        } else{
+//            return true
+//        }
+//        
+//        return false
+//    }
     
-            result = false
-        }
-        return result
-    }
+    
+    
+    
+//    override func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+//        var result = true
+//        let prospectiveText = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
+//        
+//        
+//        
+//        if textField  == form.formRowWithTag(Tags.customer)?.tag! {
+//            if string.characters.count > 0 {
+//                let disallowedCharacterSet = NSCharacterSet(charactersInString: "0123456789").invertedSet
+//                let replacementStringIsLegal = string.rangeOfCharacterFromSet(disallowedCharacterSet) == nil
+//                
+//                let resultingStringLengthIsLegal = prospectiveText.characters.count <= 9
+//                
+//                let scanner = NSScanner(string: prospectiveText)
+//                let resultingTextIsNumeric = scanner.scanDecimal(nil) && scanner.atEnd
+//                
+//                result = replacementStringIsLegal &&
+//                    resultingStringLengthIsLegal &&
+//                resultingTextIsNumeric
+//            }
+//        } else if textField == form.formRowWithTag(Tags.warehouse)?.tag!
+//        {
+//            textField.text = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string.uppercaseString)
+//    
+//            result = false
+//        }
+//        return result
+//    }
     
     func validateForm() -> Bool
     {
@@ -176,7 +215,9 @@ class SalesValuesController: XLFormViewController
                     self.animateCell(cell)
                 }
                 
-//                if let rowDescriptor = validationStatus.rowDescriptor, let indexPath = form.indexPathOfFormRow(rowDescriptor), let cell = tableView.cellForRowAtIndexPath(indexPath) {
+//                if let rowDescriptor = validationStatus.rowDescriptor, let indexPath =  
+//                      form.indexPathOfFormRow(rowDescriptor), let cell = 
+//                          tableView.cellForRowAtIndexPath(indexPath) {
 //                    cell.backgroundColor = .orangeColor()
 //                    UIView.animateWithDuration(0.3, animations: { () -> Void in
 //                        cell.backgroundColor = .whiteColor()

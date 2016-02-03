@@ -18,6 +18,9 @@ class CustomerSales: UIViewController, SalesParams  {
     var embededViewController: ConTable? = nil
     var notConnectedBanner: Banner?
     var isLoading = false
+    var custNum: Int = 0
+    var whseID: String = ""
+    var reportType: Bool = true
 
     
     @IBOutlet weak var lblCustomer: UILabel!
@@ -38,24 +41,7 @@ class CustomerSales: UIViewController, SalesParams  {
     
     @IBAction func GetCustProds(sender: AnyObject)    {
         
-        var custid: String = ""
-        var whse: String = ""
-        
-        let type = lblType.text != "All" ? true : false
-        custid = lblCustomer.text != "" ? lblCustomer.text! : ""
-        whse = lblWhse.text != "" ? lblWhse.text! : ""
-        
-        
-        custid = "60004"
-        whse = "A/G"
-        if let custnum = Int(custid)
-        {
-            GetCustProducts(custnum, type: type, whse: whse);
-        } else
-        {
-            // display an alert and return
-            return
-        }
+        GetCustProducts(custNum, type: reportType, whse: whseID)
         
     }
     
@@ -76,8 +62,7 @@ class CustomerSales: UIViewController, SalesParams  {
             menuButton.action = "revealToggle:"            
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
-        }
-        
+        }        
     }
     
     // MARK: GET API DATA
@@ -158,6 +143,10 @@ class CustomerSales: UIViewController, SalesParams  {
         lblCustomer.text = customer > 0 ? "Cust: " + String(customer) : "None"
         lblType.text = type == true ? "6/Mo" : "All"
         lblWhse.text = whse > "" ? "Whse: " + whse : "None"
+        
+        custNum = customer
+        reportType = type
+        whseID = whse
     }
     
     func GetSearchCriteria()
@@ -179,6 +168,8 @@ class CustomerSales: UIViewController, SalesParams  {
         }
         
     }
+    
+    
     
     
     

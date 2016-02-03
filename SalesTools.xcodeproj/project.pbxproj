@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5520A5341C6258F5007D4B6E /* CustomerSalesDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5520A5331C6258F5007D4B6E /* CustomerSalesDetail.swift */; };
+		5520A5561C629541007D4B6E /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5520A5551C629541007D4B6E /* Utilities.swift */; };
 		5532592E1C5BD4D500120905 /* SalesValuesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5532592D1C5BD4D500120905 /* SalesValuesController.swift */; };
 		55340F481C5929D900A4BDCB /* custProd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55340F471C5929D900A4BDCB /* custProd.swift */; };
 		55340F4A1C592BC500A4BDCB /* ResponseJsonObjectSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55340F491C592BC500A4BDCB /* ResponseJsonObjectSerializable.swift */; };
@@ -34,6 +36,8 @@
 /* Begin PBXFileReference section */
 		04655A36CA32E3B959753C9C /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		514D8CB2D1DE5B85291215CC /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5520A5331C6258F5007D4B6E /* CustomerSalesDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomerSalesDetail.swift; sourceTree = "<group>"; };
+		5520A5551C629541007D4B6E /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		5532592D1C5BD4D500120905 /* SalesValuesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SalesValuesController.swift; sourceTree = "<group>"; };
 		55340F471C5929D900A4BDCB /* custProd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = custProd.swift; sourceTree = "<group>"; };
 		55340F491C592BC500A4BDCB /* ResponseJsonObjectSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseJsonObjectSerializable.swift; sourceTree = "<group>"; };
@@ -87,6 +91,7 @@
 			children = (
 				55EEABCC1C46BDAE00FE0BD9 /* CustomerSales.swift */,
 				5532592D1C5BD4D500120905 /* SalesValuesController.swift */,
+				5520A5331C6258F5007D4B6E /* CustomerSalesDetail.swift */,
 			);
 			name = CustomerSales;
 			sourceTree = "<group>";
@@ -181,6 +186,7 @@
 				55EEABB01C46A0DF00FE0BD9 /* AppDelegate.swift */,
 				55EEABBC1C46A0DF00FE0BD9 /* Info.plist */,
 				5540A8041C47FA12002B1088 /* Media.xcassets */,
+				5520A5551C629541007D4B6E /* Utilities.swift */,
 			);
 			name = Support;
 			sourceTree = "<group>";
@@ -329,6 +335,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5578C9961C581ECC0060E92D /* CustomerInfo.swift in Sources */,
+				5520A5341C6258F5007D4B6E /* CustomerSalesDetail.swift in Sources */,
 				55EEABCF1C46C02E00FE0BD9 /* ProductSales.swift in Sources */,
 				5532592E1C5BD4D500120905 /* SalesValuesController.swift in Sources */,
 				55EEABB11C46A0DF00FE0BD9 /* AppDelegate.swift in Sources */,
@@ -340,6 +347,7 @@
 				55340F4A1C592BC500A4BDCB /* ResponseJsonObjectSerializable.swift in Sources */,
 				55EEABD31C46C79200FE0BD9 /* MenuTableViewController.swift in Sources */,
 				55340F481C5929D900A4BDCB /* custProd.swift in Sources */,
+				5520A5561C629541007D4B6E /* Utilities.swift in Sources */,
 				55EEABC71C46A1F000FE0BD9 /* SWRevealViewController.m in Sources */,
 				55EEABCB1C46B22A00FE0BD9 /* MainViewController.swift in Sources */,
 				5579F2D31C5D35A3003F87D3 /* ConTable.swift in Sources */,
