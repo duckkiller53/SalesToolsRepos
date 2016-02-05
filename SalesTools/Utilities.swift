@@ -2,8 +2,7 @@
 
 import UIKit
 
-let DefaultTint = UIColor(red: 0, green: 0.7569, blue: 0.949, alpha: 1.0)
-var progress: UIProgressView?
+let DefaultTint = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
 
 #if DEBUG
 let _debug = true

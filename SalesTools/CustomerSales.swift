@@ -11,6 +11,7 @@ import BRYXBanner
 
 class CustomerSales: UIViewController, SalesParams  {
     
+    @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
     var Products = [custProd]()
     var embededViewController: ConTable? = nil
@@ -19,7 +20,7 @@ class CustomerSales: UIViewController, SalesParams  {
     var whseID: String = ""
     var reportType: Bool = true
     
-    @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!    
+    
     @IBOutlet weak var lblCustomer: UILabel!
     @IBOutlet weak var lblType: UILabel!
     @IBOutlet weak var lblWhse: UILabel!
@@ -40,7 +41,6 @@ class CustomerSales: UIViewController, SalesParams  {
         
         ActivityIndicator.startAnimating()
         ActivityIndicator.hidden = false
-        setProgressBar(true)
         GetCustProducts(custNum, type: reportType, whse: whseID)
         
     }
@@ -48,16 +48,10 @@ class CustomerSales: UIViewController, SalesParams  {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //self.navigationItem.title = "Product Sales By Cust";
+        // remove the inset to tableview due to nav controller
+        self.automaticallyAdjustsScrollViewInsets = false
         
-        lblCustomer.text = ""
-        lblType.text = ""
-        lblWhse.text = ""
-        Products.removeAll()
-        embededViewController!.items = Products
-        ActivityIndicator.hidden = true
-        ActivityIndicator.color = DefaultTint
-        setupProgressBar()
+        ClearForm()
         
         if  self.revealViewController() != nil
         {
@@ -77,8 +71,6 @@ class CustomerSales: UIViewController, SalesParams  {
         { (result) in
             
             
-            // set progress bar all the way to right when page is loaded.
-            self.setProgressBar(false)
             self.ActivityIndicator.hidden = true
             self.ActivityIndicator.stopAnimating()
             
@@ -162,62 +154,15 @@ class CustomerSales: UIViewController, SalesParams  {
         
     }
     
-    
-    // MARK: Support functions
-    
-    func setProgressBar(status: Bool)
+    func ClearForm()
     {
-        // make sure progress is set to 0
-        if let pb = progress {
-            if status == true
-            {
-                pb.setProgress(0.0, animated: false)
-                pb.hidden = false
-            } else
-            {
-                pb.setProgress(1.0, animated: true)
-                pb.hidden = true
-            }
-        }
+        lblCustomer.text = ""
+        lblType.text = ""
+        lblWhse.text = ""
+        Products.removeAll()
+        embededViewController!.items = Products
+        ActivityIndicator.hidden = true
+        ActivityIndicator.color = DefaultTint
     }
-    
-    
-    func setupProgressBar()
-    {
-        // Create a new progressbar object
-        progress = UIProgressView(progressViewStyle: UIProgressViewStyle.Bar)
-        
-        if let pv = progress
-        {
-            // turn off auto constraints of the progress bar.
-            pv.translatesAutoresizingMaskIntoConstraints = false
-            
-            // add the progress bar as a subview
-            self.view.addSubview(pv)
-            
-            // set left side of progress bar equal to left side of view
-            self.view.addConstraint(NSLayoutConstraint(item: pv, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0))
-            
-            // set right side of progress bar equal to right side of view.
-            self.view.addConstraint(NSLayoutConstraint(item: pv, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Right, multiplier: 1, constant: 0))
-            
-            // set top of progress to top of view.
-            self.view.addConstraint(NSLayoutConstraint(item: pv, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.topLayoutGuide, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0))
-            
-            pv.translatesAutoresizingMaskIntoConstraints = false
-            pv.hidden = true
-            
-            // set's the current progress of the bar to 0
-            pv.setProgress(0, animated: false)
-            pv.tintColor = DefaultTint
-            
-            // Moves the specified subview so that it appears on top
-            // of its siblings.
-            self.view.bringSubviewToFront(pv)
-        }
-    }
-
-    
-    
     
 }
