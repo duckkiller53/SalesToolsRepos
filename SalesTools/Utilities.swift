@@ -1,14 +1,14 @@
 //  Utilities.swift
-//  Copyright (c) 2010-2015 Bill Weinman. All rights reserved.
 
 import UIKit
 
-let RSSDefaultTint = UIColor(red: 0.6, green: 0.0, blue: 0.0, alpha: 0.8)
+let DefaultTint = UIColor(red: 0, green: 0.7569, blue: 0.949, alpha: 1.0)
+var progress: UIProgressView?
 
 #if DEBUG
-let _RSSdebug = true
+let _debug = true
 #else
-let _RSSdebug = false
+let _debug = false
 #endif
 
 extension String {

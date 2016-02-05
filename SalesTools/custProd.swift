@@ -43,12 +43,12 @@ class custProd: NSObject, ResponseJSONObjectSerializable
         if let dateString = json["LastInvDate"].string
         {
             //self.lastINVDate = dateFormatter.dateFromString(dateString)
-            self.lastINVDate = dateString
+            self.lastINVDate = dateString.toStringDate()
         }
         if let dateString = json["LastRecvDate"].string
         {
             //self.lastRecvDate = dateFormatter.dateFromString(dateString)
-            self.lastRecvDate = dateString
+            self.lastRecvDate = dateString.toStringDate()
         }
     }
 

@@ -33,12 +33,6 @@ class CustomerSalesDetail: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
-        
-        
-        
-        //var onHand:Int = 0;
         if (Product != nil)
         {
             lblProduct.text = Product?.prod
@@ -49,30 +43,30 @@ class CustomerSalesDetail: UIViewController {
             lblQtyAvail.text = "\(Product!.qtyAvail)"
             lblWhse.text = Product!.whse
             
-            lblLastInvDate.text = Product!.lastINVDate.toStringDate()
-            lblLastRecvDate.text = Product!.lastRecvDate.toStringDate()
+            lblLastInvDate.text = Product!.lastINVDate
+            lblLastRecvDate.text = Product!.lastRecvDate
             
-            print(convertDateFormater(Product!.lastINVDate))
+            //print(convertDateFormater(Product!.lastINVDate))
         }
         
    }
     
-    func convertDateFormater(date: String) -> String
-    {
-        
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" //this your string date format
-        dateFormatter.timeZone = NSTimeZone(name: "UTC")
-        let date = dateFormatter.dateFromString(date)
-        
-        
-        dateFormatter.dateFormat = "MM-dd-yyyy"///this is you want to convert format
-        dateFormatter.timeZone = NSTimeZone(name: "UTC")
-        let timeStamp = dateFormatter.stringFromDate(date!)
-        
-        
-        return timeStamp
-    }
+//    func convertDateFormater(date: String) -> String
+//    {
+//        
+//        let dateFormatter = NSDateFormatter()
+//        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" //this your string date format
+//        dateFormatter.timeZone = NSTimeZone(name: "UTC")
+//        let date = dateFormatter.dateFromString(date)
+//        
+//        
+//        dateFormatter.dateFormat = "MM-dd-yyyy"///this is you want to convert format
+//        dateFormatter.timeZone = NSTimeZone(name: "UTC")
+//        let timeStamp = dateFormatter.stringFromDate(date!)
+//        
+//        
+//        return timeStamp
+//    }
     
     
 
