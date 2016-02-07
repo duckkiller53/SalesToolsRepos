@@ -142,3 +142,15 @@ func stringToSQLDate(sdate: String) -> String {
     return dateFormatter.stringFromDate(date)
 }
 
+func FormatPhone(phone: String) -> String
+{
+    let stringts: NSMutableString = NSMutableString(string: phone)
+    stringts.insertString("(", atIndex: 0)
+    stringts.insertString(")", atIndex: 4)
+    stringts.insertString("-", atIndex: 5)
+    stringts.insertString("-", atIndex: 9)
+    
+    return String(stringts)
+    
+}
+

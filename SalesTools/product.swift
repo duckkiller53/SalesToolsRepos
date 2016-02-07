@@ -21,10 +21,7 @@ class product: NSObject, ResponseJSONObjectSerializable
     var whse: String?
     var lastINVDate: String = ""
     var lastRecvDate: String = ""
-    
-    //    // have all custProd's share a single instance of a dateformatter to save processor time.
-    static let sharedDateFormatter = custProd.dateFormatter()
-    
+      
     required init(json: JSON)
     {
         self.prod = json["ProdNum"].string

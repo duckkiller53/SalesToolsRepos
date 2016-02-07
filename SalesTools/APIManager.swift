@@ -43,7 +43,14 @@ class APIManager {
         
     }
     
-    // MARK:  get customer products.
+    func getCustomerAR(custid: String, completionHandler: (Result<customerAR, NSError>) -> Void) {
+        
+        getCustomerAR(Router.GetCustAR(custid),  completionHandler: completionHandler)
+        
+    }
+
+    
+    // MARK:  AlamoFire API Calls
     
     func getCustSalesData(urlRequest: URLRequestConvertible, completionHandler: (Result<[custProd], NSError>) -> Void) {
         alamofireManager.request(urlRequest)
@@ -102,11 +109,29 @@ class APIManager {
         }
     }
     
-    
     func getCustomerInfo(urlRequest: URLRequestConvertible, completionHandler: (Result<customer, NSError>) -> Void) {
         alamofireManager.request(urlRequest)
             .validate()
             .responseObject { (response:Response<customer, NSError>) in
+                // Begin handler
+                
+                guard response.result.error == nil,
+                    let prods = response.result.value else {
+                        print(response.result.error)
+                        // completion bubbles up with error to getPublicGists
+                        completionHandler(response.result)
+                        return
+                }
+                
+                // End handler
+                completionHandler(.Success(prods)) // bubbles up to getCustSales
+        }
+    }
+    
+    func getCustomerAR(urlRequest: URLRequestConvertible, completionHandler: (Result<customerAR, NSError>) -> Void) {
+        alamofireManager.request(urlRequest)
+            .validate()
+            .responseObject { (response:Response<customerAR, NSError>) in
                 // Begin handler
                 
                 guard response.result.error == nil,

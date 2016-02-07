@@ -16,6 +16,7 @@
 		55340F4A1C592BC500A4BDCB /* ResponseJsonObjectSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55340F491C592BC500A4BDCB /* ResponseJsonObjectSerializable.swift */; };
 		5540A8051C47FA12002B1088 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5540A8041C47FA12002B1088 /* Media.xcassets */; };
 		5540A80D1C48035D002B1088 /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 5540A80C1C48035D002B1088 /* Icon-Small.png */; };
+		554BFA311C67A9F600139145 /* customerAR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554BFA301C67A9F600139145 /* customerAR.swift */; };
 		5578C9961C581ECC0060E92D /* CustomerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5578C9951C581ECC0060E92D /* CustomerInfo.swift */; };
 		5578C9981C5824710060E92D /* CustomerAR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5578C9971C5824710060E92D /* CustomerAR.swift */; };
 		5578C99A1C5824820060E92D /* LogOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5578C9991C5824820060E92D /* LogOut.swift */; };
@@ -51,6 +52,7 @@
 		55340F491C592BC500A4BDCB /* ResponseJsonObjectSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseJsonObjectSerializable.swift; sourceTree = "<group>"; };
 		5540A8041C47FA12002B1088 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		5540A80C1C48035D002B1088 /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small.png"; sourceTree = "<group>"; };
+		554BFA301C67A9F600139145 /* customerAR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = customerAR.swift; sourceTree = "<group>"; };
 		5578C9951C581ECC0060E92D /* CustomerInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomerInfo.swift; sourceTree = "<group>"; };
 		5578C9971C5824710060E92D /* CustomerAR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomerAR.swift; path = ../CustomerAR.swift; sourceTree = "<group>"; };
 		5578C9991C5824820060E92D /* LogOut.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LogOut.swift; path = ../LogOut.swift; sourceTree = "<group>"; };
@@ -136,7 +138,7 @@
 				55020AC41C63BA4500ECBE49 /* ProductSales */,
 				550533781C650561006F2C23 /* ProductLookup */,
 				559899E01C65408A0076B5B8 /* CustomerLookup */,
-				5578C9971C5824710060E92D /* CustomerAR.swift */,
+				554BFA2F1C67A97D00139145 /* CustomerAR */,
 				5578C9991C5824820060E92D /* LogOut.swift */,
 			);
 			name = Controllers;
@@ -150,6 +152,7 @@
 				55340F491C592BC500A4BDCB /* ResponseJsonObjectSerializable.swift */,
 				559899DC1C6533DC0076B5B8 /* product.swift */,
 				559899E11C6554210076B5B8 /* customer.swift */,
+				554BFA301C67A9F600139145 /* customerAR.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -176,6 +179,14 @@
 			children = (
 			);
 			name = Factories;
+			sourceTree = "<group>";
+		};
+		554BFA2F1C67A97D00139145 /* CustomerAR */ = {
+			isa = PBXGroup;
+			children = (
+				5578C9971C5824710060E92D /* CustomerAR.swift */,
+			);
+			name = CustomerAR;
 			sourceTree = "<group>";
 		};
 		559899E01C65408A0076B5B8 /* CustomerLookup */ = {
@@ -386,6 +397,7 @@
 				5532592E1C5BD4D500120905 /* SalesValuesController.swift in Sources */,
 				55EEABB11C46A0DF00FE0BD9 /* AppDelegate.swift in Sources */,
 				55BDC4151C59681E00DE1DE4 /* APIManager.swift in Sources */,
+				554BFA311C67A9F600139145 /* customerAR.swift in Sources */,
 				5578C9981C5824710060E92D /* CustomerAR.swift in Sources */,
 				55EEABD11C46C0B900FE0BD9 /* ProductLookUp.swift in Sources */,
 				559899E21C6554210076B5B8 /* customer.swift in Sources */,

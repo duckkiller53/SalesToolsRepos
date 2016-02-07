@@ -61,6 +61,8 @@ class CustomerInfo: UIViewController {
         }
 
     }
+    
+    
     // MARK: GET API DATA
     
     func GetCustomer(custnum: String)
@@ -131,8 +133,6 @@ class CustomerInfo: UIViewController {
         lblSlsRep.text = cust.outSlsRep
         lblContact.text = cust.contact
     }
-  
-    
     
     func ClearForm()
     {
@@ -149,19 +149,8 @@ class CustomerInfo: UIViewController {
         lblContact.text = ""
         ActivityIndicator.hidden = true
         ActivityIndicator.color = DefaultTint
-    }
+    }   
     
-    func FormatPhone(phone: String) -> String
-    {
-        let stringts: NSMutableString = NSMutableString(string: phone)
-        stringts.insertString("(", atIndex: 0)
-        stringts.insertString(")", atIndex: 4)
-        stringts.insertString("-", atIndex: 5)
-        stringts.insertString("-", atIndex: 9)
-        
-        return String(stringts)
-    
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

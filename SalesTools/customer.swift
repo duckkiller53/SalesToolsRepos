@@ -22,9 +22,7 @@ class customer: NSObject, ResponseJSONObjectSerializable
     var outSlsRep: String?
     var contact: String?
     
-    //    // have all custProd's share a single instance of a dateformatter to save processor time.
-    static let sharedDateFormatter = custProd.dateFormatter()
-    
+        
     required init(json: JSON)
     {
         self.custnum = json["_custNum"].double!

@@ -19,9 +19,7 @@ class salesProd: NSObject, ResponseJSONObjectSerializable
     var cost: Double = 0.0
     var dateSold: String = ""
     
-    //    // have all custProd's share a single instance of a dateformatter to save processor time.
-    static let sharedDateFormatter = custProd.dateFormatter()
-    
+       
     required init(json: JSON)
     {
         self.ordNum = json["OrderNumber"].int!
