@@ -41,7 +41,7 @@ class CustomerAR: UIViewController {
     @IBAction func btnSearch(sender: AnyObject) {
         if let custnum = txtCustNum.text
         {
-            if custnum != ""
+            if !custnum.isEmpty
             {
                 ActivityIndicator.startAnimating()
                 ActivityIndicator.hidden = false

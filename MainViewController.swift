@@ -14,7 +14,15 @@ class MainViewController: UIViewController {
     @IBOutlet weak var menubutton: UIBarButtonItem!
     
     
+    @IBAction func btnPhone(sender: AnyObject) {
+        let phonenum = "17156274826"
+        DialNumber(phonenum)
+    }
     
+    
+    @IBAction func btnLogout(sender: AnyObject) {
+        
+    }
     
     
 
@@ -32,16 +40,17 @@ class MainViewController: UIViewController {
     
     }
     
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func DialNumber(phonenumber:String)
+    {
+        if let phoneCallURL:NSURL = NSURL(string: "tel://\(phonenumber)")
+        {
+            let application:UIApplication = UIApplication.sharedApplication()
+            
+            if (application.canOpenURL(phoneCallURL)) {
+                application.openURL(phoneCallURL);
+            }
+        }
     }
-    */
 
+    
 }
