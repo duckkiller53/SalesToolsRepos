@@ -143,7 +143,7 @@
 				550533781C650561006F2C23 /* ProductLookup */,
 				559899E01C65408A0076B5B8 /* CustomerLookup */,
 				554BFA2F1C67A97D00139145 /* CustomerAR */,
-				5578C9991C5824820060E92D /* LogIn.swift */,
+				55DF6BB51C6BD93700627BF7 /* Login */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -201,6 +201,14 @@
 				5578C9951C581ECC0060E92D /* CustomerInfo.swift */,
 			);
 			name = CustomerLookup;
+			sourceTree = "<group>";
+		};
+		55DF6BB51C6BD93700627BF7 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				5578C9991C5824820060E92D /* LogIn.swift */,
+			);
+			name = Login;
 			sourceTree = "<group>";
 		};
 		55EEABA41C46A0DF00FE0BD9 = {

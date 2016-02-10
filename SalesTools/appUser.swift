@@ -13,6 +13,7 @@ class appUser: NSObject, NSCoding
 {
     var username: String?
     var password: String?
+    var success: String?
     
     required override init() { }
     

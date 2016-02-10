@@ -1697,6 +1697,9 @@
                                     <action selector="btnLogin:" destination="n2X-4w-eMn" eventType="touchUpInside" id="ywp-2l-JY8"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="wcZ-AQ-uea">
+                                <rect key="frame" x="173" y="177" width="37" height="37"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -1706,10 +1709,12 @@
                             <constraint firstItem="vA2-HZ-1Qd" firstAttribute="leading" secondItem="s8g-JE-Zc2" secondAttribute="leading" id="Hrn-QA-Agl"/>
                             <constraint firstItem="ilh-BZ-0N6" firstAttribute="leading" secondItem="vA2-HZ-1Qd" secondAttribute="leading" id="KZQ-wx-xBK"/>
                             <constraint firstItem="ilh-BZ-0N6" firstAttribute="top" secondItem="vA2-HZ-1Qd" secondAttribute="bottom" constant="8" symbolic="YES" id="LAb-1c-Aro"/>
+                            <constraint firstItem="wcZ-AQ-uea" firstAttribute="top" secondItem="PTa-hF-Xhd" secondAttribute="bottom" constant="113" id="PZj-Fc-A7u"/>
                             <constraint firstItem="Bh7-6W-ZTO" firstAttribute="top" secondItem="PY6-J0-83Y" secondAttribute="bottom" constant="8" symbolic="YES" id="Rer-Fr-UA6"/>
                             <constraint firstItem="PY6-J0-83Y" firstAttribute="leading" secondItem="ilh-BZ-0N6" secondAttribute="leading" id="SfK-Q7-7Lh"/>
                             <constraint firstItem="Pk8-r5-4JV" firstAttribute="centerX" secondItem="fXy-xe-CT1" secondAttribute="centerX" id="XGo-f5-AJc"/>
                             <constraint firstItem="s8g-JE-Zc2" firstAttribute="leading" secondItem="fXy-xe-CT1" secondAttribute="leadingMargin" constant="27" id="Xm2-Ho-EUO"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="wcZ-AQ-uea" secondAttribute="trailing" constant="149" id="bMO-kL-yV5"/>
                             <constraint firstItem="Bh7-6W-ZTO" firstAttribute="centerX" secondItem="Pk8-r5-4JV" secondAttribute="centerX" id="cn5-r6-wKS"/>
                             <constraint firstItem="Pk8-r5-4JV" firstAttribute="top" secondItem="Bh7-6W-ZTO" secondAttribute="bottom" constant="28" id="jIK-sn-EAr"/>
                             <constraint firstItem="ilh-BZ-0N6" firstAttribute="trailing" secondItem="vA2-HZ-1Qd" secondAttribute="trailing" id="o2h-1B-fVz"/>
@@ -1726,6 +1731,7 @@
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="ActivityIndicator" destination="wcZ-AQ-uea" id="c7K-D7-Nqn"/>
                         <outlet property="menuButton" destination="1ZD-0l-BC6" id="UKv-LJ-tKH"/>
                         <outlet property="txtPassword" destination="Bh7-6W-ZTO" id="YHQ-pX-f8P"/>
                         <outlet property="txtUserName" destination="ilh-BZ-0N6" id="EiV-U2-HAU"/>

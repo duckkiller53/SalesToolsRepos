@@ -48,6 +48,12 @@ class APIManager {
         getCustomerAR(Router.GetCustAR(custid),  completionHandler: completionHandler)
         
     }
+    
+    func validateLogin(completionHandler: (Result<String, NSError>) -> Void)
+    {
+        testLogin(Router.GetLogin(),  completionHandler: completionHandler)
+    }
+
 
     
     // MARK:  AlamoFire API Calls
@@ -57,6 +63,12 @@ class APIManager {
             .validate()
             .responseArray { (response:Response<[custProd], NSError>) in
                 // Begin handler
+                
+                if let urlResponse = response.response,
+                    authError = self.checkUnauthorized(urlResponse) {
+                        completionHandler(.Failure(authError))
+                        return
+                }
                 
                 guard response.result.error == nil,
                     let prods = response.result.value else {
@@ -77,6 +89,13 @@ class APIManager {
             .responseArray { (response:Response<[salesProd], NSError>) in
                 // Begin handler
                 
+                if let urlResponse = response.response,
+                    authError = self.checkUnauthorized(urlResponse) {
+                        completionHandler(.Failure(authError))
+                        return
+                }
+
+                
                 guard response.result.error == nil,
                     let prods = response.result.value else {
                         print(response.result.error)
@@ -95,6 +114,13 @@ class APIManager {
             .validate()
             .responseObject { (response:Response<product, NSError>) in
                 // Begin handler
+                
+                if let urlResponse = response.response,
+                    authError = self.checkUnauthorized(urlResponse) {
+                        completionHandler(.Failure(authError))
+                        return
+                }
+
                 
                 guard response.result.error == nil,
                     let prods = response.result.value else {
@@ -115,6 +141,13 @@ class APIManager {
             .responseObject { (response:Response<customer, NSError>) in
                 // Begin handler
                 
+                if let urlResponse = response.response,
+                    authError = self.checkUnauthorized(urlResponse) {
+                        completionHandler(.Failure(authError))
+                        return
+                }
+
+                
                 guard response.result.error == nil,
                     let prods = response.result.value else {
                         print(response.result.error)
@@ -134,6 +167,12 @@ class APIManager {
             .responseObject { (response:Response<customerAR, NSError>) in
                 // Begin handler
                 
+                if let urlResponse = response.response,
+                    authError = self.checkUnauthorized(urlResponse) {
+                        completionHandler(.Failure(authError))
+                        return
+                }
+                
                 guard response.result.error == nil,
                     let prods = response.result.value else {
                         print(response.result.error)
@@ -145,6 +184,39 @@ class APIManager {
                 // End handler
                 completionHandler(.Success(prods)) // bubbles up to getCustSales
         }
+    }
+    
+    
+    
+    func testLogin(urlRequest: URLRequestConvertible, completionHandler: (Result<String, NSError>) -> Void)
+    {
+        alamofireManager.request(urlRequest)
+            .validate()
+            .responseString{ response in
+                
+                if let urlResponse = response.response,
+                    authError = self.checkUnauthorized(urlResponse) {
+                        completionHandler(.Failure(authError))
+                        return
+                }
+
+        
+                // End handler
+                completionHandler(response.result) // bubbles up to getCustSales
+            }
+    }
+    
+    func checkUnauthorized(urlResponse: NSHTTPURLResponse) -> (NSError?)
+    {
+        if (urlResponse.statusCode == 401)
+        {
+            let noCredentials = NSError(domain: NSURLErrorDomain,
+                code: NSURLErrorUserAuthenticationRequired,
+                userInfo: [NSLocalizedDescriptionKey: "Not Logged In",
+                    NSLocalizedRecoverySuggestionErrorKey: "Please re-enter your SalesTools credentials"])
+            return noCredentials
+        }
+        return nil
     }
     
 }
