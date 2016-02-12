@@ -22,7 +22,8 @@ class CustomerInfo: UIViewController {
     @IBOutlet weak var lblCustNum: UILabel!
     @IBOutlet weak var lblCustName: UILabel!
     @IBOutlet weak var lblCustAddress: UILabel!
-    @IBOutlet weak var lblCustCity: UILabel!
+    @IBOutlet weak var lblCustCity: UILabel!    
+    @IBOutlet weak var lblCustState: UILabel!
     @IBOutlet weak var lblCustZip: UILabel!
     @IBOutlet weak var lblCounty: UILabel!
     @IBOutlet weak var lblPhone: UILabel!
@@ -141,6 +142,7 @@ class CustomerInfo: UIViewController {
         lblCustName.text = cust.custName
         lblCustAddress.text = cust.address
         lblCustCity.text = cust.city
+        lblCustState.text = cust.state
         lblCustZip.text = cust.zip
         lblCounty.text = cust.county
         lblPhone.text = FormatPhone(cust.phone!)
@@ -155,6 +157,7 @@ class CustomerInfo: UIViewController {
         lblCustName.text = ""
         lblCustAddress.text = ""
         lblCustCity.text = ""
+        lblCustState.text = ""
         lblCustZip.text = ""
         lblCounty.text = ""
         lblPhone.text = ""

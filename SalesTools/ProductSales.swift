@@ -31,6 +31,7 @@ class ProductSales: UIViewController {
         {
             txtProduct.resignFirstResponder()
             embededViewController!.items = [salesProd]()
+            embededViewController!.prodNum = txtProduct.text
             GetProductSales(prod.trim())
         }
     }

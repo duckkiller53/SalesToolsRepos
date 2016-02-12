@@ -11,22 +11,15 @@ import UIKit
 class ProductDetail: UIViewController {
     
     var Product: salesProd?
+    var prodNum: String?
     
     @IBOutlet weak var lblCustNum: UILabel!
-    
-    
+    @IBOutlet weak var lblProduct: UILabel!
     @IBOutlet weak var lblCustName: UILabel!
-    
-    
     @IBOutlet weak var lblOrderNum: UILabel!
-    
-    
     @IBOutlet weak var lblQtySold: UILabel!
-    
     @IBOutlet weak var lblPrice: UILabel!
-    
     @IBOutlet weak var lblCost: UILabel!
-    
     @IBOutlet weak var lblDateSold: UILabel!
     
     
@@ -39,6 +32,7 @@ class ProductDetail: UIViewController {
         {
             
             lblCustNum.text = "\(Product!.custNum)"
+            lblProduct.text = prodNum
             lblCustName.text = Product!.custName
             lblOrderNum.text = "\(Product!.ordNum)"
             lblQtySold.text = "\(Product!.qtySold)"

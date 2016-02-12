@@ -20,7 +20,8 @@ class ProdTable: UIViewController,  UITableViewDataSource, UITableViewDelegate {
             self.tableView.reloadData()
         }
     }
-
+    
+    var prodNum: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,6 +63,9 @@ class ProdTable: UIViewController,  UITableViewDataSource, UITableViewDelegate {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
+        // dismiss the keyboard, if, after the tableview is loaded, the user
+        // set's focus to the textbox (where the keyboard is displayed) and
+        // the clicks on a cell.
         self.parentViewController!.navigationController!.view.endEditing(true)
        
         
@@ -71,6 +75,7 @@ class ProdTable: UIViewController,  UITableViewDataSource, UITableViewDelegate {
             {
                 let selectedRow = tableView.indexPathForSelectedRow!.row
                 destinationVC.Product = items[selectedRow]
+                destinationVC.prodNum = prodNum
             }
             
         }
