@@ -215,7 +215,7 @@ class APIManager {
                 userInfo: [NSLocalizedDescriptionKey: "Not Logged In",
                     NSLocalizedRecoverySuggestionErrorKey: "Please re-enter your SalesTools credentials"])
             return noCredentials
-        }
+        } 
         return nil
     }
     

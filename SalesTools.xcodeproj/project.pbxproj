@@ -166,6 +166,7 @@
 			isa = PBXGroup;
 			children = (
 				55BDC4181C59686000DE1DE4 /* AlamofireRequest+JSONSerializable.swift */,
+				550F15C51C6ABD300020D8EF /* PersistenceManager.swift */,
 			);
 			name = Business;
 			sourceTree = "<group>";
@@ -175,7 +176,6 @@
 			children = (
 				55BDC4161C59683700DE1DE4 /* Router.swift */,
 				55BDC4141C59681E00DE1DE4 /* APIManager.swift */,
-				550F15C51C6ABD300020D8EF /* PersistenceManager.swift */,
 			);
 			name = DataLayer;
 			sourceTree = "<group>";

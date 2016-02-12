@@ -15,6 +15,7 @@ class ProductLookUp: UIViewController {
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
     @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!
+    var keyboardDismissTapGesture: UIGestureRecognizer?
     var notConnectedBanner: Banner?
 
     @IBOutlet weak var txtProduct: UITextField!
@@ -38,14 +39,13 @@ class ProductLookUp: UIViewController {
     
     @IBAction func GetProduct(sender: AnyObject) {
         
+        txtProduct.resignFirstResponder()
         
         if let prod = txtProduct.text
         {
             if prod != ""
             {
-                ActivityIndicator.startAnimating()
-                ActivityIndicator.hidden = false
-                GetSingleProduct(prod)
+                GetSingleProduct(prod.trim())
             }
         }
         
@@ -60,11 +60,15 @@ class ProductLookUp: UIViewController {
         
         if  self.revealViewController() != nil
         {
-            
             menuButton.target = self.revealViewController()
             menuButton.action = "revealToggle:"
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
+        
+        // add observer to dismiss keyboard
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name: UIKeyboardWillHideNotification, object: nil)
 
     }
     
@@ -85,7 +89,7 @@ class ProductLookUp: UIViewController {
                 print(result.error)
                 
                 if let error = result.error
-                {
+                {                    
                     if error.domain == NSURLErrorDomain
                     {
                         // If we already are showing a banner, dismiss it and create new
@@ -115,6 +119,9 @@ class ProductLookUp: UIViewController {
                     }
                     
                 }
+                
+                self.ShowAlert("No Results were found!")
+                self.txtProduct.becomeFirstResponder()
                 return
             }
             
@@ -124,7 +131,10 @@ class ProductLookUp: UIViewController {
                 self.LoadControls(self.prod!)
             }
             
-        }
+        }        
+        
+        ActivityIndicator.startAnimating()
+        ActivityIndicator.hidden = false
         
         APIManager.sharedInstance.getProduct(prod, completionHandler: completionHandler)
         
@@ -145,8 +155,7 @@ class ProductLookUp: UIViewController {
     
     func ClearForm()
     {
-        txtProduct.text = ""
-        txtProduct.becomeFirstResponder()   
+        txtProduct.text = "" 
         lblProdNumber.text = ""
         lblDescrip.text = ""
         lblOnHand.text = ""
@@ -158,5 +167,48 @@ class ProductLookUp: UIViewController {
         lblLastRecvDate.text = ""
         ActivityIndicator.hidden = true        
         ActivityIndicator.color = DefaultTint
+    }    
+    
+    func ShowAlert(msg: String)
+    {
+        let myAlert = UIAlertController(title:"Alert", message: msg, preferredStyle: UIAlertControllerStyle.Alert);
+        
+        let okAction = UIAlertAction(title:"Ok", style:UIAlertActionStyle.Default){ action in
+            self.dismissViewControllerAnimated(true, completion:nil);
+        }
+        
+        myAlert.addAction(okAction);
+        self.presentViewController(myAlert, animated:true, completion:nil);
+        
     }
+    
+    // MARK:  Hide KeyBoard code
+    
+    override func viewWillDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+        
+        super.viewWillDisappear(animated)
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        if keyboardDismissTapGesture == nil
+        {
+            keyboardDismissTapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissKeyboard:"))
+            self.view.addGestureRecognizer(keyboardDismissTapGesture!)
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        if keyboardDismissTapGesture != nil
+        {
+            self.view.removeGestureRecognizer(keyboardDismissTapGesture!)
+            keyboardDismissTapGesture = nil
+        }
+    }
+    
+    func dismissKeyboard(sender: AnyObject) {
+        txtProduct?.resignFirstResponder()
+    }
+
+
 }

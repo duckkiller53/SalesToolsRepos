@@ -39,8 +39,13 @@ class CustomerSales: UIViewController, SalesParams  {
     
     @IBAction func GetCustProds(sender: AnyObject)    {
         
-        ActivityIndicator.startAnimating()
-        ActivityIndicator.hidden = false
+        embededViewController!.items = [custProd]()
+        
+        if custNum == 0 || whseID.isEmpty {
+            ShowAlert("Please enter search criteria!")
+            return
+        }
+        
         GetCustProducts(custNum, type: reportType, whse: whseID)
         
     }
@@ -113,15 +118,24 @@ class CustomerSales: UIViewController, SalesParams  {
                 return
             }
             
-            // No Errors Load Data
+            // No Errors Load Data            
             if let fetchedResults = result.value {
-                self.Products = fetchedResults
-                self.embededViewController!.items = self.Products
-
+                if fetchedResults.count > 0
+                {
+                    self.Products = fetchedResults
+                    self.embededViewController!.items = self.Products
+                } else
+                {
+                    self.ShowAlert("No Results were found!")
+                }
             }
+
             
             
         }
+        
+        ActivityIndicator.startAnimating()
+        ActivityIndicator.hidden = false
         
         APIManager.sharedInstance.getCustSales(cust, type: type, whse: whse, completionHandler: completionHandler)
         

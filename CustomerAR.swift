@@ -14,6 +14,7 @@ class CustomerAR: UIViewController {
     
    
     @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!
+    var keyboardDismissTapGesture: UIGestureRecognizer?
     var notConnectedBanner: Banner?
 
     @IBOutlet weak var menuButton: UIBarButtonItem!
@@ -39,13 +40,13 @@ class CustomerAR: UIViewController {
 
     
     @IBAction func btnSearch(sender: AnyObject) {
+        txtCustNum.resignFirstResponder()
+        
         if let custnum = txtCustNum.text
         {
             if !custnum.isEmpty
             {
-                ActivityIndicator.startAnimating()
-                ActivityIndicator.hidden = false
-                GetCustomerAR(custnum)
+                GetCustomerAR(custnum.trim())
             }
         }
 
@@ -60,11 +61,16 @@ class CustomerAR: UIViewController {
         ClearForm()
         
         if  self.revealViewController() != nil
-        {            
+        { 
             menuButton.target = self.revealViewController()
             menuButton.action = "revealToggle:"
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
+        
+        // add observer to dismiss keyboard
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name: UIKeyboardWillHideNotification, object: nil)
     
     }
     
@@ -115,7 +121,10 @@ class CustomerAR: UIViewController {
                         self.notConnectedBanner?.show(duration: nil)
                     }
                     
-                }
+                }                
+                
+                self.ShowAlert("No Results were found!")
+                self.txtCustNum.becomeFirstResponder()
                 return
             }
             
@@ -127,6 +136,10 @@ class CustomerAR: UIViewController {
             
         }
         
+        
+        ActivityIndicator.startAnimating()
+        ActivityIndicator.hidden = false
+        
         APIManager.sharedInstance.getCustomerAR(custnum, completionHandler: completionHandler)
         
     }
@@ -135,7 +148,6 @@ class CustomerAR: UIViewController {
     
     func ClearForm()
     {
-        txtCustNum.becomeFirstResponder()
         txtCustNum.text = ""
         lblCustName.text = ""
         lblCycleCD.text = ""
@@ -197,14 +209,49 @@ class CustomerAR: UIViewController {
         
     }
     
-    
-
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func ShowAlert(msg: String)
+    {
+        let myAlert = UIAlertController(title:"Alert", message: msg, preferredStyle: UIAlertControllerStyle.Alert);
+        
+        let okAction = UIAlertAction(title:"Ok", style:UIAlertActionStyle.Default){ action in
+            self.dismissViewControllerAnimated(true, completion:nil);
+        }
+        
+        myAlert.addAction(okAction);
+        self.presentViewController(myAlert, animated:true, completion:nil);
+        
     }
     
-
-
+    // MARK:  Hide KeyBoard code
+    
+    override func viewWillDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+        
+        super.viewWillDisappear(animated)
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        if keyboardDismissTapGesture == nil
+        {
+            keyboardDismissTapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissKeyboard:"))
+            self.view.addGestureRecognizer(keyboardDismissTapGesture!)
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        if keyboardDismissTapGesture != nil
+        {
+            self.view.removeGestureRecognizer(keyboardDismissTapGesture!)
+            keyboardDismissTapGesture = nil
+        }
+    }
+    
+    func dismissKeyboard(sender: AnyObject) {
+        txtCustNum?.resignFirstResponder()
+    }
+    
+    
 }
+
+
+
