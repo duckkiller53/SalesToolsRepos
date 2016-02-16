@@ -18,6 +18,9 @@ class CustomerAR: UIViewController {
     var notConnectedBanner: Banner?
 
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    
+    
+    @IBOutlet weak var lblCust: UILabel!
     @IBOutlet weak var txtCustNum: UITextField!
     
     @IBOutlet weak var lblCustNum: UILabel!
@@ -54,6 +57,15 @@ class CustomerAR: UIViewController {
     
     @IBAction func btnClearForm(sender: AnyObject) {
         ClearForm()
+    }  
+    
+    override func viewWillAppear(animated: Bool) {
+        // Setup Nav bar color scheme
+        colorizeNavBar(self.navigationController!.navigationBar)
+        // Create BackGround Gradient to display data.
+        drawBackGroundGradient(self, topColor: colorWithHexString("4294f4"), bottomColor: colorWithHexString("1861b7"))
+        
+        setControlColors(UIColor.whiteColor())
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -148,7 +160,7 @@ class CustomerAR: UIViewController {
     
     func ClearForm()
     {
-        txtCustNum.text = ""
+        lblCustNum.text = ""
         lblCustName.text = ""
         lblCycleCD.text = ""
         lblArAmt.text = ""
@@ -166,11 +178,33 @@ class CustomerAR: UIViewController {
         ActivityIndicator.hidden = true
         ActivityIndicator.color = DefaultTint
     }
-
+    
+    func setControlColors(color: UIColor)
+    {
+        // Set input control colors
+        txtCustNum.tintColor = UIColor.blackColor()
+        lblCust.textColor = UIColor.whiteColor()
+        
+        // Set display colors
+        lblCustNum.textColor = color
+        lblCustName.textColor = color
+        lblCycleCD.textColor = color
+        lblArAmt.textColor = color
+        lblUnCashBal.textColor = color
+        lblCurrent.textColor = color
+        lblPastDue30.textColor = color
+        lblPastDue60.textColor = color
+        lblPastDue90.textColor = color
+        lblPastDue120.textColor = color
+        lblServChgBal.textColor = color
+        lblCOD.textColor = color
+        lblMiscCrBal.textColor = color
+        lblFutureInvBal.textColor = color
+    }
     
     func LoadControls(cust: customerAR)
     {   
-        txtCustNum.text = "\(Int(cust.custnum))"
+        lblCustNum.text = "\(Int(cust.custnum))"
         lblCustName.text = cust.custName
         lblCycleCD.text = GetARArea(cust.arArea!)
         lblArAmt.text = "\(cust.arAmt)"
@@ -248,6 +282,14 @@ class CustomerAR: UIViewController {
     
     func dismissKeyboard(sender: AnyObject) {
         txtCustNum?.resignFirstResponder()
+    }
+    
+    //MARK: Gradient function
+    func drawBackGroundGradient(sender: AnyObject, topColor: UIColor, bottomColor: UIColor)
+    {
+        let background = CreateGradient(topColor, bottomColor: bottomColor)
+        background.frame = self.view.bounds
+        sender.view!!.layer.insertSublayer(background, atIndex: 0)
     }
     
     

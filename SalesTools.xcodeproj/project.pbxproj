@@ -13,6 +13,7 @@
 		550F15C61C6ABD300020D8EF /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550F15C51C6ABD300020D8EF /* PersistenceManager.swift */; };
 		5520A5341C6258F5007D4B6E /* CustomerSalesDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5520A5331C6258F5007D4B6E /* CustomerSalesDetail.swift */; };
 		5520A5561C629541007D4B6E /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5520A5551C629541007D4B6E /* Utilities.swift */; };
+		5521EB211C6FC21000A364CB /* ColorsAndGradients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5521EB201C6FC21000A364CB /* ColorsAndGradients.swift */; };
 		5532592E1C5BD4D500120905 /* SalesValuesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5532592D1C5BD4D500120905 /* SalesValuesController.swift */; };
 		55340F481C5929D900A4BDCB /* custProd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55340F471C5929D900A4BDCB /* custProd.swift */; };
 		55340F4A1C592BC500A4BDCB /* ResponseJsonObjectSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55340F491C592BC500A4BDCB /* ResponseJsonObjectSerializable.swift */; };
@@ -50,6 +51,7 @@
 		550F15C51C6ABD300020D8EF /* PersistenceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistenceManager.swift; sourceTree = "<group>"; };
 		5520A5331C6258F5007D4B6E /* CustomerSalesDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomerSalesDetail.swift; sourceTree = "<group>"; };
 		5520A5551C629541007D4B6E /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		5521EB201C6FC21000A364CB /* ColorsAndGradients.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorsAndGradients.swift; sourceTree = "<group>"; };
 		5532592D1C5BD4D500120905 /* SalesValuesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SalesValuesController.swift; sourceTree = "<group>"; };
 		55340F471C5929D900A4BDCB /* custProd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = custProd.swift; sourceTree = "<group>"; };
 		55340F491C592BC500A4BDCB /* ResponseJsonObjectSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseJsonObjectSerializable.swift; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 				5540A8041C47FA12002B1088 /* Media.xcassets */,
 				5520A5551C629541007D4B6E /* Utilities.swift */,
 				559899DE1C653C160076B5B8 /* icons.xcassets */,
+				5521EB201C6FC21000A364CB /* ColorsAndGradients.swift */,
 			);
 			name = Support;
 			sourceTree = "<group>";
@@ -419,6 +422,7 @@
 				55EEABD31C46C79200FE0BD9 /* MenuTableViewController.swift in Sources */,
 				55340F481C5929D900A4BDCB /* custProd.swift in Sources */,
 				5520A5561C629541007D4B6E /* Utilities.swift in Sources */,
+				5521EB211C6FC21000A364CB /* ColorsAndGradients.swift in Sources */,
 				55EEABC71C46A1F000FE0BD9 /* SWRevealViewController.m in Sources */,
 				55EEABCB1C46B22A00FE0BD9 /* MainViewController.swift in Sources */,
 				5579F2D31C5D35A3003F87D3 /* ConTable.swift in Sources */,

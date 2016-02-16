@@ -22,15 +22,34 @@ class ProductDetail: UIViewController {
     @IBOutlet weak var lblCost: UILabel!
     @IBOutlet weak var lblDateSold: UILabel!
     
+    override func viewWillAppear(animated: Bool) {
+        // Setup Nav bar color scheme
+        colorizeNavBar(self.navigationController!.navigationBar)
+        setControlColors(UIColor.whiteColor())
+        
+        // Create BackGround Gradient to display data.
+        drawBackGroundGradient(self, topColor: colorWithHexString("4294f4"), bottomColor: colorWithHexString("1861b7"))
+    }
     
+    func setControlColors(color: UIColor)
+    {
+        lblCustNum.textColor = color
+        lblProduct.textColor = color
+        lblCustName.textColor = color
+        lblOrderNum.textColor = color
+        lblQtySold.textColor = color
+        lblPrice.textColor = color
+        lblCost.textColor = color
+        lblDateSold.textColor = color
+
+    }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if (Product != nil)
-        {
-            
+        {            
             lblCustNum.text = "\(Product!.custNum)"
             lblProduct.text = prodNum
             lblCustName.text = Product!.custName
@@ -40,7 +59,14 @@ class ProductDetail: UIViewController {
             lblCost.text = "\(Product!.cost)"
             lblDateSold.text = Product!.dateSold
         }
-
+        
+    }
+    
+    func drawBackGroundGradient(sender: AnyObject, topColor: UIColor, bottomColor: UIColor)
+    {
+        let background = CreateGradient(topColor, bottomColor: bottomColor)
+        background.frame = self.view.bounds
+        sender.view!!.layer.insertSublayer(background, atIndex: 0)
     }
 
 }

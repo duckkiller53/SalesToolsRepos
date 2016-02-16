@@ -32,8 +32,15 @@ class ProdTable: UIViewController,  UITableViewDataSource, UITableViewDelegate {
             selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name: UIKeyboardWillHideNotification, object: nil)
         
+        // Set background of the tableview and hide cell seperator lines
+        setTableViewBackgroundGradient(tableView, colorWithHexString("4294f4"), colorWithHexString("1861b7"))
+       
+        tableView.tableFooterView = UIView(frame:CGRectZero)
+        tableView.separatorColor = UIColor.redColor()
     }
     
+    
+        
     // MARK:  TableView methods
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -57,6 +64,19 @@ class ProdTable: UIViewController,  UITableViewDataSource, UITableViewDelegate {
             cell.textLabel?.text = "Order Number: " + "\(r.ordNum)"
             cell.detailTextLabel!.text = "\(r.custNum)" + " " + r.custName
         }
+        
+        // This allows the background color of the cells to show through the cells.
+        cell.backgroundColor = UIColor.clearColor()
+        cell.textLabel!.textColor = UIColor.whiteColor()
+        cell.detailTextLabel!.textColor = UIColor.whiteColor()
+        
+         // code for alternating row colors.
+//        if(indexPath.row % 2 == 0){
+//            cell.backgroundColor = colorWithHexString("#0f4380")
+//        } else{
+//            cell.backgroundColor = colorWithHexString("#175c99")
+//        }
+
         
         return cell
     }

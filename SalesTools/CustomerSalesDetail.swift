@@ -30,8 +30,35 @@ class CustomerSalesDetail: UIViewController {
     
     var Product: custProd?
     
+    override func viewWillAppear(animated: Bool) {
+        // Setup Nav bar color scheme
+        colorizeNavBar(self.navigationController!.navigationBar)
+        setControlColors(UIColor.whiteColor())
+        
+        // Create BackGround Gradient to display data.
+        drawBackGroundGradient(self, topColor: colorWithHexString("4294f4"), bottomColor: colorWithHexString("1861b7"))
+    }
+    
+    func setControlColors(color: UIColor)
+    {
+        lblProduct.textColor = color
+        lblDescription.textColor = color
+        lblQtyOnHand.textColor = color
+        lblQtyOnOrder.textColor = color
+        lblQtyCommit.textColor = color
+        lblQtyAvail.textColor = color
+        lblWhse.textColor = color
+        lblLastInvDate.textColor = color
+        lblLastRecvDate.textColor = color
+    }
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Create BackGround Gradient to display data.
+        drawBackGroundGradient(self, topColor: colorWithHexString("4294f4"), bottomColor: colorWithHexString("1861b7"))
+
         
         if (Product != nil)
         {
@@ -45,29 +72,18 @@ class CustomerSalesDetail: UIViewController {
             
             lblLastInvDate.text = Product!.lastINVDate
             lblLastRecvDate.text = Product!.lastRecvDate
-            
-            //print(convertDateFormater(Product!.lastINVDate))
         }
         
    }
     
-//    func convertDateFormater(date: String) -> String
-//    {
-//        
-//        let dateFormatter = NSDateFormatter()
-//        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" //this your string date format
-//        dateFormatter.timeZone = NSTimeZone(name: "UTC")
-//        let date = dateFormatter.dateFromString(date)
-//        
-//        
-//        dateFormatter.dateFormat = "MM-dd-yyyy"///this is you want to convert format
-//        dateFormatter.timeZone = NSTimeZone(name: "UTC")
-//        let timeStamp = dateFormatter.stringFromDate(date!)
-//        
-//        
-//        return timeStamp
-//    }
     
+    
+    func drawBackGroundGradient(sender: AnyObject, topColor: UIColor, bottomColor: UIColor)
+    {
+        let background = CreateGradient(topColor, bottomColor: bottomColor)
+        background.frame = self.view.bounds
+        sender.view!!.layer.insertSublayer(background, atIndex: 0)
+    }
     
 
 }

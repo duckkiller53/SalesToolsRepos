@@ -17,7 +17,9 @@ class ProductLookUp: UIViewController {
     @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!
     var keyboardDismissTapGesture: UIGestureRecognizer?
     var notConnectedBanner: Banner?
+    
 
+    @IBOutlet weak var lblProd: UILabel!
     @IBOutlet weak var txtProduct: UITextField!
     
     @IBOutlet weak var lblProdNumber: UILabel!
@@ -34,7 +36,7 @@ class ProductLookUp: UIViewController {
     
     
     @IBAction func btnClear(sender: AnyObject) {
-        ClearForm()
+        clearForm()
     }
     
     @IBAction func GetProduct(sender: AnyObject) {
@@ -52,10 +54,19 @@ class ProductLookUp: UIViewController {
         
     }
     
+    override func viewWillAppear(animated: Bool) {
+        // Setup Nav bar color scheme
+        colorizeNavBar(self.navigationController!.navigationBar)
+        setControlColors(UIColor.whiteColor())
+        
+        // Create BackGround Gradient to display data.
+        drawBackGroundGradient(self, topColor: colorWithHexString("4294f4"), bottomColor: colorWithHexString("1861b7"))
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ClearForm()
+        clearForm()
         
         
         if  self.revealViewController() != nil
@@ -128,7 +139,7 @@ class ProductLookUp: UIViewController {
             // No Errors Load Data
             if let fetchedResult = result.value {
                 self.prod = fetchedResult
-                self.LoadControls(self.prod!)
+                self.loadControls(self.prod!)
             }
             
         }        
@@ -140,7 +151,7 @@ class ProductLookUp: UIViewController {
         
     }
     
-    func LoadControls(prod: product)
+    func loadControls(prod: product)
     {
         lblProdNumber.text = prod.prod
         lblDescrip.text = prod.descrip1! + " " + prod.descrip2!
@@ -153,7 +164,7 @@ class ProductLookUp: UIViewController {
         lblLastRecvDate.text = prod.lastINVDate
     }
     
-    func ClearForm()
+    func clearForm()
     {
         txtProduct.text = "" 
         lblProdNumber.text = ""
@@ -167,6 +178,24 @@ class ProductLookUp: UIViewController {
         lblLastRecvDate.text = ""
         ActivityIndicator.hidden = true        
         ActivityIndicator.color = DefaultTint
+    }
+    
+    func setControlColors(color: UIColor)
+    {
+        // Set input colors
+        txtProduct.tintColor = UIColor.blackColor()
+        lblProd.textColor = UIColor.whiteColor()
+        
+        // Set display colors
+        lblProdNumber.textColor = color
+        lblDescrip.textColor = color
+        lblOnHand.textColor = color
+        lblOnOrder.textColor = color
+        lblCommit.textColor = color
+        lblQtyAvail.textColor = color
+        lblWhse.textColor = color
+        lblLastInvDate.textColor = color
+        lblLastRecvDate.textColor = color
     }    
     
     func ShowAlert(msg: String)
@@ -208,6 +237,15 @@ class ProductLookUp: UIViewController {
     
     func dismissKeyboard(sender: AnyObject) {
         txtProduct?.resignFirstResponder()
+    }
+    
+    // MARK: Gradient function
+    
+    func drawBackGroundGradient(sender: AnyObject, topColor: UIColor, bottomColor: UIColor)
+    {
+        let background = CreateGradient(topColor, bottomColor: bottomColor)
+        background.frame = self.view.bounds
+        sender.view!!.layer.insertSublayer(background, atIndex: 0)
     }
 
 

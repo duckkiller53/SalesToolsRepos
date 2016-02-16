@@ -11,11 +11,14 @@ import BRYXBanner
 class ProductSales: UIViewController {
 
     
+    
     @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var lblProd: UILabel!
     @IBOutlet weak var txtProduct: UITextField!
     var Products = [salesProd]()
     var embededViewController: ProdTable? = nil
+    @IBOutlet weak var lblProdSales: UILabel!
     var notConnectedBanner: Banner?
     var prodNum: Int = 0
     
@@ -42,6 +45,12 @@ class ProductSales: UIViewController {
         txtProduct.resignFirstResponder()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        // Setup Nav bar color scheme
+        colorizeNavBar(self.navigationController!.navigationBar)
+        txtProduct.tintColor = UIColor.blackColor()
+        lblProd.textColor = UIColor.whiteColor()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

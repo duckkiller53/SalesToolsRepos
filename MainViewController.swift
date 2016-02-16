@@ -27,21 +27,23 @@ class MainViewController: UIViewController {
         ShowAlert("Logout Successful!")
     }
     
-    
+    override func viewWillAppear(animated: Bool) {
+        // Setup Nav bar color scheme
+        colorizeNavBar(self.navigationController!.navigationBar)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         if  self.revealViewController() != nil
         {
-            
             menubutton.target = self.revealViewController()
             menubutton.action = "revealToggle:"
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            
         }
-    
-    }
+        
+    }    
+   
     
     func ShowAlert(msg: String)
     {

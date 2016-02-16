@@ -50,8 +50,7 @@ class LogIn: UIViewController {
             } else {
                 pass = password
             }
-        }
-        
+        }       
         
         
         
@@ -125,6 +124,9 @@ class LogIn: UIViewController {
             
         }
         
+        self.ActivityIndicator.hidden = false
+        self.ActivityIndicator.startAnimating()
+        
         APIManager.sharedInstance.validateLogin(completionHandler)
         
     }
@@ -142,6 +144,19 @@ class LogIn: UIViewController {
 
     }
     
+    override func viewWillAppear(animated: Bool) {        
+        
+        // Setup Nav bar color scheme
+        colorizeNavBar(self.navigationController!.navigationBar)
+        
+        // Create BackGround Gradient to display data.
+        drawBackGroundGradient(self, topColor: colorWithHexString("4294f4"), bottomColor: colorWithHexString("1861b7"))
+        
+        self.ActivityIndicator.hidden = true
+        self.ActivityIndicator.stopAnimating()
+
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,8 +169,11 @@ class LogIn: UIViewController {
         }
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    //MARK: Gradient function
+    func drawBackGroundGradient(sender: AnyObject, topColor: UIColor, bottomColor: UIColor)
+    {
+        let background = CreateGradient(topColor, bottomColor: bottomColor)
+        background.frame = self.view.bounds
+        sender.view!!.layer.insertSublayer(background, atIndex: 0)
     }
 }

@@ -48,6 +48,14 @@ class CustomerSales: UIViewController, SalesParams  {
         
         GetCustProducts(custNum, type: reportType, whse: whseID)
         
+    }    
+    
+    override func viewWillAppear(animated: Bool) {
+        // Setup Nav bar color scheme
+        colorizeNavBar(self.navigationController!.navigationBar)        
+        
+        // Add background to customer selection area of main view.
+        self.view.backgroundColor = colorWithHexString("4092f2")
     }
     
     override func viewDidLoad() {
@@ -63,8 +71,11 @@ class CustomerSales: UIViewController, SalesParams  {
             menuButton.target = self.revealViewController()
             menuButton.action = "revealToggle:"            
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            
-        }        
+        }
+        
+        // Set nav bar color
+        let navBarColor = navigationController!.navigationBar
+        navBarColor.barTintColor = colorWithHexString("#175c99")
     }
     
     // MARK: GET API DATA
@@ -194,6 +205,15 @@ class CustomerSales: UIViewController, SalesParams  {
         myAlert.addAction(okAction);
         self.presentViewController(myAlert, animated:true, completion:nil);
         
+    }
+    
+    // MARK: Gradient background
+    
+    func drawBackGroundGradient(sender: AnyObject, topColor: UIColor, bottomColor: UIColor)
+    {
+        let background = CreateGradient(topColor, bottomColor: bottomColor)
+        background.frame = self.view.bounds
+        sender.view!!.layer.insertSublayer(background, atIndex: 0)
     }
     
 }

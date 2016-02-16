@@ -23,6 +23,12 @@ class ConTable: UIViewController, UITableViewDataSource, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set background of the tableview and hide cell seperator lines
+        setTableViewBackgroundGradient(tableView, colorWithHexString("4294f4"), colorWithHexString("1861b7"))
+        
+        tableView.tableFooterView = UIView(frame:CGRectZero)
+        tableView.separatorColor = UIColor.redColor()
+        
     }
     
     
@@ -49,6 +55,12 @@ class ConTable: UIViewController, UITableViewDataSource, UITableViewDelegate {
                 cell.textLabel?.text = r.prod
                 cell.detailTextLabel!.text = r.descrip1! + " " + r.descrip2!
             }
+            
+            // This allows the background color of the cells to show through the cells.
+            cell.backgroundColor = UIColor.clearColor()
+            cell.textLabel!.textColor = UIColor.whiteColor()
+            cell.detailTextLabel!.textColor = UIColor.whiteColor()
+
             
             return cell
         }

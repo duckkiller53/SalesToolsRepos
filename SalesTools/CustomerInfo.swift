@@ -16,7 +16,10 @@ class CustomerInfo: UIViewController {
     var keyboardDismissTapGesture: UIGestureRecognizer?
     var notConnectedBanner: Banner?
 
-    @IBOutlet weak var menuButton: UIBarButtonItem!    
+    @IBOutlet weak var menuButton: UIBarButtonItem!
+    
+    
+    @IBOutlet weak var lblCust: UILabel!
     @IBOutlet weak var txtCustNum: UITextField!
     
     @IBOutlet weak var lblCustNum: UILabel!
@@ -45,13 +48,23 @@ class CustomerInfo: UIViewController {
     }
    
     @IBAction func btnClear(sender: AnyObject) {
-        ClearForm()
+        clearForm()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        // Setup Nav bar color scheme
+        colorizeNavBar(self.navigationController!.navigationBar)
+        // Create BackGround Gradient to display data.
+        drawBackGroundGradient(self, topColor: colorWithHexString("4294f4"), bottomColor: colorWithHexString("1861b7"))
+        
+        setControlColors(UIColor.whiteColor())
+
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        ClearForm()
+        
+        clearForm()
         
         if  self.revealViewController() != nil
         {   
@@ -124,7 +137,7 @@ class CustomerInfo: UIViewController {
             // No Errors Load Data
             if let fetchedResult = result.value {
                 self.cust = fetchedResult
-                self.LoadControls(self.cust!)
+                self.loadControls(self.cust!)
             }
             
         }        
@@ -136,7 +149,7 @@ class CustomerInfo: UIViewController {
         
     }
     
-    func LoadControls(cust: customer)
+    func loadControls(cust: customer)
     {
         lblCustNum.text = "\(Int(cust.custnum))"
         lblCustName.text = cust.custName
@@ -150,7 +163,7 @@ class CustomerInfo: UIViewController {
         lblContact.text = cust.contact
     }
     
-    func ClearForm()
+    func clearForm()
     {        
         txtCustNum.text = ""
         lblCustNum.text = ""
@@ -165,6 +178,26 @@ class CustomerInfo: UIViewController {
         lblContact.text = ""
         ActivityIndicator.hidden = true
         ActivityIndicator.color = DefaultTint
+    }
+    
+    func setControlColors(color: UIColor)
+    {
+        // Set Input colors
+        txtCustNum.tintColor = UIColor.blackColor()
+        lblCust.textColor = UIColor.whiteColor()
+        
+        // Set display colors
+        lblCustNum.textColor = color
+        lblCustName.textColor = color
+        lblCustAddress.textColor = color
+        lblCustCity.textColor = color
+        lblCustState.textColor = color
+        lblCustZip.textColor = color
+        lblCounty.textColor = color
+        lblPhone.textColor = color
+        lblSlsRep.textColor = color
+        lblContact.textColor = color
+        
     }
     
     func ShowAlert(msg: String)
@@ -206,6 +239,15 @@ class CustomerInfo: UIViewController {
     
     func dismissKeyboard(sender: AnyObject) {
         txtCustNum?.resignFirstResponder()
-    }   
+    }
+    
+    // MARK: gradient function
+    
+    func drawBackGroundGradient(sender: AnyObject, topColor: UIColor, bottomColor: UIColor)
+    {
+        let background = CreateGradient(topColor, bottomColor: bottomColor)
+        background.frame = self.view.bounds
+        sender.view!!.layer.insertSublayer(background, atIndex: 0)
+    }
 
 }
