@@ -18,7 +18,6 @@
 		55340F481C5929D900A4BDCB /* custProd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55340F471C5929D900A4BDCB /* custProd.swift */; };
 		55340F4A1C592BC500A4BDCB /* ResponseJsonObjectSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55340F491C592BC500A4BDCB /* ResponseJsonObjectSerializable.swift */; };
 		5540A8051C47FA12002B1088 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5540A8041C47FA12002B1088 /* Media.xcassets */; };
-		5540A80D1C48035D002B1088 /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 5540A80C1C48035D002B1088 /* Icon-Small.png */; };
 		554BFA311C67A9F600139145 /* customerAR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554BFA301C67A9F600139145 /* customerAR.swift */; };
 		5578C9961C581ECC0060E92D /* CustomerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5578C9951C581ECC0060E92D /* CustomerInfo.swift */; };
 		5578C9981C5824710060E92D /* CustomerAR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5578C9971C5824710060E92D /* CustomerAR.swift */; };
@@ -56,7 +55,6 @@
 		55340F471C5929D900A4BDCB /* custProd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = custProd.swift; sourceTree = "<group>"; };
 		55340F491C592BC500A4BDCB /* ResponseJsonObjectSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseJsonObjectSerializable.swift; sourceTree = "<group>"; };
 		5540A8041C47FA12002B1088 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
-		5540A80C1C48035D002B1088 /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small.png"; sourceTree = "<group>"; };
 		554BFA301C67A9F600139145 /* customerAR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = customerAR.swift; sourceTree = "<group>"; };
 		5578C9951C581ECC0060E92D /* CustomerInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomerInfo.swift; sourceTree = "<group>"; };
 		5578C9971C5824710060E92D /* CustomerAR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomerAR.swift; path = ../CustomerAR.swift; sourceTree = "<group>"; };
@@ -247,7 +245,6 @@
 			isa = PBXGroup;
 			children = (
 				55EEABC31C46A13100FE0BD9 /* SWRevealViewController */,
-				5540A80C1C48035D002B1088 /* Icon-Small.png */,
 				55EEABB01C46A0DF00FE0BD9 /* AppDelegate.swift */,
 				55EEABBC1C46A0DF00FE0BD9 /* Info.plist */,
 				5540A8041C47FA12002B1088 /* Media.xcassets */,
@@ -339,7 +336,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5540A80D1C48035D002B1088 /* Icon-Small.png in Resources */,
 				5540A8051C47FA12002B1088 /* Media.xcassets in Resources */,
 				55EEABB61C46A0DF00FE0BD9 /* Main.storyboard in Resources */,
 				559899DF1C653C160076B5B8 /* icons.xcassets in Resources */,

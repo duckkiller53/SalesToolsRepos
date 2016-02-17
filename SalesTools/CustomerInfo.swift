@@ -129,7 +129,7 @@ class CustomerInfo: UIViewController {
                     
                 }
                 
-                self.ShowAlert("No Results were found!")
+                self.ShowAlert("No results were found!")
                 self.txtCustNum.becomeFirstResponder()
                 return
             }
@@ -202,7 +202,7 @@ class CustomerInfo: UIViewController {
     
     func ShowAlert(msg: String)
     {
-        let myAlert = UIAlertController(title:"Alert", message: msg, preferredStyle: UIAlertControllerStyle.Alert);
+        let myAlert = UIAlertController(title:"SalesTools", message: msg, preferredStyle: UIAlertControllerStyle.Alert);
         
         let okAction = UIAlertAction(title:"Ok", style:UIAlertActionStyle.Default){ action in
             self.dismissViewControllerAnimated(true, completion:nil);
