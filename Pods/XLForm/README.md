@@ -4,7 +4,7 @@ XLForm
 By [XMARTLABS](http://xmartlabs.com).
 
 [![Build Status](https://travis-ci.org/xmartlabs/XLForm.svg?branch=master)](https://travis-ci.org/xmartlabs/XLForm)
-[![license](https://img.shields.io/badge/pod-3.0.2-blue.svg)](https://github.com/xmartlabs/XLForm/releases)
+[![license](https://img.shields.io/badge/pod-3.1.1-blue.svg)](https://github.com/xmartlabs/XLForm/releases)
 
 **If you are looking for Swift 2 native implementation we have recently created [Eureka], a complete re-design of XLForm in Swift 2.** *Do not panic, We will continue maintaining and improving XLForm, obj-c rocks!!*
 
@@ -647,6 +647,8 @@ Usually you may want to change the form when some value change or some row or se
 
 In order to stay in sync with the form descriptor modifications your `XLFormViewController` subclass should override the `XLFormDescriptorDelegate` methods of 'XLFormViewController'.
 
+> Note: It is important to always call the `[super ...]` method when overriding this delegate's methods.
+
 ```objc
 @protocol XLFormDescriptorDelegate <NSObject>
 
@@ -657,6 +659,10 @@ In order to stay in sync with the form descriptor modifications your `XLFormView
 -(void)formRowHasBeenAdded:(XLFormRowDescriptor *)formRow atIndexPath:(NSIndexPath *)indexPath;
 -(void)formRowHasBeenRemoved:(XLFormRowDescriptor *)formRow atIndexPath:(NSIndexPath *)indexPath;
 -(void)formRowDescriptorValueHasChanged:(XLFormRowDescriptor *)formRow oldValue:(id)oldValue newValue:(id)newValue;
+-(void)formRowDescriptorPredicateHasChanged:(XLFormRowDescriptor *)formRow
+                                   oldValue:(id)oldValue
+                                   newValue:(id)newValue
+                              predicateType:(XLPredicateType)predicateType;
 
 @end
 ```
@@ -901,6 +907,8 @@ You can change the length of a UITextField using the `cellConfigAtConfigure` dic
 row.cellConfigAtConfigure.setObject(0.7, forKey:XLFormTextFieldLengthPercentage)
 ```
 
+**Note:**The same can be achieved for the UITextView when using `XLFormRowDescriptorTypeTextView`; just set your percentage for the key `XLFormTextViewLengthPercentage`.
+
 #### How to change a UITableViewCell font
 
 You can change the font or any other table view cell property using the `cellConfig` dictionary property. XLForm will set up `cellConfig` dictionary values when the table view cell is about to be displayed.
@@ -994,7 +1002,7 @@ This is how you can set them:
 Installation
 --------------------------
 
-## Cocoapods
+## CocoaPods
 
 1. Add the following line in the project's Podfile file:
 `pod 'XLForm', '~> 3.0'`.
@@ -1039,6 +1047,13 @@ Requirements
 
 Release Notes
 --------------
+
+Version 3.1.1
+* Allow setting width percentage on UITextView
+* Added custom inline row example
+* Fixed bug where XLFormImageCell was not added to project
+* Add ability to `end editing` on scroll
+* Other bugs and refactor
 
 Version 3.1.0
 * Added Carthage support

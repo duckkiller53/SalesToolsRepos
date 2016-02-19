@@ -86,20 +86,12 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods/Alamofire.framework"
   install_framework "Pods/BRYXBanner.framework"
-  install_framework "Pods/FLAnimatedImage.framework"
-  install_framework "Pods/Locksmith.framework"
-  install_framework "Pods/PINCache.framework"
-  install_framework "Pods/PINRemoteImage.framework"
   install_framework "Pods/SwiftyJSON.framework"
   install_framework "Pods/XLForm.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods/Alamofire.framework"
   install_framework "Pods/BRYXBanner.framework"
-  install_framework "Pods/FLAnimatedImage.framework"
-  install_framework "Pods/Locksmith.framework"
-  install_framework "Pods/PINCache.framework"
-  install_framework "Pods/PINRemoteImage.framework"
   install_framework "Pods/SwiftyJSON.framework"
   install_framework "Pods/XLForm.framework"
 fi

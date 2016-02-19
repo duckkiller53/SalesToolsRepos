@@ -118,7 +118,7 @@
             NSString *cellClassString = cellClass;
             NSString *cellResource = nil;
             NSBundle *bundle = nil;
-            if ([cellClassString containsString:@"/"]) {
+            if ([cellClassString rangeOfString:@"/"].location != NSNotFound) {
                 NSArray *components = [cellClassString componentsSeparatedByString:@"/"];
                 cellResource = [components lastObject];
                 NSString *folderName = [components firstObject];
@@ -137,6 +137,7 @@
         } else {
             _cell = [[cellClass alloc] initWithStyle:self.cellStyle reuseIdentifier:nil];
         }
+        _cell.rowDescriptor = self;
         NSAssert([_cell isKindOfClass:[XLFormBaseCell class]], @"UITableViewCell must extend from XLFormBaseCell");
         [self configureCellAtCreationTime];
     }
@@ -290,13 +291,17 @@
 -(BOOL)evaluateIsDisabled
 {
     if ([_disabled isKindOfClass:[NSPredicate class]]) {
-        @try {
-            self.disablePredicateCache = @([_disabled evaluateWithObject:self substitutionVariables:self.sectionDescriptor.formDescriptor.allRowsByTag ?: @{}]);
-        }
-        @catch (NSException *exception) {
-            // predicate syntax error.
+        if (!self.sectionDescriptor.formDescriptor) {
             self.isDirtyDisablePredicateCache = YES;
-        };
+        } else {
+            @try {
+                self.disablePredicateCache = @([_disabled evaluateWithObject:self substitutionVariables:self.sectionDescriptor.formDescriptor.allRowsByTag ?: @{}]);
+            }
+            @catch (NSException *exception) {
+                // predicate syntax error.
+                self.isDirtyDisablePredicateCache = YES;
+            };
+        }
     }
     else{
         self.disablePredicateCache = _disabled;
@@ -353,13 +358,17 @@
 -(BOOL)evaluateIsHidden
 {
     if ([_hidden isKindOfClass:[NSPredicate class]]) {
-        @try {
-            self.hidePredicateCache = @([_hidden evaluateWithObject:self substitutionVariables:self.sectionDescriptor.formDescriptor.allRowsByTag ?: @{}]);
-        }
-        @catch (NSException *exception) {
-            // predicate syntax error.
+        if (!self.sectionDescriptor.formDescriptor) {
             self.isDirtyHidePredicateCache = YES;
-        };
+        } else {
+            @try {
+                self.hidePredicateCache = @([_hidden evaluateWithObject:self substitutionVariables:self.sectionDescriptor.formDescriptor.allRowsByTag ?: @{}]);
+            }
+            @catch (NSException *exception) {
+                // predicate syntax error or for has not finished loading.
+                self.isDirtyHidePredicateCache = YES;
+            };
+        }
     }
     else{
         self.hidePredicateCache = _hidden;

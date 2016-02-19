@@ -1,7 +1,5 @@
 //
-//  MenuTableViewController.swift
-//  SideBarMenuExample
-//
+//  MenuTableViewController.swift//
 //  Created by William Volm on 1/13/16.
 //  Copyright © 2016 Dave LaPorte. All rights reserved.
 //

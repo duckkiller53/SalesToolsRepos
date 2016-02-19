@@ -310,6 +310,7 @@
 				TargetAttributes = {
 					55EEABAC1C46A0DF00FE0BD9 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 9LF4X6VAHE;
 					};
 				};
 			};
@@ -531,10 +532,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = SalesTools/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.volmcompanies.SalesTools;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.volmcompanies.salestools-v3";
 				PRODUCT_NAME = SalesTools;
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "SalesTools-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -546,10 +550,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = SalesTools/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.volmcompanies.SalesTools;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.volmcompanies.salestools-v3";
 				PRODUCT_NAME = SalesTools;
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "SalesTools-Bridging-Header.h";
 			};
 			name = Release;

@@ -8,7 +8,6 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
-import Locksmith
 
 class APIManager {
   static let sharedInstance = APIManager()

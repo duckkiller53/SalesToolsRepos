@@ -1,35 +1,19 @@
 PODS:
-  - Alamofire (3.1.5)
+  - Alamofire (3.2.0)
   - BRYXBanner (0.4.1)
-  - FLAnimatedImage (1.0.10)
-  - Locksmith (2.0.6)
-  - PINCache (2.1.2)
-  - PINRemoteImage (1.2.2):
-    - PINRemoteImage/FLAnimatedImage (= 1.2.2)
-  - PINRemoteImage/Core (1.2.2):
-    - PINCache (>= 2.1)
-  - PINRemoteImage/FLAnimatedImage (1.2.2):
-    - FLAnimatedImage (>= 1.0)
-    - PINRemoteImage/Core
   - SwiftyJSON (2.3.2)
-  - XLForm (3.1.0)
+  - XLForm (3.1.1)
 
 DEPENDENCIES:
   - Alamofire (~> 3.1)
   - BRYXBanner (~> 0.4.1)
-  - Locksmith (~> 2.0)
-  - PINRemoteImage (~> 1.2)
   - SwiftyJSON (~> 2.3)
   - XLForm (~> 3.0)
 
 SPEC CHECKSUMS:
-  Alamofire: 5f730ba29fd113b7ddd71c1e65d0c630acf5d7b0
+  Alamofire: 4da478599fccddff361205c8929333d7fe18dceb
   BRYXBanner: b9d72df3a6ed7f17bb5828828cdde8a68e7aa678
-  FLAnimatedImage: e16a1e1cef08e4c509b47e4acbe3923f65c16135
-  Locksmith: 42ec3d535448e3c218f4342782b07a222b1acfd1
-  PINCache: 9e70271f1bdd60c0465b7208adcc4b6acc1fc376
-  PINRemoteImage: 9f6f484bbceee15e2df5aee0beeac2e261e4ac81
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
-  XLForm: 754b061f9f4b249a7ab7548efb22f1b586e26740
+  XLForm: c9ee7e0f859341279bfd894f9589a9d25c23e4df
 
 COCOAPODS: 0.39.0
