@@ -11,7 +11,6 @@ import XLForm
 
 protocol SalesParams {
     func haveAddedSearchParams(customer: Int, type: Bool, whse: String)
-
 }
 
 
@@ -71,8 +70,7 @@ class SalesValuesController: XLFormViewController
     section = XLFormSectionDescriptor.formSection() as XLFormSectionDescriptor
     section.title = "Enter Search Values"    
     
-    form.addFormSection(section)
-    
+    form.addFormSection(section)    
     
     
     // Customer ID

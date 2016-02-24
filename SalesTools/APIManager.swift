@@ -30,9 +30,9 @@ class APIManager {
         
     }
     
-    func getProduct(prodid: String, completionHandler: (Result<product, NSError>) -> Void) {
+    func getProductSearch(prodid: String, description: String, active: String, warehouse: String, completionHandler: (Result<[product], NSError>) -> Void) {
         
-        getSingleProd(Router.GetProduct(prodid),  completionHandler: completionHandler)
+        getProductSearch(Router.GetProductSearch(prodid, description, active, warehouse),  completionHandler: completionHandler)
         
     }
     
@@ -108,10 +108,10 @@ class APIManager {
         }
     }
     
-    func getSingleProd(urlRequest: URLRequestConvertible, completionHandler: (Result<product, NSError>) -> Void) {
+    func getProductSearch(urlRequest: URLRequestConvertible, completionHandler: (Result<[product], NSError>) -> Void) {
         alamofireManager.request(urlRequest)
             .validate()
-            .responseObject { (response:Response<product, NSError>) in
+            .responseArray { (response:Response<[product], NSError>) in
                 // Begin handler
                 
                 if let urlResponse = response.response,
@@ -124,13 +124,13 @@ class APIManager {
                 guard response.result.error == nil,
                     let prods = response.result.value else {
                         print(response.result.error)
-                        // completion bubbles up with error to getPublicGists
+                        // completion bubbles up with error to getSingleProd
                         completionHandler(response.result)
                         return
                 }
                 
                 // End handler
-                completionHandler(.Success(prods)) // bubbles up to getCustSales
+                completionHandler(.Success(prods)) // bubbles up to getSingleProd
         }
     }
     

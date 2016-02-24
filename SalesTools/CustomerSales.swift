@@ -42,7 +42,7 @@ class CustomerSales: UIViewController, SalesParams  {
         embededViewController!.items = [custProd]()
         
         if custNum == 0 || whseID.isEmpty {
-            ShowAlert("Please enter search criteria!")
+            showAlert("Please enter search criteria!")
             return
         }
         
@@ -56,6 +56,10 @@ class CustomerSales: UIViewController, SalesParams  {
         
         // Add background to customer selection area of main view.
         self.view.backgroundColor = colorWithHexString("4092f2")
+        
+        // Set Colors of top buttons.
+        setControlColors(UIColor.whiteColor())
+
     }
     
     override func viewDidLoad() {
@@ -64,7 +68,7 @@ class CustomerSales: UIViewController, SalesParams  {
         // remove the inset to tableview due to nav controller
         self.automaticallyAdjustsScrollViewInsets = false
         
-        ClearForm()
+        clearForm()
         
         if  self.revealViewController() != nil
         {
@@ -72,10 +76,6 @@ class CustomerSales: UIViewController, SalesParams  {
             menuButton.action = "revealToggle:"            
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
-        
-        // Set nav bar color
-        let navBarColor = navigationController!.navigationBar
-        navBarColor.barTintColor = colorWithHexString("#175c99")
     }
     
     // MARK: GET API DATA
@@ -126,7 +126,7 @@ class CustomerSales: UIViewController, SalesParams  {
                     }
             
                 }
-                self.ShowAlert("No results were found!")
+                self.showAlert("No results were found!")
                 return
             }
             
@@ -138,7 +138,7 @@ class CustomerSales: UIViewController, SalesParams  {
                     self.embededViewController!.items = self.Products
                 } else
                 {
-                    self.ShowAlert("No results were found!")
+                    self.showAlert("No results were found!")
                 }
             }
 
@@ -170,8 +170,7 @@ class CustomerSales: UIViewController, SalesParams  {
         createVC.delegate = self
         
         // Note: pushViewController loads it on stack.
-        self.navigationController?.pushViewController(createVC, animated: true)
-        
+        self.navigationController?.pushViewController(createVC, animated: true)        
         
     }
    
@@ -184,7 +183,7 @@ class CustomerSales: UIViewController, SalesParams  {
         
     }
     
-    func ClearForm()
+    func clearForm()
     {
         lblCustomer.text = ""
         lblType.text = ""
@@ -195,7 +194,7 @@ class CustomerSales: UIViewController, SalesParams  {
         ActivityIndicator.color = DefaultTint
     }
     
-    func ShowAlert(msg: String)
+    func showAlert(msg: String)
     {
         let myAlert = UIAlertController(title:"SalesTools", message: msg, preferredStyle: UIAlertControllerStyle.Alert);
         
@@ -206,6 +205,13 @@ class CustomerSales: UIViewController, SalesParams  {
         myAlert.addAction(okAction);
         self.presentViewController(myAlert, animated:true, completion:nil);
         
+    }
+    
+    func setControlColors(color: UIColor)
+    {
+        lblCustomer.textColor = color
+        lblType.textColor = color
+        lblWhse.textColor = color
     }
     
     // MARK: Gradient background

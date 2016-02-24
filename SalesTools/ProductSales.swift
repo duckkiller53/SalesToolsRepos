@@ -48,14 +48,14 @@ class ProductSales: UIViewController {
     override func viewWillAppear(animated: Bool) {
         // Setup Nav bar color scheme
         colorizeNavBar(self.navigationController!.navigationBar)
-        txtProduct.tintColor = UIColor.blackColor()
-        lblProd.textColor = UIColor.whiteColor()
+        SetControlColors(UIColor.whiteColor())
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         ClearForm()
+        SetControlColors(UIColor.whiteColor())
         
         // remove the inset to tableview due to nav controller
         self.automaticallyAdjustsScrollViewInsets = false
@@ -67,6 +67,12 @@ class ProductSales: UIViewController {
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
 
+    }
+    
+    func SetControlColors(color: UIColor)
+    {
+        txtProduct.tintColor = UIColor.blackColor()
+        lblProd.textColor = UIColor.whiteColor()
     }
     
     

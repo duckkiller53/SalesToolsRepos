@@ -23,6 +23,9 @@
 		5578C9981C5824710060E92D /* CustomerAR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5578C9971C5824710060E92D /* CustomerAR.swift */; };
 		5578C99A1C5824820060E92D /* LogIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5578C9991C5824820060E92D /* LogIn.swift */; };
 		5579F2D31C5D35A3003F87D3 /* ConTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5579F2D21C5D35A3003F87D3 /* ConTable.swift */; };
+		55983F861C7E1117001FD304 /* ProdLookupDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55983F851C7E1117001FD304 /* ProdLookupDetail.swift */; };
+		55983F881C7E1EA5001FD304 /* ProdLookupTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55983F871C7E1EA5001FD304 /* ProdLookupTable.swift */; };
+		55983F8A1C7E266B001FD304 /* ProductValuesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55983F891C7E266B001FD304 /* ProductValuesController.swift */; };
 		559899DD1C6533DC0076B5B8 /* product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559899DC1C6533DC0076B5B8 /* product.swift */; };
 		559899DF1C653C160076B5B8 /* icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 559899DE1C653C160076B5B8 /* icons.xcassets */; };
 		559899E21C6554210076B5B8 /* customer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559899E11C6554210076B5B8 /* customer.swift */; };
@@ -60,6 +63,9 @@
 		5578C9971C5824710060E92D /* CustomerAR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomerAR.swift; path = ../CustomerAR.swift; sourceTree = "<group>"; };
 		5578C9991C5824820060E92D /* LogIn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LogIn.swift; path = ../LogIn.swift; sourceTree = "<group>"; };
 		5579F2D21C5D35A3003F87D3 /* ConTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConTable.swift; sourceTree = "<group>"; };
+		55983F851C7E1117001FD304 /* ProdLookupDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProdLookupDetail.swift; sourceTree = "<group>"; };
+		55983F871C7E1EA5001FD304 /* ProdLookupTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProdLookupTable.swift; sourceTree = "<group>"; };
+		55983F891C7E266B001FD304 /* ProductValuesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductValuesController.swift; sourceTree = "<group>"; };
 		559899DC1C6533DC0076B5B8 /* product.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = product.swift; sourceTree = "<group>"; };
 		559899DE1C653C160076B5B8 /* icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = icons.xcassets; sourceTree = "<group>"; };
 		559899E11C6554210076B5B8 /* customer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = customer.swift; sourceTree = "<group>"; };
@@ -127,6 +133,9 @@
 			isa = PBXGroup;
 			children = (
 				55EEABD01C46C0B900FE0BD9 /* ProductLookUp.swift */,
+				55983F891C7E266B001FD304 /* ProductValuesController.swift */,
+				55983F871C7E1EA5001FD304 /* ProdLookupTable.swift */,
+				55983F851C7E1117001FD304 /* ProdLookupDetail.swift */,
 			);
 			name = ProductLookup;
 			sourceTree = "<group>";
@@ -419,12 +428,15 @@
 				55EEABD31C46C79200FE0BD9 /* MenuTableViewController.swift in Sources */,
 				55340F481C5929D900A4BDCB /* custProd.swift in Sources */,
 				5520A5561C629541007D4B6E /* Utilities.swift in Sources */,
+				55983F861C7E1117001FD304 /* ProdLookupDetail.swift in Sources */,
 				5521EB211C6FC21000A364CB /* ColorsAndGradients.swift in Sources */,
 				55EEABC71C46A1F000FE0BD9 /* SWRevealViewController.m in Sources */,
 				55EEABCB1C46B22A00FE0BD9 /* MainViewController.swift in Sources */,
 				5579F2D31C5D35A3003F87D3 /* ConTable.swift in Sources */,
 				55BDC4191C59686000DE1DE4 /* AlamofireRequest+JSONSerializable.swift in Sources */,
+				55983F881C7E1EA5001FD304 /* ProdLookupTable.swift in Sources */,
 				55EEABCD1C46BDAE00FE0BD9 /* CustomerSales.swift in Sources */,
+				55983F8A1C7E266B001FD304 /* ProductValuesController.swift in Sources */,
 				55020AC81C63BBDD00ECBE49 /* salesProd.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

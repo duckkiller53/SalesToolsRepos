@@ -6,64 +6,67 @@ import UIKit
 import Alamofire
 import BRYXBanner
 
-class ProductLookUp: UIViewController {
+class ProductLookUp: UIViewController, ProdParams {
 
     @IBOutlet weak var menuButton: UIBarButtonItem!
-    
     @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!
-    var keyboardDismissTapGesture: UIGestureRecognizer?
+    
+    @IBOutlet weak var lblProduct: UILabel!
+    @IBOutlet weak var lblDescription: UILabel!
+    @IBOutlet weak var lblActive: UILabel!
+    @IBOutlet weak var lblWhse: UILabel!
+    
+    var Products = [product]()
+    var embededViewController: ProdLookupTable? = nil
     var notConnectedBanner: Banner?
     
-
-    @IBOutlet weak var lblProd: UILabel!
-    @IBOutlet weak var txtProduct: UITextField!
+    var prodParam: String?
+    var descripParam: String?
+    var activeParam: String?
+    var whseParam: String?
     
-    @IBOutlet weak var lblProdNumber: UILabel!
-    @IBOutlet weak var lblDescrip: UILabel!
-    @IBOutlet weak var lblOnHand: UILabel!
-    @IBOutlet weak var lblOnOrder: UILabel!
-    @IBOutlet weak var lblCommit: UILabel!
-    @IBOutlet weak var lblQtyAvail: UILabel!
-    @IBOutlet weak var lblWhse: UILabel!
-    @IBOutlet weak var lblLastInvDate: UILabel!    
-    @IBOutlet weak var lblLastRecvDate: UILabel!
     
-    var prod: product?
-    
+    @IBAction func btnCriteria(sender: AnyObject) {
+        GetSearchCriteria()
+    }
     
     @IBAction func btnClear(sender: AnyObject) {
-        clearForm()
+       lblProduct.text = ""
+       lblDescription.text = ""
+       lblActive.text = ""
+       lblWhse.text = ""
+       Products.removeAll()
+       embededViewController!.items = Products
     }
     
-    @IBAction func GetProduct(sender: AnyObject) {
+    @IBAction func btnSearch(sender: AnyObject) {
         
-        txtProduct.resignFirstResponder()
+        embededViewController!.items = [product]()
         
-        if let prod = txtProduct.text
-        {
-            if prod != ""
-            {
-                GetSingleProduct(prod.trim())
-            }
+        if prodParam!.isEmpty && descripParam!.isEmpty {
+            showAlert("criteria must contain a product or description")
+            return
         }
-        
-        
+
+        GetProductSearch(prodParam!, descrip: descripParam!, isactive: activeParam!, whse: whseParam!)
     }
+    
     
     override func viewWillAppear(animated: Bool) {
         // Setup Nav bar color scheme
         colorizeNavBar(self.navigationController!.navigationBar)
-        setControlColors(UIColor.whiteColor())
         
-        // Create BackGround Gradient to display data.
-        drawBackGroundGradient(self, topColor: colorWithHexString("4294f4"), bottomColor: colorWithHexString("1861b7"))
+        // Add background to customer selection area of main view.
+        self.view.backgroundColor = colorWithHexString("4092f2")
+        
+        // Set Colors of top buttons.
+        setControlColors(UIColor.whiteColor())
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         clearForm()
-        
         
         if  self.revealViewController() != nil
         {
@@ -72,20 +75,18 @@ class ProductLookUp: UIViewController {
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         
-        // add observer to dismiss keyboard
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name: UIKeyboardWillHideNotification, object: nil)
-
     }
+    
+    
     
     // MARK: GET API DATA
     
-    func GetSingleProduct(prod: String)
+    func GetProductSearch(prod: String, descrip: String, isactive: String, whse: String)
     {
         
-        let completionHandler: (Result<product, NSError>) -> Void =
-        { (result) in            
+        let completionHandler: (Result<[product], NSError>) -> Void =
+        { (result) in
+            
             
             self.ActivityIndicator.hidden = true
             self.ActivityIndicator.stopAnimating()
@@ -96,7 +97,7 @@ class ProductLookUp: UIViewController {
                 print(result.error)
                 
                 if let error = result.error
-                {                    
+                {
                     if error.domain == NSURLErrorDomain
                     {
                         // If we already are showing a banner, dismiss it and create new
@@ -126,75 +127,90 @@ class ProductLookUp: UIViewController {
                     }
                     
                 }
-                
-                self.ShowAlert("No results were found!")
-                self.txtProduct.becomeFirstResponder()
+                self.showAlert("No results were found!")
                 return
             }
             
             // No Errors Load Data
-            if let fetchedResult = result.value {
-                self.prod = fetchedResult
-                self.loadControls(self.prod!)
+            if let fetchedResults = result.value {
+                if fetchedResults.count > 0
+                {
+                    self.Products = fetchedResults
+                    self.embededViewController!.items = self.Products
+                } else
+                {
+                    self.showAlert("No results were found!")
+                }
             }
             
-        }        
+            
+            
+        }
         
         ActivityIndicator.startAnimating()
         ActivityIndicator.hidden = false
         
-        APIManager.sharedInstance.getProduct(prod, completionHandler: completionHandler)
+        APIManager.sharedInstance.getProductSearch(prod, description: descrip, active: isactive, warehouse: whse, completionHandler: completionHandler)
+        
+    }
+
+    
+    func haveAddedSearchParams(prod: String, descrip: String, active: Bool, whse: String)
+    {
+        lblProduct.text = !prod.isEmpty ? prod : "None"
+        lblDescription.text = !descrip.isEmpty ? descrip : "None"
+        lblActive.text = active == true ? "Active" : "Inactive"
+        lblWhse.text = whse
+
+        prodParam = prod
+        descripParam = descrip
+        activeParam = active == true ? "A" : "I"
+        whseParam = whse
+    
+    }
+    
+    func GetSearchCriteria()
+    {
+        
+        let createVC = ProductValuesController(nibName: nil, bundle: nil)
+        createVC.delegate = self
+        
+        // Note: pushViewController loads it on stack.
+        self.navigationController?.pushViewController(createVC, animated: true)
         
     }
     
-    func loadControls(prod: product)
-    {
-        lblProdNumber.text = prod.prod
-        lblDescrip.text = prod.descrip1! + " " + prod.descrip2!
-        lblOnHand.text = "\(prod.qtyOnHand)"
-        lblOnOrder.text = "\(prod.qtyOnOrder)"
-        lblCommit.text = "\(prod.qtyCommit)"
-        lblQtyAvail.text = "\(prod.qtyAvail)"
-        lblWhse.text = prod.whse
-        lblLastInvDate.text = prod.lastINVDate
-        lblLastRecvDate.text = prod.lastINVDate
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        if segue.identifier == "prodtable"
+        {
+            embededViewController = (segue.destinationViewController as! ProdLookupTable)
+        }
+        
     }
     
     func clearForm()
     {
-        txtProduct.text = "" 
-        lblProdNumber.text = ""
-        lblDescrip.text = ""
-        lblOnHand.text = ""
-        lblOnOrder.text = ""
-        lblCommit.text = ""
-        lblQtyAvail.text = ""
+        lblProduct.text = ""
+        lblDescription.text = ""
+        lblActive.text = ""
         lblWhse.text = ""
-        lblLastInvDate.text = ""
-        lblLastRecvDate.text = ""
-        ActivityIndicator.hidden = true        
+        Products.removeAll()
+        embededViewController!.items = Products
+        ActivityIndicator.hidden = true
         ActivityIndicator.color = DefaultTint
     }
     
     func setControlColors(color: UIColor)
     {
-        // Set input colors
-        txtProduct.tintColor = UIColor.blackColor()
-        lblProd.textColor = UIColor.whiteColor()
-        
-        // Set display colors
-        lblProdNumber.textColor = color
-        lblDescrip.textColor = color
-        lblOnHand.textColor = color
-        lblOnOrder.textColor = color
-        lblCommit.textColor = color
-        lblQtyAvail.textColor = color
+        lblProduct.textColor = color
+        lblDescription.textColor = color
+        lblActive.textColor = color
         lblWhse.textColor = color
-        lblLastInvDate.textColor = color
-        lblLastRecvDate.textColor = color
-    }    
+    } 
+       
     
-    func ShowAlert(msg: String)
+    func showAlert(msg: String)
     {
         let myAlert = UIAlertController(title:"SalesTools", message: msg, preferredStyle: UIAlertControllerStyle.Alert);
         
@@ -205,34 +221,6 @@ class ProductLookUp: UIViewController {
         myAlert.addAction(okAction);
         self.presentViewController(myAlert, animated:true, completion:nil);
         
-    }
-    
-    // MARK:  Hide KeyBoard code
-    
-    override func viewWillDisappear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-        
-        super.viewWillDisappear(animated)
-    }
-    
-    func keyboardWillShow(notification: NSNotification) {
-        if keyboardDismissTapGesture == nil
-        {
-            keyboardDismissTapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissKeyboard:"))
-            self.view.addGestureRecognizer(keyboardDismissTapGesture!)
-        }
-    }
-    
-    func keyboardWillHide(notification: NSNotification) {
-        if keyboardDismissTapGesture != nil
-        {
-            self.view.removeGestureRecognizer(keyboardDismissTapGesture!)
-            keyboardDismissTapGesture = nil
-        }
-    }
-    
-    func dismissKeyboard(sender: AnyObject) {
-        txtProduct?.resignFirstResponder()
     }
     
     // MARK: Gradient function
