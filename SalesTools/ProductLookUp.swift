@@ -16,7 +16,7 @@ class ProductLookUp: UIViewController, ProdParams {
     @IBOutlet weak var lblActive: UILabel!
     @IBOutlet weak var lblWhse: UILabel!
     
-    var Products = [product]()
+    var products = [product]()
     var embededViewController: ProdLookupTable? = nil
     var notConnectedBanner: Banner?
     
@@ -31,12 +31,7 @@ class ProductLookUp: UIViewController, ProdParams {
     }
     
     @IBAction func btnClear(sender: AnyObject) {
-       lblProduct.text = ""
-       lblDescription.text = ""
-       lblActive.text = ""
-       lblWhse.text = ""
-       Products.removeAll()
-       embededViewController!.items = Products
+        clearForm()
     }
     
     @IBAction func btnSearch(sender: AnyObject) {
@@ -66,6 +61,9 @@ class ProductLookUp: UIViewController, ProdParams {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // remove the inset to tableview due to nav controller
+        self.automaticallyAdjustsScrollViewInsets = false
+        
         clearForm()
         
         if  self.revealViewController() != nil
@@ -75,8 +73,7 @@ class ProductLookUp: UIViewController, ProdParams {
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         
-    }
-    
+    }    
     
     
     // MARK: GET API DATA
@@ -135,8 +132,8 @@ class ProductLookUp: UIViewController, ProdParams {
             if let fetchedResults = result.value {
                 if fetchedResults.count > 0
                 {
-                    self.Products = fetchedResults
-                    self.embededViewController!.items = self.Products
+                    self.products = fetchedResults
+                    self.embededViewController!.items = self.products
                 } else
                 {
                     self.showAlert("No results were found!")
@@ -157,15 +154,16 @@ class ProductLookUp: UIViewController, ProdParams {
     
     func haveAddedSearchParams(prod: String, descrip: String, active: Bool, whse: String)
     {
-        lblProduct.text = !prod.isEmpty ? prod : "None"
-        lblDescription.text = !descrip.isEmpty ? descrip : "None"
+        clearForm()
+        lblProduct.text = prod == "" ? "None" : prod
+        lblDescription.text = descrip == "" ? "None" : descrip
         lblActive.text = active == true ? "Active" : "Inactive"
-        lblWhse.text = whse
+        lblWhse.text = whse == "" ? "None" : whse
 
-        prodParam = prod
-        descripParam = descrip
+        prodParam = prod == "" ? "null" : prod
+        descripParam = descrip == "" ? "null" : descrip
         activeParam = active == true ? "A" : "I"
-        whseParam = whse
+        whseParam = whse == "" ? "null" : whse
     
     }
     
@@ -195,8 +193,12 @@ class ProductLookUp: UIViewController, ProdParams {
         lblDescription.text = ""
         lblActive.text = ""
         lblWhse.text = ""
-        Products.removeAll()
-        embededViewController!.items = Products
+        prodParam = ""
+        descripParam = ""
+        activeParam = ""
+        whseParam = ""
+        products.removeAll()
+        embededViewController!.items = products
         ActivityIndicator.hidden = true
         ActivityIndicator.color = DefaultTint
     }

@@ -36,9 +36,9 @@ class APIManager {
         
     }
     
-    func getCustomer(custid: String, completionHandler: (Result<customer, NSError>) -> Void) {
+    func getCustomerSearch(custid: String, custname: String, city: String, state: String, completionHandler: (Result<[customer], NSError>) -> Void) {
         
-        getCustomerInfo(Router.GetCustInfo(custid),  completionHandler: completionHandler)
+        getCustomerSearch(Router.GetCustSearch(custid, custname, city, state),  completionHandler: completionHandler)
         
     }
     
@@ -124,20 +124,20 @@ class APIManager {
                 guard response.result.error == nil,
                     let prods = response.result.value else {
                         print(response.result.error)
-                        // completion bubbles up with error to getSingleProd
+                        // completion bubbles up with error to getProductSearch
                         completionHandler(response.result)
                         return
                 }
                 
                 // End handler
-                completionHandler(.Success(prods)) // bubbles up to getSingleProd
+                completionHandler(.Success(prods)) // bubbles up to getProductSearch
         }
     }
     
-    func getCustomerInfo(urlRequest: URLRequestConvertible, completionHandler: (Result<customer, NSError>) -> Void) {
+    func getCustomerSearch(urlRequest: URLRequestConvertible, completionHandler: (Result<[customer], NSError>) -> Void) {
         alamofireManager.request(urlRequest)
             .validate()
-            .responseObject { (response:Response<customer, NSError>) in
+            .responseArray { (response:Response<[customer], NSError>) in
                 // Begin handler
                 
                 if let urlResponse = response.response,
@@ -150,13 +150,13 @@ class APIManager {
                 guard response.result.error == nil,
                     let prods = response.result.value else {
                         print(response.result.error)
-                        // completion bubbles up with error to getPublicGists
+                        // completion bubbles up with error to getCustomerSearch
                         completionHandler(response.result)
                         return
                 }
                 
                 // End handler
-                completionHandler(.Success(prods)) // bubbles up to getCustSales
+                completionHandler(.Success(prods)) // bubbles up to getCustomerSearch
         }
     }
     

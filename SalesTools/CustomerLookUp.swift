@@ -10,59 +10,63 @@ import UIKit
 import Alamofire
 import BRYXBanner
 
-class CustomerInfo: UIViewController {
+class CustomerLookUp: UIViewController, CustParams {
 
     @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!
-    var keyboardDismissTapGesture: UIGestureRecognizer?
-    var notConnectedBanner: Banner?
-
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
-    
-    @IBOutlet weak var lblCust: UILabel!
-    @IBOutlet weak var txtCustNum: UITextField!
-    
-    @IBOutlet weak var lblCustNum: UILabel!
+    @IBOutlet weak var lblCustNo: UILabel!
     @IBOutlet weak var lblCustName: UILabel!
-    @IBOutlet weak var lblCustAddress: UILabel!
-    @IBOutlet weak var lblCustCity: UILabel!    
-    @IBOutlet weak var lblCustState: UILabel!
-    @IBOutlet weak var lblCustZip: UILabel!
-    @IBOutlet weak var lblCounty: UILabel!
-    @IBOutlet weak var lblPhone: UILabel!
-    @IBOutlet weak var lblSlsRep: UILabel!    
-    @IBOutlet weak var lblContact: UILabel!
+    @IBOutlet weak var lblCity: UILabel!
+    @IBOutlet weak var lblState: UILabel!
+    @IBOutlet weak var lblRows: UILabel!
     
-    var cust: customer?
+    var customers = [customer]()
+    var notConnectedBanner: Banner?
+    var embededViewController: CustLookupTable? = nil
+
+    var custidParam: String?
+    var nameParam: String?
+    var cityParam: String?
+    var stateParam: String?
     
-    @IBAction func btnGetCustInfo(sender: AnyObject) {
-        txtCustNum.resignFirstResponder()
-        
-        if let custnum = txtCustNum.text
-        {
-            if custnum != ""
-            {
-                GetCustomer(custnum.trim())
-            }
-        }
+    
+    @IBAction func btnCriteria(sender: AnyObject) {
+        GetSearchCriteria()
     }
-   
+    
     @IBAction func btnClear(sender: AnyObject) {
         clearForm()
     }
     
+    @IBAction func btnSearch(sender: AnyObject) {
+        
+        embededViewController!.items = [customer]()
+        
+        print(custidParam)
+        print(nameParam)
+        print(cityParam)
+        print(stateParam)
+        
+        GetCustSearch(custidParam!, name: nameParam!, custcity: cityParam!, custstate: stateParam!)
+    }
+        
     override func viewWillAppear(animated: Bool) {
         // Setup Nav bar color scheme
         colorizeNavBar(self.navigationController!.navigationBar)
-        // Create BackGround Gradient to display data.
-        drawBackGroundGradient(self, topColor: colorWithHexString("4294f4"), bottomColor: colorWithHexString("1861b7"))
         
+        // Add background to customer selection area of main view.
+        self.view.backgroundColor = colorWithHexString("4092f2")
+        
+        // Set Colors of top buttons.
         setControlColors(UIColor.whiteColor())
-
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // remove the inset to tableview due to nav controller
+        self.automaticallyAdjustsScrollViewInsets = false
         
         clearForm()
         
@@ -72,21 +76,15 @@ class CustomerInfo: UIViewController {
             menuButton.action = "revealToggle:"
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
-        
-        // add observer to dismiss keyboard
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name: UIKeyboardWillHideNotification, object: nil)
-
+      
     }
-    
     
     // MARK: GET API DATA
     
-    func GetCustomer(custnum: String)
+    func GetCustSearch(id: String, name: String, custcity: String, custstate: String)
     {
         
-        let completionHandler: (Result<customer, NSError>) -> Void =
+        let completionHandler: (Result<[customer], NSError>) -> Void =
         { (result) in
             
             self.ActivityIndicator.hidden = true
@@ -129,78 +127,97 @@ class CustomerInfo: UIViewController {
                     
                 }
                 
-                self.ShowAlert("No results were found!")
-                self.txtCustNum.becomeFirstResponder()
+                self.showAlert("No results were found!")
                 return
             }
             
             // No Errors Load Data
-            if let fetchedResult = result.value {
-                self.cust = fetchedResult
-                self.loadControls(self.cust!)
+            if let fetchedResults = result.value {
+                if fetchedResults.count > 0
+                {
+                    self.customers = fetchedResults
+                    self.lblRows.text = "Num rows: " + "\(fetchedResults.count)"
+                    self.embededViewController!.items = self.customers
+                } else
+                {
+                    self.showAlert("No results were found!")
+                }
             }
+
             
-        }        
+        }
         
         ActivityIndicator.startAnimating()
         ActivityIndicator.hidden = false
         
-        APIManager.sharedInstance.getCustomer(custnum, completionHandler: completionHandler)
+        APIManager.sharedInstance.getCustomerSearch(id, custname: name, city: custcity, state: custstate, completionHandler: completionHandler)
         
     }
     
-    func loadControls(cust: customer)
+    func haveAddedSearchParams(custid: String, custname: String, city: String, state: String)
     {
-        lblCustNum.text = "\(Int(cust.custnum))"
-        lblCustName.text = cust.custName
-        lblCustAddress.text = cust.address
-        lblCustCity.text = cust.city
-        lblCustState.text = cust.state
-        lblCustZip.text = cust.zip
-        lblCounty.text = cust.county
-        lblPhone.text = FormatPhone(cust.phone!)
-        lblSlsRep.text = cust.outSlsRep
-        lblContact.text = cust.contact
+        clearForm()
+        
+        custidParam = custid
+        nameParam = custname
+        cityParam = city
+        stateParam = state
+        
+        lblCustNo.text = custid == "null" ? "None" : custid
+        lblCustName.text = custname == "null" ? "None" : custname
+        lblCity.text = city == "null" ? "None" : city
+        lblState.text = state == "null" ? "None" : state
+    }
+
+    
+    func GetSearchCriteria()
+    {
+        
+        let createVC = CustValuesController(nibName: nil, bundle: nil)
+        createVC.delegate = self
+        
+        // Note: pushViewController loads it on stack.
+        self.navigationController?.pushViewController(createVC, animated: true)
+        
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        if segue.identifier == "custtable"
+        {
+            embededViewController = (segue.destinationViewController as! CustLookupTable)
+        }
+        
     }
     
     func clearForm()
-    {        
-        txtCustNum.text = ""
-        lblCustNum.text = ""
+    {
+        custidParam = "null"
+        nameParam = "null"
+        cityParam = "null"
+        stateParam = "null"
+        lblCustNo.text = ""
         lblCustName.text = ""
-        lblCustAddress.text = ""
-        lblCustCity.text = ""
-        lblCustState.text = ""
-        lblCustZip.text = ""
-        lblCounty.text = ""
-        lblPhone.text = ""
-        lblSlsRep.text = ""
-        lblContact.text = ""
+        lblCity.text = ""
+        lblState.text = ""
+        lblRows.text = ""
+        customers.removeAll()
+        embededViewController!.items = [customer]()
         ActivityIndicator.hidden = true
         ActivityIndicator.color = DefaultTint
     }
     
     func setControlColors(color: UIColor)
     {
-        // Set Input colors
-        txtCustNum.tintColor = UIColor.blackColor()
-        lblCust.textColor = UIColor.whiteColor()
-        
-        // Set display colors
-        lblCustNum.textColor = color
+        lblCustNo.textColor = color
         lblCustName.textColor = color
-        lblCustAddress.textColor = color
-        lblCustCity.textColor = color
-        lblCustState.textColor = color
-        lblCustZip.textColor = color
-        lblCounty.textColor = color
-        lblPhone.textColor = color
-        lblSlsRep.textColor = color
-        lblContact.textColor = color
-        
+        lblCity.textColor = color
+        lblState.textColor = color
+        lblRows.textColor = color
     }
-    
-    func ShowAlert(msg: String)
+
+        
+    func showAlert(msg: String)
     {
         let myAlert = UIAlertController(title:"SalesTools", message: msg, preferredStyle: UIAlertControllerStyle.Alert);
         
@@ -213,33 +230,6 @@ class CustomerInfo: UIViewController {
         
     }
     
-    // MARK:  Hide KeyBoard code
-    
-    override func viewWillDisappear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-        
-        super.viewWillDisappear(animated)
-    }
-    
-    func keyboardWillShow(notification: NSNotification) {
-        if keyboardDismissTapGesture == nil
-        {
-            keyboardDismissTapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissKeyboard:"))
-            self.view.addGestureRecognizer(keyboardDismissTapGesture!)
-        }
-    }
-    
-    func keyboardWillHide(notification: NSNotification) {
-        if keyboardDismissTapGesture != nil
-        {
-            self.view.removeGestureRecognizer(keyboardDismissTapGesture!)
-            keyboardDismissTapGesture = nil
-        }
-    }
-    
-    func dismissKeyboard(sender: AnyObject) {
-        txtCustNum?.resignFirstResponder()
-    }
     
     // MARK: gradient function
     

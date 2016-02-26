@@ -55,10 +55,7 @@ class CustomerSalesDetail: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Create BackGround Gradient to display data.
-        drawBackGroundGradient(self, topColor: colorWithHexString("4294f4"), bottomColor: colorWithHexString("1861b7"))
-
+    
         
         if (Product != nil)
         {

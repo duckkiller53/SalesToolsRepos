@@ -155,6 +155,7 @@ class CustomerSales: UIViewController, SalesParams  {
     
     func haveAddedSearchParams(customer: Int, type: Bool, whse: String)
     {
+        clearForm()
         lblCustomer.text = customer > 0 ? "Cust: " + String(customer) : "None"
         lblType.text = type == true ? "6/Mo" : "All"
         lblWhse.text = whse > "" ? "Whse: " + whse : "None"
