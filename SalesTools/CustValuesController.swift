@@ -42,9 +42,7 @@ class CustValuesController: XLFormViewController
     {
         super.viewDidLoad()
         
-        
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
-        
         
         // Add the cancel and save buttons.
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem:
@@ -53,8 +51,7 @@ class CustValuesController: XLFormViewController
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem:
             UIBarButtonSystemItem.Save, target: self, action: "savePressed:")
-        self.navigationItem.rightBarButtonItem?.tintColor = UIColor.whiteColor()
-        
+        self.navigationItem.rightBarButtonItem?.tintColor = UIColor.whiteColor()        
         
     }
     

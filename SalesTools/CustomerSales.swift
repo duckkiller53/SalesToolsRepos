@@ -24,6 +24,7 @@ class CustomerSales: UIViewController, SalesParams  {
     @IBOutlet weak var lblCustomer: UILabel!
     @IBOutlet weak var lblType: UILabel!
     @IBOutlet weak var lblWhse: UILabel!
+    @IBOutlet weak var lblRows: UILabel!
     
     @IBAction func btnCriteria(sender: AnyObject) {
         GetSearchCriteria()
@@ -135,6 +136,7 @@ class CustomerSales: UIViewController, SalesParams  {
                 if fetchedResults.count > 0
                 {
                     self.Products = fetchedResults
+                    self.lblRows.text = "Records found: " + "\(fetchedResults.count)"
                     self.embededViewController!.items = self.Products
                 } else
                 {
@@ -189,6 +191,7 @@ class CustomerSales: UIViewController, SalesParams  {
         lblCustomer.text = ""
         lblType.text = ""
         lblWhse.text = ""
+        lblRows.text = ""
         Products.removeAll()
         embededViewController!.items = Products
         ActivityIndicator.hidden = true
@@ -213,6 +216,7 @@ class CustomerSales: UIViewController, SalesParams  {
         lblCustomer.textColor = color
         lblType.textColor = color
         lblWhse.textColor = color
+        lblRows.textColor = rowsFoundTint
     }
     
     // MARK: Gradient background

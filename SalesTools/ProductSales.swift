@@ -19,6 +19,8 @@ class ProductSales: UIViewController {
     var Products = [salesProd]()
     var embededViewController: ProdTable? = nil
     @IBOutlet weak var lblProdSales: UILabel!
+    @IBOutlet weak var lblRows: UILabel!
+    
     var notConnectedBanner: Banner?
     var prodNum: Int = 0
     
@@ -40,23 +42,22 @@ class ProductSales: UIViewController {
     }
     
     @IBAction func btnClear(sender: AnyObject) {
-        txtProduct.text = ""
-        embededViewController!.items = [salesProd]()
-        txtProduct.resignFirstResponder()
+        clearForm()
     }
     
     override func viewWillAppear(animated: Bool) {
         // Setup Nav bar color scheme
         colorizeNavBar(self.navigationController!.navigationBar)
-        SetControlColors(UIColor.whiteColor())
+        // Add background to customer selection area of main view.
+        self.view.backgroundColor = colorWithHexString("4092f2")
+
+        setControlColors(UIColor.whiteColor())
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ClearForm()
-        SetControlColors(UIColor.whiteColor())
-        
+        clearForm()
         // remove the inset to tableview due to nav controller
         self.automaticallyAdjustsScrollViewInsets = false
         
@@ -68,13 +69,6 @@ class ProductSales: UIViewController {
         }
 
     }
-    
-    func SetControlColors(color: UIColor)
-    {
-        txtProduct.tintColor = UIColor.blackColor()
-        lblProd.textColor = UIColor.whiteColor()
-    }
-    
     
     // MARK: GET API DATA
     
@@ -131,7 +125,8 @@ class ProductSales: UIViewController {
             if let fetchedResults = result.value {
                 if fetchedResults.count > 0
                 {
-                self.Products = fetchedResults
+                    self.Products = fetchedResults
+                    self.lblRows.text = "Records found: " + "\(fetchedResults.count)"
                 self.embededViewController!.items = self.Products
                 } else
                 {
@@ -158,12 +153,21 @@ class ProductSales: UIViewController {
         
     }
     
-    func ClearForm()
+    func setControlColors(color: UIColor)
+    {
+        txtProduct.tintColor = UIColor.blackColor()
+        lblProd.textColor = UIColor.whiteColor()
+        lblRows.textColor = rowsFoundTint
+    }
+    
+    func clearForm()
     {
         txtProduct.text = ""
+        lblRows.text = ""
         embededViewController!.items = [salesProd]()
         ActivityIndicator.hidden = true
         ActivityIndicator.color = DefaultTint
+        txtProduct.resignFirstResponder()
     }
     
     func ShowAlert(msg: String)

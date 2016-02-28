@@ -56,7 +56,7 @@ class CustomerAR: UIViewController {
     }
     
     @IBAction func btnClearForm(sender: AnyObject) {
-        ClearForm()
+        clearForm()
     }  
     
     override func viewWillAppear(animated: Bool) {
@@ -67,10 +67,11 @@ class CustomerAR: UIViewController {
         
         setControlColors(UIColor.whiteColor())
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ClearForm()
+        clearForm()
         
         if  self.revealViewController() != nil
         { 
@@ -156,9 +157,7 @@ class CustomerAR: UIViewController {
         
     }
     
-    
-    
-    func ClearForm()
+    func clearForm()
     {
         lblCustNum.text = ""
         lblCustName.text = ""

@@ -15,6 +15,7 @@ class ProductLookUp: UIViewController, ProdParams {
     @IBOutlet weak var lblDescription: UILabel!
     @IBOutlet weak var lblActive: UILabel!
     @IBOutlet weak var lblWhse: UILabel!
+    @IBOutlet weak var lblRows: UILabel!
     
     var products = [product]()
     var embededViewController: ProdLookupTable? = nil
@@ -133,6 +134,7 @@ class ProductLookUp: UIViewController, ProdParams {
                 if fetchedResults.count > 0
                 {
                     self.products = fetchedResults
+                    self.lblRows.text = "Records found: " + "\(fetchedResults.count)"
                     self.embededViewController!.items = self.products
                 } else
                 {
@@ -197,6 +199,7 @@ class ProductLookUp: UIViewController, ProdParams {
         descripParam = ""
         activeParam = ""
         whseParam = ""
+        lblRows.text = ""
         products.removeAll()
         embededViewController!.items = products
         ActivityIndicator.hidden = true
@@ -209,6 +212,7 @@ class ProductLookUp: UIViewController, ProdParams {
         lblDescription.textColor = color
         lblActive.textColor = color
         lblWhse.textColor = color
+        lblRows.textColor = rowsFoundTint
     } 
        
     

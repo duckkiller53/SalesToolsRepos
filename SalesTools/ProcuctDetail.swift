@@ -41,7 +41,6 @@ class ProductDetail: UIViewController {
         lblPrice.textColor = color
         lblCost.textColor = color
         lblDateSold.textColor = color
-
     }
     
     

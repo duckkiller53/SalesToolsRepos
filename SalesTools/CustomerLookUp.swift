@@ -136,7 +136,7 @@ class CustomerLookUp: UIViewController, CustParams {
                 if fetchedResults.count > 0
                 {
                     self.customers = fetchedResults
-                    self.lblRows.text = "Num rows: " + "\(fetchedResults.count)"
+                    self.lblRows.text = "Records found: " + "\(fetchedResults.count)"
                     self.embededViewController!.items = self.customers
                 } else
                 {
@@ -213,7 +213,7 @@ class CustomerLookUp: UIViewController, CustParams {
         lblCustName.textColor = color
         lblCity.textColor = color
         lblState.textColor = color
-        lblRows.textColor = color
+        lblRows.textColor = rowsFoundTint
     }
 
         

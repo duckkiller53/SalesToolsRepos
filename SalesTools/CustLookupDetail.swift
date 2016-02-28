@@ -42,8 +42,7 @@ class CustLookupDetail: UIViewController
 
     func loadControls(cust: customer!)
     {
-        if cust != nil {
-            
+        if cust != nil {            
         
         lblCustNum.text = "\(Int(cust.custnum))"
         lblCustName.text = cust.custName
