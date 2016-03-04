@@ -42,18 +42,20 @@ class CustLookupDetail: UIViewController
 
     func loadControls(cust: customer!)
     {
-        if cust != nil {            
-        
-        lblCustNum.text = "\(Int(cust.custnum))"
-        lblCustName.text = cust.custName
-        lblCustAddress.text = cust.address
-        lblCustCity.text = cust.city
-        lblCustState.text = cust.state
-        lblCustZip.text = cust.zip
-        lblCounty.text = cust.county
-        lblPhone.text = FormatPhone(cust.phone!)
-        lblSlsRep.text = cust.outSlsRep
-        lblContact.text = cust.contact
+        if cust != nil
+        {            
+            clearForm()
+            
+            lblCustNum.text = "\(Int(cust.custnum))"
+            lblCustName.text = cust.custName
+            lblCustAddress.text = cust.address
+            lblCustCity.text = cust.city
+            lblCustState.text = cust.state
+            lblCustZip.text = cust.zip
+            lblCounty.text = cust.county
+            lblPhone.text = FormatPhone(cust.phone!)
+            lblSlsRep.text = cust.outSlsRep
+            lblContact.text = cust.contact
             
         }
     }

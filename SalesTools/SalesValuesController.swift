@@ -10,7 +10,7 @@ import Foundation
 import XLForm
 
 protocol SalesParams {
-    func haveAddedSearchParams(customer: Int, type: Bool, whse: String)
+    func haveAddedSearchParams(customer: Int, type: Bool, exclude: Bool, whse: String)
 }
 
 
@@ -22,6 +22,7 @@ class SalesValuesController: XLFormViewController
         static let customer = "customer"
         static let type = "type"
         static let warehouse = "warehouse"
+        static let noequip = "noequip"
     }
 
 
@@ -61,16 +62,19 @@ class SalesValuesController: XLFormViewController
    // Create the form with the XLFrom
   private func initializeForm() {
     let form : XLFormDescriptor
-    var section : XLFormSectionDescriptor
+    var section1 : XLFormSectionDescriptor
+    var section2 : XLFormSectionDescriptor
+    var section3 : XLFormSectionDescriptor
     var row : XLFormRowDescriptor
     
     form = XLFormDescriptor(title: "Search Values")
     
-    // Section
-    section = XLFormSectionDescriptor.formSection() as XLFormSectionDescriptor
-    section.title = "Enter Search Values"    
+    // SECTION 1
     
-    form.addFormSection(section)    
+    section1 = XLFormSectionDescriptor.formSection() as XLFormSectionDescriptor
+    section1.title = "Enter customer and warehouse"
+    
+    form.addFormSection(section1)
     
     
     // Customer ID
@@ -79,20 +83,45 @@ class SalesValuesController: XLFormViewController
     row.cellConfigAtConfigure["textField.textAlignment"] = NSTextAlignment.Left.rawValue
     row.required = true
     row.addValidator(XLFormRegexValidator(msg: "Numbers Only", andRegexString: "^\\d+$"))
-    section.addFormRow(row)
+    section1.addFormRow(row)
     
     // Warehosue
     row = XLFormRowDescriptor(tag: Tags.warehouse, rowType: XLFormRowDescriptorTypeText,
         title: "Warehouse:")
     row.required = true
-    section.addFormRow(row)
+    section1.addFormRow(row)
+    
+    form.addFormSection(section1)
+    
+    // SECTION 2
+    
+    section2 = XLFormSectionDescriptor.formSection() as XLFormSectionDescriptor
+    section2.title = "Select to include/exclude equipment sales"
+    
+    // Equipment Y/N
+    row = XLFormRowDescriptor(tag: Tags.noequip, rowType: XLFormRowDescriptorTypeBooleanSwitch,
+        title: "Exclude equipment sales Y/N:")
+    row.required = false
+    row.value = true
+    section2.addFormRow(row)
+    
+    form.addFormSection(section2)
+    
+    // SECTION 3
+    
+    
+    
+    section3 = XLFormSectionDescriptor.formSection() as XLFormSectionDescriptor
+    section3.title = "Report Defaults to 12 months"
     
     // Report Type
+    
     row = XLFormRowDescriptor(tag: Tags.type, rowType: XLFormRowDescriptorTypeBooleanSwitch,
         title: "Six Months Only:")
     row.required = false
     row.value = true
-    section.addFormRow(row)
+    section3.addFormRow(row)
+    form.addFormSection(section3)    
     
     
     self.form = form
@@ -111,6 +140,9 @@ class SalesValuesController: XLFormViewController
   
     self.tableView.endEditing(true)
     
+    let cust = form.formRowWithTag(Tags.customer)?.value as? Int ?? 0
+    let whse = form.formRowWithTag(Tags.warehouse)?.value as? String ?? ""
+    
     let type: Bool
     if let sixMonths = form.formRowWithTag(Tags.type)?.value as? Bool
     {
@@ -119,11 +151,18 @@ class SalesValuesController: XLFormViewController
         type = false
     }
     
-    let cust = form.formRowWithTag(Tags.customer)?.value as? Int ?? 0
-    let whse = form.formRowWithTag(Tags.warehouse)?.value as? String ?? ""
+    let exclude: Bool
+    if let exclude_equip = form.formRowWithTag(Tags.noequip)?.value as? Bool
+    {
+        exclude = exclude_equip
+    } else {
+        exclude = false
+    }
+    
+    
    
     
-    self.delegate.haveAddedSearchParams(cust, type: type, whse: whse.uppercaseString)
+    self.delegate.haveAddedSearchParams(cust, type: type, exclude: exclude, whse: whse.uppercaseString)
     self.navigationController?.popViewControllerAnimated(true)
    
   }

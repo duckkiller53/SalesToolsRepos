@@ -37,7 +37,7 @@ class ProductLookUp: UIViewController, ProdParams {
     
     @IBAction func btnSearch(sender: AnyObject) {
         
-        embededViewController!.items = [product]()
+        clearResults()
         
         if prodParam!.isEmpty && descripParam!.isEmpty {
             showAlert("criteria must contain a product or description")
@@ -189,6 +189,13 @@ class ProductLookUp: UIViewController, ProdParams {
         
     }
     
+    func clearResults()
+    {
+        lblRows.text = ""
+        products.removeAll()
+        embededViewController!.items = products
+    }
+    
     func clearForm()
     {
         lblProduct.text = ""
@@ -202,8 +209,6 @@ class ProductLookUp: UIViewController, ProdParams {
         lblRows.text = ""
         products.removeAll()
         embededViewController!.items = products
-        ActivityIndicator.hidden = true
-        ActivityIndicator.color = DefaultTint
     }
     
     func setControlColors(color: UIColor)
@@ -213,6 +218,8 @@ class ProductLookUp: UIViewController, ProdParams {
         lblActive.textColor = color
         lblWhse.textColor = color
         lblRows.textColor = rowsFoundTint
+        ActivityIndicator.hidden = true
+        ActivityIndicator.color = DefaultTint
     } 
        
     

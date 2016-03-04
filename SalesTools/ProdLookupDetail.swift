@@ -38,17 +38,19 @@ class ProdLookupDetail: UIViewController {
     
     func loadControls(prod: product!)
     {
-        if prod != nil {
-            
-        lblProdNum.text = prod.prod
-        lblDescription.text = prod.descrip1! + " " + prod.descrip2!
-        lblOnHand.text = "\(prod.qtyOnHand)"
-        lblOnOrder.text = "\(prod.qtyOnOrder)"
-        lblQtyCommit.text = "\(prod.qtyCommit)"
-        lblQtyAvail.text = "\(prod.qtyAvail)"
-        lblWhse.text = prod.whse
-        lblLastInvDate.text = prod.lastINVDate
-        lblLastRcvDate.text = prod.lastINVDate
+        if prod != nil
+        {        
+            clearForm()
+                
+            lblProdNum.text = prod.prod
+            lblDescription.text = prod.descrip1! + " " + prod.descrip2!
+            lblOnHand.text = "\(prod.qtyOnHand)"
+            lblOnOrder.text = "\(prod.qtyOnOrder)"
+            lblQtyCommit.text = "\(prod.qtyCommit)"
+            lblQtyAvail.text = "\(prod.qtyAvail)"
+            lblWhse.text = prod.whse
+            lblLastInvDate.text = prod.lastINVDate
+            lblLastRcvDate.text = prod.lastINVDate
             
         }
     }

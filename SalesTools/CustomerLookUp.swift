@@ -41,13 +41,7 @@ class CustomerLookUp: UIViewController, CustParams {
     
     @IBAction func btnSearch(sender: AnyObject) {
         
-        embededViewController!.items = [customer]()
-        
-        print(custidParam)
-        print(nameParam)
-        print(cityParam)
-        print(stateParam)
-        
+        clearResults()
         GetCustSearch(custidParam!, name: nameParam!, custcity: cityParam!, custstate: stateParam!)
     }
         
@@ -190,6 +184,13 @@ class CustomerLookUp: UIViewController, CustParams {
         
     }
     
+    func clearResults()
+    {
+        lblRows.text = ""
+        customers.removeAll()
+        embededViewController!.items = [customer]()
+    }
+    
     func clearForm()
     {
         custidParam = "null"
@@ -203,8 +204,6 @@ class CustomerLookUp: UIViewController, CustParams {
         lblRows.text = ""
         customers.removeAll()
         embededViewController!.items = [customer]()
-        ActivityIndicator.hidden = true
-        ActivityIndicator.color = DefaultTint
     }
     
     func setControlColors(color: UIColor)
@@ -214,6 +213,8 @@ class CustomerLookUp: UIViewController, CustParams {
         lblCity.textColor = color
         lblState.textColor = color
         lblRows.textColor = rowsFoundTint
+        ActivityIndicator.hidden = true
+        ActivityIndicator.color = DefaultTint
     }
 
         

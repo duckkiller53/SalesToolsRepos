@@ -42,7 +42,8 @@ class CustomerAR: UIViewController {
     var custar: customerAR?
 
     
-    @IBAction func btnSearch(sender: AnyObject) {
+    @IBAction func btnSearch(sender: AnyObject) {        
+        
         txtCustNum.resignFirstResponder()
         
         if let custnum = txtCustNum.text
@@ -173,9 +174,6 @@ class CustomerAR: UIViewController {
         lblCOD.text = ""
         lblMiscCrBal.text = ""
         lblFutureInvBal.text = ""
-        
-        ActivityIndicator.hidden = true
-        ActivityIndicator.color = DefaultTint
     }
     
     func setControlColors(color: UIColor)
@@ -199,6 +197,9 @@ class CustomerAR: UIViewController {
         lblCOD.textColor = color
         lblMiscCrBal.textColor = color
         lblFutureInvBal.textColor = color
+        
+        ActivityIndicator.hidden = true
+        ActivityIndicator.color = DefaultTint
     }
     
     func LoadControls(cust: customerAR)

@@ -14,6 +14,7 @@ class custProd: NSObject, ResponseJSONObjectSerializable
     var prod: String?
     var descrip1: String?
     var descrip2: String?
+    var qtySold: Int = 0
     var qtyOnHand: Int = 0
     var qtyOnOrder: Int = 0
     var qtyCommit: Int = 0
@@ -32,6 +33,7 @@ class custProd: NSObject, ResponseJSONObjectSerializable
         self.prod = json["Product"].string
         self.descrip1 = json["Descrip1"].string
         self.descrip2 = json["Descrip2"].string
+        self.qtySold = json["QtySold"].int!
         self.qtyOnHand = json["QtyOnHand"].int!
         self.qtyOnOrder = json["QtyOnOrder"].int!
         self.qtyCommit = json["QtyCommit"].int!

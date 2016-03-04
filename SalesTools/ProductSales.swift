@@ -26,6 +26,8 @@ class ProductSales: UIViewController {
     
     @IBAction func btnSearch(sender: AnyObject) {
         
+        clearResults()
+        
         guard let text = txtProduct.text where !text.isEmpty else {
             ShowAlert("Please enter a product number!")
             txtProduct.becomeFirstResponder()
@@ -34,8 +36,6 @@ class ProductSales: UIViewController {
         
         if let prod = txtProduct.text
         {
-            txtProduct.resignFirstResponder()
-            embededViewController!.items = [salesProd]()
             embededViewController!.prodNum = txtProduct.text
             GetProductSales(prod.trim())
         }
@@ -158,6 +158,17 @@ class ProductSales: UIViewController {
         txtProduct.tintColor = UIColor.blackColor()
         lblProd.textColor = UIColor.whiteColor()
         lblRows.textColor = rowsFoundTint
+        
+        ActivityIndicator.hidden = true
+        ActivityIndicator.color = DefaultTint
+
+    }
+    
+    func clearResults()
+    {
+        lblRows.text = ""
+        embededViewController!.items = [salesProd]()
+        txtProduct.resignFirstResponder()    
     }
     
     func clearForm()
@@ -165,8 +176,6 @@ class ProductSales: UIViewController {
         txtProduct.text = ""
         lblRows.text = ""
         embededViewController!.items = [salesProd]()
-        ActivityIndicator.hidden = true
-        ActivityIndicator.color = DefaultTint
         txtProduct.resignFirstResponder()
     }
     

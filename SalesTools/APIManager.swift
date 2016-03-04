@@ -18,9 +18,9 @@ class APIManager {
         alamofireManager = Alamofire.Manager(configuration: configuration)
     }
     
-    func getCustSales(customer: Int, type: Bool, whse: String, completionHandler: (Result<[custProd], NSError>) -> Void) {
+    func getCustSales(customer: Int, type: Bool, exclude_equip: Bool, whse: String, completionHandler: (Result<[custProd], NSError>) -> Void) {
         
-        getCustSalesData(Router.GetSalesByCust(customer, type, whse),  completionHandler: completionHandler)
+        getCustSales(Router.GetSalesByCust(customer, type, exclude_equip, whse),  completionHandler: completionHandler)
         
     }
     
@@ -57,7 +57,7 @@ class APIManager {
     
     // MARK:  AlamoFire API Calls
     
-    func getCustSalesData(urlRequest: URLRequestConvertible, completionHandler: (Result<[custProd], NSError>) -> Void) {
+    func getCustSales(urlRequest: URLRequestConvertible, completionHandler: (Result<[custProd], NSError>) -> Void) {
         alamofireManager.request(urlRequest)
             .validate()
             .responseArray { (response:Response<[custProd], NSError>) in
@@ -68,6 +68,13 @@ class APIManager {
                         completionHandler(.Failure(authError))
                         return
                 }
+                
+                // Check for no Records
+                if let urlRecords = response.response,
+                    noRecords = self.checkForNoData(urlRecords) {
+                        completionHandler(.Failure(noRecords))
+                        return
+                }                
                 
                 guard response.result.error == nil,
                     let prods = response.result.value else {
@@ -215,6 +222,18 @@ class APIManager {
                     NSLocalizedRecoverySuggestionErrorKey: "Please re-enter your SalesTools credentials"])
             return noCredentials
         } 
+        return nil
+    }
+    
+    func checkForNoData(urlResponse: NSHTTPURLResponse) -> (NSError?)
+    {
+        if (urlResponse.statusCode == 500)
+        {
+            let noRecords = NSError(domain: NSURLErrorDomain, code: -99,
+                userInfo: [NSLocalizedDescriptionKey: "No records found!"
+                ])
+            return noRecords
+        }
         return nil
     }
     

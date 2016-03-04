@@ -19,48 +19,47 @@ class CustomerSales: UIViewController, SalesParams  {
     var custNum: Int = 0
     var whseID: String = ""
     var reportType: Bool = true
+    var exclude: Bool = true
     
     
     @IBOutlet weak var lblCustomer: UILabel!
     @IBOutlet weak var lblType: UILabel!
     @IBOutlet weak var lblWhse: UILabel!
     @IBOutlet weak var lblRows: UILabel!
+    @IBOutlet weak var lblEquip: UILabel!
     
     @IBAction func btnCriteria(sender: AnyObject) {
         GetSearchCriteria()
     }
     
     @IBAction func btnClear(sender: AnyObject) {
-        lblCustomer.text = ""
-        lblType.text = ""
-        lblWhse.text = ""
-        Products.removeAll()
-        embededViewController!.items = Products
+        clearForm()
     }
     
     @IBAction func GetCustProds(sender: AnyObject)    {
         
-        embededViewController!.items = [custProd]()
         
         if custNum == 0 || whseID.isEmpty {
             showAlert("Please enter search criteria!")
             return
         }
         
-        GetCustProducts(custNum, type: reportType, whse: whseID)
+        clearResults()
+        GetCustProducts(custNum, type: reportType, exclude_equip: exclude,  whse: whseID)
         
     }    
     
+    
+    
     override func viewWillAppear(animated: Bool) {
         // Setup Nav bar color scheme
-        colorizeNavBar(self.navigationController!.navigationBar)        
+        colorizeNavBar(self.navigationController!.navigationBar)
         
         // Add background to customer selection area of main view.
         self.view.backgroundColor = colorWithHexString("4092f2")
         
         // Set Colors of top buttons.
         setControlColors(UIColor.whiteColor())
-
     }
     
     override func viewDidLoad() {
@@ -81,7 +80,7 @@ class CustomerSales: UIViewController, SalesParams  {
     
     // MARK: GET API DATA
     
-    func GetCustProducts(cust: Int, type: Bool, whse: String)
+    func GetCustProducts(cust: Int, type: Bool, exclude_equip: Bool, whse: String)
     {        
         
         let completionHandler: (Result<[custProd], NSError>) -> Void =
@@ -120,14 +119,18 @@ class CustomerSales: UIViewController, SalesParams  {
                                 " Try again when you're connected to the internet",
                                 image: nil,
                                 backgroundColor: UIColor.redColor())
-                        }
+                        } else if error.code == -99 {
+                            self.showAlert("No results were found!")
+                        }                        
+                        
                         
                         self.notConnectedBanner?.dismissesOnSwipe = true
                         self.notConnectedBanner?.show(duration: nil)
                     }
             
                 }
-                self.showAlert("No results were found!")
+                
+                //self.showAlert("No results were found!")
                 return
             }
             
@@ -151,15 +154,16 @@ class CustomerSales: UIViewController, SalesParams  {
         ActivityIndicator.startAnimating()
         ActivityIndicator.hidden = false
         
-        APIManager.sharedInstance.getCustSales(cust, type: type, whse: whse, completionHandler: completionHandler)
+        APIManager.sharedInstance.getCustSales(cust, type: type, exclude_equip: exclude_equip, whse: whse, completionHandler: completionHandler)
         
     }
     
-    func haveAddedSearchParams(customer: Int, type: Bool, whse: String)
+    func haveAddedSearchParams(customer: Int, type: Bool, exclude: Bool, whse: String)
     {
         clearForm()
         lblCustomer.text = customer > 0 ? "Cust: " + String(customer) : "None"
-        lblType.text = type == true ? "6/Mo" : "All"
+        lblType.text = type == true ? "6/Mo" : "12/Mo"
+        lblEquip.text = exclude == true ? "No Equip" : "Include Equip"
         lblWhse.text = whse > "" ? "Whse: " + whse : "None"
         
         custNum = customer
@@ -186,16 +190,22 @@ class CustomerSales: UIViewController, SalesParams  {
         
     }
     
+    func clearResults()
+    {
+        lblRows.text = ""
+        Products.removeAll()
+        embededViewController!.items = Products        
+    }
+    
     func clearForm()
     {
         lblCustomer.text = ""
         lblType.text = ""
         lblWhse.text = ""
         lblRows.text = ""
+        lblEquip.text = ""
         Products.removeAll()
         embededViewController!.items = Products
-        ActivityIndicator.hidden = true
-        ActivityIndicator.color = DefaultTint
     }
     
     func showAlert(msg: String)
@@ -217,6 +227,10 @@ class CustomerSales: UIViewController, SalesParams  {
         lblType.textColor = color
         lblWhse.textColor = color
         lblRows.textColor = rowsFoundTint
+        lblEquip.textColor = color
+        
+        ActivityIndicator.hidden = true
+        ActivityIndicator.color = DefaultTint        
     }
     
     // MARK: Gradient background

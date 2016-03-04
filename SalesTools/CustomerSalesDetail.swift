@@ -11,21 +11,14 @@ import UIKit
 class CustomerSalesDetail: UIViewController {
     
     @IBOutlet weak var lblProduct: UILabel!
-    
     @IBOutlet weak var lblDescription: UILabel!
-    
+    @IBOutlet weak var lblQtySold: UILabel!
     @IBOutlet weak var lblQtyOnHand: UILabel!
-    
     @IBOutlet weak var lblQtyOnOrder: UILabel!
-    
     @IBOutlet weak var lblQtyCommit: UILabel!
-    
     @IBOutlet weak var lblQtyAvail: UILabel!
-    
     @IBOutlet weak var lblWhse: UILabel!
-    
     @IBOutlet weak var lblLastInvDate: UILabel!
-    
     @IBOutlet weak var lblLastRecvDate: UILabel!
     
     var Product: custProd?
@@ -43,6 +36,7 @@ class CustomerSalesDetail: UIViewController {
     {
         lblProduct.textColor = color
         lblDescription.textColor = color
+        lblQtySold.textColor = color
         lblQtyOnHand.textColor = color
         lblQtyOnOrder.textColor = color
         lblQtyCommit.textColor = color
@@ -55,12 +49,14 @@ class CustomerSalesDetail: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
         
         if (Product != nil)
         {
+            clearForm()
+
             lblProduct.text = Product?.prod
             lblDescription.text = (Product?.descrip1)! + " " + (Product?.descrip2)!
+            lblQtySold.text = "\(Product!.qtySold)"
             lblQtyOnHand.text = "\(Product!.qtyOnHand)"
             lblQtyOnOrder.text = "\(Product!.qtyOnOrder)"
             lblQtyCommit.text = "\(Product!.qtyCommit)"
@@ -72,6 +68,22 @@ class CustomerSalesDetail: UIViewController {
         }
         
    }
+    
+    func clearForm()
+    {
+    
+    lblProduct.text = ""
+    lblDescription.text = ""
+    lblQtySold.text = ""
+    lblQtyOnHand.text = ""
+    lblQtyOnOrder.text = ""
+    lblQtyCommit.text = ""
+    lblQtyAvail.text = ""
+    lblWhse.text = ""
+    
+    lblLastInvDate.text = ""
+    lblLastRecvDate.text = ""
+    }
     
     
     

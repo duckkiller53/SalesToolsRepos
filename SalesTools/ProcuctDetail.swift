@@ -49,6 +49,8 @@ class ProductDetail: UIViewController {
         
         if (Product != nil)
         {            
+            clearForm()
+           
             lblCustNum.text = "\(Product!.custNum)"
             lblProduct.text = prodNum
             lblCustName.text = Product!.custName
@@ -59,6 +61,18 @@ class ProductDetail: UIViewController {
             lblDateSold.text = Product!.dateSold
         }
         
+    }
+    
+    func clearForm()
+    {
+        lblCustNum.text = ""
+        lblProduct.text = ""
+        lblCustName.text = ""
+        lblOrderNum.text = ""
+        lblQtySold.text = ""
+        lblPrice.text = ""
+        lblCost.text = ""
+        lblDateSold.text = ""
     }
     
     func drawBackGroundGradient(sender: AnyObject, topColor: UIColor, bottomColor: UIColor)
