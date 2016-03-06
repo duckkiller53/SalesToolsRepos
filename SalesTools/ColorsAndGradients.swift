@@ -59,17 +59,26 @@ func setTableViewBackgroundGradient(sender: UITableView, _ topColor:UIColor, _ b
     gradientLayer.colors = gradientBackgroundColors
     gradientLayer.locations = gradientLocations
     
-    // I add to the with and height of the current window for
-    // the 6s Plus
-    
-    //let modelName = UIDevice.currentDevice().modelName
-    
-    
+    //***************** DEVICE SIZE ADJUSTMENT *****************
+    let modelName = UIDevice.currentDevice().modelName
     var rect = CGRect()
-    rect.size.width = sender.bounds.width + 100
-    rect.size.height = sender.bounds.height + 200
+    
+    switch(modelName)
+    {
+    case _ where (modelName.rangeOfString("iPhone 6 Plus") != nil) :
+        rect.size.width = sender.bounds.width + 100
+        rect.size.height = sender.bounds.height + 200
+        break;
+    case _ where (modelName.rangeOfString("iPad") != nil) :
+        rect.size.width = sender.bounds.width + 600
+        rect.size.height = sender.bounds.height + 800
+        break;
+    default :
+        rect = sender.bounds;
+    }
+    
+    
     gradientLayer.frame = rect
-    //gradientLayer.frame = sender.bounds
     
     
     let backgroundView = UIView(frame: sender.bounds)

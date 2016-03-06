@@ -53,7 +53,13 @@ class CustLookupDetail: UIViewController
             lblCustState.text = cust.state
             lblCustZip.text = cust.zip
             lblCounty.text = cust.county
-            lblPhone.text = FormatPhone(cust.phone!)
+            
+            if cust.phone! > "" {
+                lblPhone.text = FormatPhone(cust.phone!)
+            } else {
+                lblPhone.text = ""
+            }
+            
             lblSlsRep.text = cust.outSlsRep
             lblContact.text = cust.contact
             
