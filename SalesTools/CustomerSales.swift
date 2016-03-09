@@ -8,8 +8,9 @@
 import UIKit
 import Alamofire
 import BRYXBanner
+import QuickLook
 
-class CustomerSales: UIViewController, SalesParams  {
+class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewControllerDelegate, SalesParams  {
     
     @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
@@ -20,6 +21,7 @@ class CustomerSales: UIViewController, SalesParams  {
     var whseID: String = ""
     var reportType: Bool = true
     var exclude: Bool = true
+    var path: NSURL?
     
     
     @IBOutlet weak var lblCustomer: UILabel!
@@ -50,6 +52,17 @@ class CustomerSales: UIViewController, SalesParams  {
     }    
     
     
+    @IBAction func btnExportToCSV(sender: AnyObject)
+    {
+        
+        custNum = 60004
+        reportType = true
+        exclude = true
+        whseID = "A/G"
+        
+        ExportToCSV(custNum, type: reportType, exclude_equip: exclude,  whse: whseID)
+        
+    }
     
     override func viewWillAppear(animated: Bool) {
         // Setup Nav bar color scheme
@@ -119,10 +132,7 @@ class CustomerSales: UIViewController, SalesParams  {
                                 " Try again when you're connected to the internet",
                                 image: nil,
                                 backgroundColor: UIColor.redColor())
-                        } else if error.code == -99 {
-                            self.showAlert("No results were found!")
-                        }                        
-                        
+                        }                                                
                         
                         self.notConnectedBanner?.dismissesOnSwipe = true
                         self.notConnectedBanner?.show(duration: nil)
@@ -158,6 +168,82 @@ class CustomerSales: UIViewController, SalesParams  {
         
     }
     
+    // ExportToCSV
+    func ExportToCSV(cust: Int, type: Bool, exclude_equip: Bool, whse: String)
+    {
+        
+        let completionHandler: (Result<NSURL, NSError>) -> Void =
+        { (result) in
+            
+            
+            self.ActivityIndicator.hidden = true
+            self.ActivityIndicator.stopAnimating()
+            
+            // Test if error is unauthorized or no connection
+            guard result.error == nil else
+            {
+                print("Bad file path")
+                
+                if let error = result.error
+                {
+                    if error.domain == NSURLErrorDomain
+                    {
+                        // If we already are showing a banner, dismiss it and create new
+                        if let existingBanner = self.notConnectedBanner
+                        {
+                            existingBanner.dismiss()
+                        }
+                        
+                        if error.code == NSURLErrorUserAuthenticationRequired
+                        {
+                            self.notConnectedBanner = Banner(title: "Login Failed",
+                                subtitle: "Please login and try again",
+                                image: nil,
+                                backgroundColor: UIColor.orangeColor())
+                            
+                        } else if error.code == NSURLErrorNotConnectedToInternet {
+                            
+                            self.notConnectedBanner = Banner(title: "No Internet Connection",
+                                subtitle: "Could not load data." +
+                                " Try again when you're connected to the internet",
+                                image: nil,
+                                backgroundColor: UIColor.redColor())
+                        }
+                        
+                        self.notConnectedBanner?.dismissesOnSwipe = true
+                        self.notConnectedBanner?.show(duration: nil)
+                    }
+                    
+                }
+                
+                return
+            }
+            
+            // No Errors Load Data
+            if let URL = result.value {
+                     self.path = URL
+            } else {
+                self.path = nil
+                self.showAlert("Error Createing file!")
+                return
+            }
+            
+            
+            // Note: pushViewController loads it on stack.
+            
+            let preview = QLPreviewController()
+            preview.dataSource = self
+            self.navigationController?.pushViewController(preview, animated: true)
+        }
+        
+        ActivityIndicator.startAnimating()
+        ActivityIndicator.hidden = false
+        
+        APIManager.sharedInstance.ExportCustSales(cust, type: type, exclude_equip: exclude_equip, whse: whse, completionHandler: completionHandler)
+        
+    }
+
+    
     func haveAddedSearchParams(customer: Int, type: Bool, exclude: Bool, whse: String)
     {
         clearForm()
@@ -189,6 +275,27 @@ class CustomerSales: UIViewController, SalesParams  {
         }
         
     }
+    
+    // MARK:  Quick View Controller
+    
+    
+    
+    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
+        return 1
+    }
+    
+    func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {
+        
+        
+        let path = NSBundle.mainBundle().pathForResource("BudImport", ofType: "csv")
+        let url = NSURL.fileURLWithPath(path!)
+        
+        return url
+                
+
+        //return self.path!
+    }
+
     
     func clearResults()
     {

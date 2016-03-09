@@ -23,7 +23,7 @@ class PersistenceManager {
     return documentDirectory
   }
     
-  // saves an object of T ath path using our Enum 'Path'
+  // saves an object of T at path using our Enum 'Path'
   class func saveObject<T: NSCoding>(objectToSave: T, path: Path)
   {
     let file = documentsDirectory().stringByAppendingPathComponent(path.rawValue)

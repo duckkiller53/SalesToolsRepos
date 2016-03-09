@@ -52,6 +52,23 @@ class APIManager {
     {
         testLogin(Router.GetLogin(),  completionHandler: completionHandler)
     }
+    
+    func ExportCustSales(customer: Int, type: Bool, exclude_equip: Bool, whse: String,completionHandler:(Result<NSURL, NSError>) -> Void)
+    {
+        let router = ExportRouter.ExportCustSales(customer,type,exclude_equip,whse)
+        let endpoint = router.endpoint
+        GetCSVFile(endpoint, completionHandler: completionHandler)
+    }
+    
+    
+    
+//    func SimpleTest(customer: Int, type: Bool, exclude_equip: Bool, whse: String) -> String
+//    {
+//        let router = ExportRouter.ExportCustSales(customer,type,exclude_equip,whse)
+//        let endpoint = router.endpoint
+//        
+//        return  SimpleTest(endpoint)
+//    }
 
 
     
@@ -68,13 +85,6 @@ class APIManager {
                         completionHandler(.Failure(authError))
                         return
                 }
-                
-                // Check for no Records
-                if let urlRecords = response.response,
-                    noRecords = self.checkForNoData(urlRecords) {
-                        completionHandler(.Failure(noRecords))
-                        return
-                }                
                 
                 guard response.result.error == nil,
                     let prods = response.result.value else {
@@ -212,6 +222,64 @@ class APIManager {
             }
     }
     
+    // MARK: Exports
+    
+    func GetCSVFile(urlTocall: String, completionHandler: (Result<NSURL, NSError>) -> Void)
+    {
+        // Set Basic auth
+        var username = ""
+        var password = ""
+        
+        if let credentials:appUser = PersistenceManager.loadObject(.Credentials) {
+            username = credentials.username!
+            password = credentials.password!
+        } else {
+            print("Failed to read credentials")
+        }
+        
+        let credentialData = "\(username):\(password)".dataUsingEncoding(NSUTF8StringEncoding)!
+        let base64Credentials = credentialData.base64EncodedStringWithOptions([])
+        let headers = "Basic \(base64Credentials)"
+        
+        guard let destinationURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first.flatMap({ $0.URLByAppendingPathComponent("Report.csv") }), destinationPath = destinationURL.path else { return }
+        
+        // Remove file if it exists.
+        if NSFileManager.defaultManager().fileExistsAtPath(destinationPath)
+        {
+            do {
+                try NSFileManager.defaultManager().removeItemAtPath(destinationPath)
+            } catch  {
+                print("Unable to delete existing file")
+                return
+            }
+        }
+        
+        let downloadRequest = Alamofire.download(.GET, urlTocall, headers: ["Authorization" : headers], destination: { temporaryURL, response in
+            return destinationURL
+        })
+        
+        print("starting request")
+        
+        downloadRequest.validate().response { _, _, _, error in
+            
+            guard error == nil else {
+                print("Failed to download report: \(error)")
+                
+                if let authError = self.checkUnauthorized(downloadRequest.response!) {
+                    completionHandler(.Failure(authError))
+                }
+                return
+            }
+            
+            let result = Result<NSURL, NSError>.Success(destinationURL)
+              completionHandler(result)
+        }
+        
+    }
+    
+    
+    // MARK: CHECK Unauthroized.
+    
     func checkUnauthorized(urlResponse: NSHTTPURLResponse) -> (NSError?)
     {
         if (urlResponse.statusCode == 401)
@@ -224,17 +292,4 @@ class APIManager {
         } 
         return nil
     }
-    
-    func checkForNoData(urlResponse: NSHTTPURLResponse) -> (NSError?)
-    {
-        if (urlResponse.statusCode == 500)
-        {
-            let noRecords = NSError(domain: NSURLErrorDomain, code: -99,
-                userInfo: [NSLocalizedDescriptionKey: "No records found!"
-                ])
-            return noRecords
-        }
-        return nil
-    }
-    
 }
