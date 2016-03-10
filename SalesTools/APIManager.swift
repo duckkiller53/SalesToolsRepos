@@ -53,24 +53,31 @@ class APIManager {
         testLogin(Router.GetLogin(),  completionHandler: completionHandler)
     }
     
-    func ExportCustSales(customer: Int, type: Bool, exclude_equip: Bool, whse: String,completionHandler:(Result<NSURL, NSError>) -> Void)
-    {
+    // Exports
+    
+    func ExportCustSales(customer: Int, type: Bool, exclude_equip: Bool, whse: String,completionHandler:(Result<NSURL, NSError>) -> Void) {
         let router = ExportRouter.ExportCustSales(customer,type,exclude_equip,whse)
         let endpoint = router.endpoint
         GetCSVFile(endpoint, completionHandler: completionHandler)
     }
     
+    func ExportProdSales(prodid: String, completionHandler: (Result<NSURL, NSError>) -> Void) {
+        let router = ExportRouter.ExportSalesByProd(prodid)
+        let endpoint = router.endpoint
+        GetCSVFile(endpoint,  completionHandler: completionHandler)
+    }
     
+    func ExportProductSearch(prodid: String, description: String, active: String, warehouse: String, completionHandler: (Result<NSURL, NSError>) -> Void) {
+        let router = ExportRouter.ExportProdSearch(prodid, description, active, warehouse)
+        let endpoint = router.endpoint
+        GetCSVFile(endpoint, completionHandler: completionHandler)
+    }
     
-//    func SimpleTest(customer: Int, type: Bool, exclude_equip: Bool, whse: String) -> String
-//    {
-//        let router = ExportRouter.ExportCustSales(customer,type,exclude_equip,whse)
-//        let endpoint = router.endpoint
-//        
-//        return  SimpleTest(endpoint)
-//    }
-
-
+    func ExportCustomerSearch(custid: String, custname: String, city: String, state: String, completionHandler: (Result<NSURL, NSError>) -> Void) {
+        let router = ExportRouter.ExportCustSearch(custid, custname, city, state)
+        let endpoint = router.endpoint
+        GetCSVFile(endpoint, completionHandler: completionHandler)
+    }
     
     // MARK:  AlamoFire API Calls
     
@@ -258,8 +265,7 @@ class APIManager {
             return destinationURL
         })
         
-        print("starting request")
-        
+        // Note this is what actually makes the Alamofire download.
         downloadRequest.validate().response { _, _, _, error in
             
             guard error == nil else {

@@ -5,8 +5,9 @@
 import UIKit
 import Alamofire
 import BRYXBanner
+import QuickLook
 
-class ProductLookUp: UIViewController, ProdParams {
+class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewControllerDelegate, ProdParams{
 
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!
@@ -16,10 +17,13 @@ class ProductLookUp: UIViewController, ProdParams {
     @IBOutlet weak var lblActive: UILabel!
     @IBOutlet weak var lblWhse: UILabel!
     @IBOutlet weak var lblRows: UILabel!
+    @IBOutlet weak var btnExportOutlet: UIButton!
+    
     
     var products = [product]()
     var embededViewController: ProdLookupTable? = nil
     var notConnectedBanner: Banner?
+    var path: NSURL?
     
     var prodParam: String?
     var descripParam: String?
@@ -46,6 +50,17 @@ class ProductLookUp: UIViewController, ProdParams {
 
         GetProductSearch(prodParam!, descrip: descripParam!, isactive: activeParam!, whse: whseParam!)
     }
+    
+    @IBAction func btnExport(sender: AnyObject) {
+        
+        if prodParam!.isEmpty && descripParam!.isEmpty {
+            showAlert("criteria must contain a product or description")
+            return
+        }
+        
+        ExportProductSearch(prodParam!, descrip: descripParam!, isactive: activeParam!, whse: whseParam!)
+    }
+    
     
     
     override func viewWillAppear(animated: Bool) {
@@ -136,13 +151,13 @@ class ProductLookUp: UIViewController, ProdParams {
                     self.products = fetchedResults
                     self.lblRows.text = "Records found: " + "\(fetchedResults.count)"
                     self.embededViewController!.items = self.products
+                    self.btnExportOutlet.hidden = false
+
                 } else
                 {
                     self.showAlert("No results were found!")
                 }
             }
-            
-            
             
         }
         
@@ -152,7 +167,95 @@ class ProductLookUp: UIViewController, ProdParams {
         APIManager.sharedInstance.getProductSearch(prod, description: descrip, active: isactive, warehouse: whse, completionHandler: completionHandler)
         
     }
+    
+    // Export To CSV
+    
+    func ExportProductSearch(prod: String, descrip: String, isactive: String, whse: String)
+    {
+        
+        let completionHandler: (Result<NSURL, NSError>) -> Void =
+        { (result) in
+            
+            
+            self.ActivityIndicator.hidden = true
+            self.ActivityIndicator.stopAnimating()
+            
+            // Test if error is unauthorized or no connection
+            guard result.error == nil else
+            {
+                print("Bad file path")
+                
+                if let error = result.error
+                {
+                    if error.domain == NSURLErrorDomain
+                    {
+                        // If we already are showing a banner, dismiss it and create new
+                        if let existingBanner = self.notConnectedBanner
+                        {
+                            existingBanner.dismiss()
+                        }
+                        
+                        if error.code == NSURLErrorUserAuthenticationRequired
+                        {
+                            self.notConnectedBanner = Banner(title: "Login Failed",
+                                subtitle: "Please login and try again",
+                                image: nil,
+                                backgroundColor: UIColor.orangeColor())
+                            
+                        } else if error.code == NSURLErrorNotConnectedToInternet {
+                            
+                            self.notConnectedBanner = Banner(title: "No Internet Connection",
+                                subtitle: "Could not load data." +
+                                " Try again when you're connected to the internet",
+                                image: nil,
+                                backgroundColor: UIColor.redColor())
+                        }
+                        
+                        self.notConnectedBanner?.dismissesOnSwipe = true
+                        self.notConnectedBanner?.show(duration: nil)
+                    }
+                    
+                }
+                
+                return
+            }
+            
+            // No Errors Load Data
+            if let URL = result.value {
+                self.path = URL
+            } else {
+                self.path = nil
+                self.showAlert("Error Createing file!")
+                return
+            }
+            
+            // Note: pushViewController loads it on stack.
+            
+            let preview = QLPreviewController()
+            preview.dataSource = self
+            self.navigationController?.pushViewController(preview, animated: true)
+        }
+        
+        ActivityIndicator.startAnimating()
+        ActivityIndicator.hidden = false
+        
+        APIManager.sharedInstance.ExportProductSearch(prod, description: descrip, active: isactive, warehouse: whse, completionHandler: completionHandler)
+        
+    }
+    
+    // MARK:  Quick View Controller
+    
+    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
+        return 1
+    }
+    
+    func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {
+        
+        return self.path!
+    }
 
+
+    // MARK: Get search params
     
     func haveAddedSearchParams(prod: String, descrip: String, active: Bool, whse: String)
     {
@@ -194,6 +297,8 @@ class ProductLookUp: UIViewController, ProdParams {
         lblRows.text = ""
         products.removeAll()
         embededViewController!.items = products
+        btnExportOutlet.hidden = true
+
     }
     
     func clearForm()
@@ -209,6 +314,8 @@ class ProductLookUp: UIViewController, ProdParams {
         lblRows.text = ""
         products.removeAll()
         embededViewController!.items = products
+        btnExportOutlet.hidden = true
+
     }
     
     func setControlColors(color: UIColor)

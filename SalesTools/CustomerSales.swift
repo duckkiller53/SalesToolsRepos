@@ -13,7 +13,8 @@ import QuickLook
 class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewControllerDelegate, SalesParams  {
     
     @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var menuButton: UIBarButtonItem!    
+    @IBOutlet weak var btnExportOutlet: UIButton!
     var Products = [custProd]()
     var embededViewController: ConTable? = nil
     var notConnectedBanner: Banner?
@@ -54,14 +55,12 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
     
     @IBAction func btnExportToCSV(sender: AnyObject)
     {
-        
-        custNum = 60004
-        reportType = true
-        exclude = true
-        whseID = "A/G"
+        if custNum == 0 || whseID.isEmpty {
+            showAlert("Please enter search criteria!")
+            return
+        }
         
         ExportToCSV(custNum, type: reportType, exclude_equip: exclude,  whse: whseID)
-        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -151,6 +150,8 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
                     self.Products = fetchedResults
                     self.lblRows.text = "Records found: " + "\(fetchedResults.count)"
                     self.embededViewController!.items = self.Products
+                    self.btnExportOutlet.hidden = false
+
                 } else
                 {
                     self.showAlert("No results were found!")
@@ -228,7 +229,6 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
                 return
             }
             
-            
             // Note: pushViewController loads it on stack.
             
             let preview = QLPreviewController()
@@ -276,24 +276,15 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
         
     }
     
-    // MARK:  Quick View Controller
-    
-    
+    // MARK:  Quick View Controller 
     
     func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
         return 1
     }
     
-    func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {
-        
-        
-        let path = NSBundle.mainBundle().pathForResource("BudImport", ofType: "csv")
-        let url = NSURL.fileURLWithPath(path!)
-        
-        return url
-                
+    func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {                
 
-        //return self.path!
+        return self.path!
     }
 
     
@@ -301,7 +292,9 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
     {
         lblRows.text = ""
         Products.removeAll()
-        embededViewController!.items = Products        
+        embededViewController!.items = Products
+        btnExportOutlet.hidden = true
+    
     }
     
     func clearForm()
@@ -313,6 +306,7 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
         lblEquip.text = ""
         Products.removeAll()
         embededViewController!.items = Products
+        btnExportOutlet.hidden = true
     }
     
     func showAlert(msg: String)
