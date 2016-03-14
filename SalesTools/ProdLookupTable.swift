@@ -24,7 +24,9 @@ class ProdLookupTable: UIViewController, UITableViewDataSource, UITableViewDeleg
         super.viewDidLoad()
         
         // Set background of the tableview and hide cell seperator lines
-        setTableViewBackgroundGradient(tableView, colorWithHexString("4294f4"), colorWithHexString("1861b7"))
+        let backgroundImage = UIImage(named: "tv_background.png")
+        let imageView = UIImageView(image: backgroundImage)
+        self.tableView.backgroundView = imageView
         
         tableView.tableFooterView = UIView(frame:CGRectZero)
         tableView.separatorColor = UIColor.redColor()        

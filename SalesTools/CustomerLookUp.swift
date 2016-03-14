@@ -330,15 +330,5 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
         self.presentViewController(myAlert, animated:true, completion:nil);
         
     }
-    
-    
-    // MARK: gradient function
-    
-    func drawBackGroundGradient(sender: AnyObject, topColor: UIColor, bottomColor: UIColor)
-    {
-        let background = CreateGradient(topColor, bottomColor: bottomColor)
-        background.frame = self.view.bounds
-        sender.view!!.layer.insertSublayer(background, atIndex: 0)
-    }
 
 }

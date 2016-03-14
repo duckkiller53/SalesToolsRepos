@@ -63,6 +63,7 @@ class CustomerAR: UIViewController {
     override func viewWillAppear(animated: Bool) {
         // Setup Nav bar color scheme
         colorizeNavBar(self.navigationController!.navigationBar)
+        
         // Create BackGround Gradient to display data.
         drawBackGroundGradient(self, topColor: colorWithHexString("4294f4"), bottomColor: colorWithHexString("1861b7"))
         

@@ -332,15 +332,6 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
         
         ActivityIndicator.hidden = true
         ActivityIndicator.color = DefaultTint        
-    }
-    
-    // MARK: Gradient background
-    
-    func drawBackGroundGradient(sender: AnyObject, topColor: UIColor, bottomColor: UIColor)
-    {
-        let background = CreateGradient(topColor, bottomColor: bottomColor)
-        background.frame = self.view.bounds
-        sender.view!!.layer.insertSublayer(background, atIndex: 0)
-    }
+    }    
     
 }
