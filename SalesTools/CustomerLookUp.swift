@@ -21,7 +21,8 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
     @IBOutlet weak var lblCity: UILabel!
     @IBOutlet weak var lblState: UILabel!
     @IBOutlet weak var lblRows: UILabel!
-    @IBOutlet weak var btnExportOutlet: UIButton!
+    @IBOutlet weak var btnExportOutlet: UIButton!    
+    @IBOutlet weak var viewBar: UIView!
     
     var customers = [customer]()
     var notConnectedBanner: Banner?
@@ -75,7 +76,7 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
         if  self.revealViewController() != nil
         {   
             menuButton.target = self.revealViewController()
-            menuButton.action = "revealToggle:"
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
       
@@ -141,6 +142,7 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
                     self.lblRows.text = "Records found: " + "\(fetchedResults.count)"
                     self.embededViewController!.items = self.customers
                     self.btnExportOutlet.hidden = false
+                    self.viewBar.hidden = false
                 } else
                 {
                     self.showAlert("No results were found!")
@@ -288,6 +290,7 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
         customers.removeAll()
         embededViewController!.items = [customer]()
         btnExportOutlet.hidden = true
+        self.viewBar.hidden = true
     }
     
     func clearForm()
@@ -304,6 +307,7 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
         customers.removeAll()
         embededViewController!.items = [customer]()
         btnExportOutlet.hidden = true
+        self.viewBar.hidden = true
     }
     
     func setControlColors(color: UIColor)
@@ -316,7 +320,6 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
         ActivityIndicator.hidden = true
         ActivityIndicator.color = DefaultTint
     }
-
         
     func showAlert(msg: String)
     {

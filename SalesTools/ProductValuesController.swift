@@ -46,11 +46,11 @@ class ProductValuesController: XLFormViewController
         
         // Add the cancel and save buttons.
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem:
-            UIBarButtonSystemItem.Cancel, target: self, action: "cancelPressed:")
+            UIBarButtonSystemItem.Cancel, target: self, action: #selector(ProductValuesController.cancelPressed(_:)))
         self.navigationItem.leftBarButtonItem?.tintColor = UIColor.whiteColor()
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem:
-            UIBarButtonSystemItem.Save, target: self, action: "savePressed:")
+            UIBarButtonSystemItem.Save, target: self, action: #selector(ProductValuesController.savePressed(_:)))
         self.navigationItem.rightBarButtonItem?.tintColor = UIColor.whiteColor()
         
     }

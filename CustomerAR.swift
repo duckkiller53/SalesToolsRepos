@@ -78,14 +78,14 @@ class CustomerAR: UIViewController {
         if  self.revealViewController() != nil
         { 
             menuButton.target = self.revealViewController()
-            menuButton.action = "revealToggle:"
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         
         // add observer to dismiss keyboard
         NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name: UIKeyboardWillHideNotification, object: nil)
+            selector: #selector(CustomerAR.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CustomerAR.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     
     }
     
@@ -268,7 +268,7 @@ class CustomerAR: UIViewController {
     func keyboardWillShow(notification: NSNotification) {
         if keyboardDismissTapGesture == nil
         {
-            keyboardDismissTapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissKeyboard:"))
+            keyboardDismissTapGesture = UITapGestureRecognizer(target: self, action: #selector(CustomerAR.dismissKeyboard(_:)))
             self.view.addGestureRecognizer(keyboardDismissTapGesture!)
         }
     }

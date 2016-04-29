@@ -13,9 +13,25 @@ let _debug = false
 
 extension String {
     
+    func trunc(length: Int, trailing: String? = "...") -> String
+    {
+        if self.characters.count > length
+        {
+            return self.substringToIndex(self.startIndex.advancedBy(length)) + (trailing ?? "")
+        } else
+        {
+            return self
+        }
+    }
+}
+
+
+extension String {
+    
     public func trim() -> String {
         return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
     }
+    
     
     // remove XML/HTML tags from a string
     public func flattenHTML() -> String {

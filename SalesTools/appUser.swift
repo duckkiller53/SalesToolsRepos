@@ -36,5 +36,6 @@ class appUser: NSObject, NSCoding
         self.username = aDecoder.decodeObjectForKey("username") as? String
         self.password = aDecoder.decodeObjectForKey("password") as? String
     }
-
+    
+    
 }

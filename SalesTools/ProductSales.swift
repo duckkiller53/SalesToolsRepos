@@ -20,7 +20,8 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
     @IBOutlet weak var lblProdSales: UILabel!
     @IBOutlet weak var lblRows: UILabel!
     @IBOutlet weak var btnExportOutlet: UIButton!
-    
+   
+    @IBOutlet weak var viewBar: UIView!
     
     var Products = [salesProd]()
     var embededViewController: ProdTable? = nil
@@ -84,7 +85,7 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
         if  self.revealViewController() != nil
         {
             menuButton.target = self.revealViewController()
-            menuButton.action = "revealToggle:"
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
 
@@ -149,7 +150,7 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
                     self.lblRows.text = "Records found: " + "\(fetchedResults.count)"
                     self.embededViewController!.items = self.Products
                     self.btnExportOutlet.hidden = false
-
+                    self.viewBar.hidden = false
                 } else
                 {
                     self.showAlert("No results were found!")
@@ -281,6 +282,7 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
         embededViewController!.items = [salesProd]()
         txtProduct.resignFirstResponder()
         self.btnExportOutlet.hidden = true
+        self.viewBar.hidden = true
     }
     
     func clearForm()
@@ -290,7 +292,7 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
         embededViewController!.items = [salesProd]()
         txtProduct.resignFirstResponder()
         self.btnExportOutlet.hidden = true
-
+        self.viewBar.hidden = true
     }
     
     func showAlert(msg: String)

@@ -19,137 +19,67 @@ class LogIn: UIViewController {
 
     var notConnectedBanner: Banner?
     var loginResult: String?
-
     
+    @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var txtUserName: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
+    
+    
+    @IBOutlet weak var btnLogin: UIButton!
     
     @IBAction func btnLogin(sender: AnyObject) {
         
         var name: String?
         var pass: String?
-
         
-        if let username = txtUserName.text
+        if btnLogin.tag == 1
         {
-            if username.isEmpty
-            {
-                ShowAlert("Please enter a username!")
-                return
-            } else {
-                name = username
-            }
-            
+            // Logout User
+            name = ""
+            pass = ""
+            SaveUser(name!, pass: pass!)
+            self.ShowAlert("Logout Successful!")
         }
-
-        
-        if let password = txtPassword.text
+        else
         {
-            if password.isEmpty
-            {
-                ShowAlert("Please enter a password!")
-                return
-            } else {
-                pass = password
-            }
-        }       
-        
-        
-        
-        let Person = appUser(username: name!, password: pass!)        
-        PersistenceManager.saveObject(Person, path: .Credentials)
-        
-        TestCredentials()
-        
-        // read credentials
-//        if let test:appUser = PersistenceManager.loadObject(path) {
-//            print(test.username! + " " + test.password!)
-//        } else {
-//            print("Fail")
-//        }
-        
-    }
-    
-    func TestCredentials()
-    {
-        
-        let completionHandler: (Result<String, NSError>) -> Void =
-        { (result) in
+            // Login User
             
-            self.ActivityIndicator.hidden = true
-            self.ActivityIndicator.stopAnimating()
-            
-            // Test if error is unauthorized or no connection
-            guard result.error == nil else
+            if let username = txtUserName.text
             {
-                print(result.error)
-                
-                if let error = result.error
+                if username.isEmpty
                 {
-                    if error.domain == NSURLErrorDomain
-                    {
-                        // If we already are showing a banner, dismiss it and create new
-                        if let existingBanner = self.notConnectedBanner
-                        {
-                            existingBanner.dismiss()
-                        }
-                        
-                        if error.code == NSURLErrorUserAuthenticationRequired
-                        {
-                            self.notConnectedBanner = Banner(title: "Login Failed",
-                                subtitle: "Please login and try again",
-                                image: nil,
-                                backgroundColor: UIColor.orangeColor())
-                            
-                        } else if error.code == NSURLErrorNotConnectedToInternet {
-                            
-                            self.notConnectedBanner = Banner(title: "No Internet Connection",
-                                subtitle: "Could not load data." +
-                                " Try again when you're connected to the internet",
-                                image: nil,
-                                backgroundColor: UIColor.redColor())
-                        }
-                        
-                        self.notConnectedBanner?.dismissesOnSwipe = true
-                        self.notConnectedBanner?.show(duration: nil)
-                    }
-                    
+                    ShowAlert("Please enter a username!")
+                    return
+                } else {
+                    name = username
                 }
-                return
+            }
+
+            
+            if let password = txtPassword.text
+            {
+                if password.isEmpty
+                {
+                    ShowAlert("Please enter a password!")
+                    return
+                } else {
+                    pass = password
+                }
             }
             
-            // No Errors Load Data
-            if let fetchedResult = result.value {
-                self.loginResult = fetchedResult
-                self.ShowAlert("Login Successful!")
-            }
+            SaveUser(name!, pass: pass!)
+            TestCredentials()
             
         }
-        
-        self.ActivityIndicator.hidden = false
-        self.ActivityIndicator.startAnimating()
-        
-        APIManager.sharedInstance.validateLogin(completionHandler)
-        
-    }
-
-    func ShowAlert(msg: String)
-    {
-        let myAlert = UIAlertController(title:"SalesTools", message: msg, preferredStyle: UIAlertControllerStyle.Alert);
-        
-        let okAction = UIAlertAction(title:"Ok", style:UIAlertActionStyle.Default){ action in
-            self.dismissViewControllerAnimated(true, completion:nil);
-        }
-        
-        myAlert.addAction(okAction);
-        self.presentViewController(myAlert, animated:true, completion:nil);
-
     }
     
-    override func viewWillAppear(animated: Bool) {        
+    override func viewWillAppear(animated: Bool) {
+        
+        TestCurrentCredentials()
         
         // Setup Nav bar color scheme
         colorizeNavBar(self.navigationController!.navigationBar)
+        lblTitle.textColor = UIColor.whiteColor()
         
         // Create BackGround Gradient to display data.
         drawBackGroundGradient(self, topColor: colorWithHexString("4294f4"), bottomColor: colorWithHexString("1861b7"))
@@ -159,22 +89,21 @@ class LogIn: UIViewController {
 
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if  self.revealViewController() != nil
         {
             menuButton.target = self.revealViewController()
-            menuButton.action = "revealToggle:"
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         
         
         // add observer to dismiss keyboard
         NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name: UIKeyboardWillHideNotification, object: nil)
+            selector: #selector(LogIn.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LogIn.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
     
     //MARK: Gradient function
@@ -196,7 +125,7 @@ class LogIn: UIViewController {
     func keyboardWillShow(notification: NSNotification) {
         if keyboardDismissTapGesture == nil
         {
-            keyboardDismissTapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissKeyboard:"))
+            keyboardDismissTapGesture = UITapGestureRecognizer(target: self, action: #selector(LogIn.dismissKeyboard(_:)))
             self.view.addGestureRecognizer(keyboardDismissTapGesture!)
         }
     }
@@ -218,5 +147,113 @@ class LogIn: UIViewController {
             txtPassword.resignFirstResponder()
         }
     }
+    
+    func SaveUser(name: String, pass: String)
+    {
+        let Person = appUser(username: name, password: pass)
+        PersistenceManager.saveObject(Person, path: .Credentials)
+        TestCurrentCredentials()
+    }
+    
+    func TestCredentials()
+    {
+        
+        let completionHandler: (Result<String, NSError>) -> Void =
+            { (result) in
+                
+                self.ActivityIndicator.hidden = true
+                self.ActivityIndicator.stopAnimating()
+                
+                // Test if error is unauthorized or no connection
+                guard result.error == nil else
+                {
+                    print(result.error)
+                    
+                    if let error = result.error
+                    {
+                        if error.domain == NSURLErrorDomain
+                        {
+                            // If we already are showing a banner, dismiss it and create new
+                            if let existingBanner = self.notConnectedBanner
+                            {
+                                existingBanner.dismiss()
+                            }
+                            
+                            if error.code == NSURLErrorUserAuthenticationRequired
+                            {
+                                self.notConnectedBanner = Banner(title: "Login Failed",
+                                                                 subtitle: "Please login and try again",
+                                                                 image: nil,
+                                                                 backgroundColor: UIColor.orangeColor())
+                                self.SaveUser("", pass: "")
+                                
+                            } else if error.code == NSURLErrorNotConnectedToInternet {
+                                
+                                self.notConnectedBanner = Banner(title: "No Internet Connection",
+                                                                 subtitle: "Could not load data." +
+                                    " Try again when you're connected to the internet",
+                                                                 image: nil,
+                                                                 backgroundColor: UIColor.redColor())
+                                self.SaveUser("", pass: "")
+                            }
+                            
+                            self.notConnectedBanner?.dismissesOnSwipe = true
+                            self.notConnectedBanner?.show(duration: nil)
+                        }
+                        
+                    }
+                    return
+                }
+                
+                // No Errors Load Data
+                if let fetchedResult = result.value {
+                    self.loginResult = fetchedResult
+                    
+                    if let existingBanner = self.notConnectedBanner
+                    {
+                        existingBanner.dismiss()
+                    }
+                    
+                    self.ShowAlert("Login Successful!")
+                }
+                
+        }
+        
+        self.ActivityIndicator.hidden = false
+        self.ActivityIndicator.startAnimating()
+        
+        APIManager.sharedInstance.validateLogin(completionHandler)
+        
+    }
+    
+    func ShowAlert(msg: String)
+    {
+        let myAlert = UIAlertController(title:"SalesTools", message: msg, preferredStyle: UIAlertControllerStyle.Alert);
+        
+        let okAction = UIAlertAction(title:"Ok", style:UIAlertActionStyle.Default){ action in
+            self.dismissViewControllerAnimated(true, completion:nil);
+        }
+        
+        myAlert.addAction(okAction);
+        self.presentViewController(myAlert, animated:true, completion:nil);
+        
+    }
+    
+    func TestCurrentCredentials() {
+        if let credentials:appUser = PersistenceManager.loadObject(.Credentials) {
+            if credentials.username != "" {
+                txtUserName.text = credentials.username!
+                txtPassword.text = credentials.password!
+                btnLogin.setTitle("Logout", forState: .Normal)
+                btnLogin.tag = 1
+            } else {
+                btnLogin.setTitle("Login", forState: .Normal)
+                txtUserName.text = ""
+                txtPassword.text = ""
+                btnLogin.tag = 0
+            }
+        }
+    }
+
 
 }

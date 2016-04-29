@@ -48,6 +48,10 @@ class APIManager {
         
     }
     
+    func getARBalance(custid: String, completionHandler: (Result<ARBalance, NSError>) -> Void) {
+        getARBalance(Router.GetARBal(custid), completionHandler: completionHandler)
+    }
+    
     func validateLogin(completionHandler: (Result<String, NSError>) -> Void)
     {
         testLogin(Router.GetLogin(),  completionHandler: completionHandler)
@@ -209,7 +213,29 @@ class APIManager {
         }
     }
     
-    
+    func getARBalance(urlRequest: URLRequestConvertible, completionHandler: (Result<ARBalance, NSError>) -> Void) {
+        alamofireManager.request(urlRequest)
+            .validate()
+            .responseObject { (response:Response<ARBalance, NSError>) in
+                // Begin handler
+                
+                if let urlResponse = response.response,
+                    authError = self.checkUnauthorized(urlResponse) {
+                    completionHandler(.Failure(authError))
+                    return
+                }
+                
+                guard response.result.error == nil,
+                    let arbalance = response.result.value else {
+                        print(response.result.error)
+                        completionHandler(response.result)
+                        return
+                }
+                
+                // End handler
+                completionHandler(.Success(arbalance))
+        }
+    }    
     
     func testLogin(urlRequest: URLRequestConvertible, completionHandler: (Result<String, NSError>) -> Void)
     {
@@ -225,7 +251,7 @@ class APIManager {
 
         
                 // End handler
-                completionHandler(response.result) // bubbles up to getCustSales
+                completionHandler(response.result) // bubbles up to calling func
             }
     }
     

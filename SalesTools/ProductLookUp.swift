@@ -17,8 +17,8 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
     @IBOutlet weak var lblActive: UILabel!
     @IBOutlet weak var lblWhse: UILabel!
     @IBOutlet weak var lblRows: UILabel!
-    @IBOutlet weak var btnExportOutlet: UIButton!
-    
+    @IBOutlet weak var btnExportOutlet: UIButton!    
+    @IBOutlet weak var viewBar: UIView!
     
     var products = [product]()
     var embededViewController: ProdLookupTable? = nil
@@ -85,7 +85,7 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
         if  self.revealViewController() != nil
         {
             menuButton.target = self.revealViewController()
-            menuButton.action = "revealToggle:"
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         
@@ -152,7 +152,7 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
                     self.lblRows.text = "Records found: " + "\(fetchedResults.count)"
                     self.embededViewController!.items = self.products
                     self.btnExportOutlet.hidden = false
-
+                    self.viewBar.hidden = false
                 } else
                 {
                     self.showAlert("No results were found!")
@@ -298,7 +298,7 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
         products.removeAll()
         embededViewController!.items = products
         btnExportOutlet.hidden = true
-
+        self.viewBar.hidden = true
     }
     
     func clearForm()
@@ -315,7 +315,7 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
         products.removeAll()
         embededViewController!.items = products
         btnExportOutlet.hidden = true
-
+        self.viewBar.hidden = true
     }
     
     func setControlColors(color: UIColor)

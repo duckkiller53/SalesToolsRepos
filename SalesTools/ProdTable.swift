@@ -29,8 +29,8 @@ class ProdTable: UIViewController,  UITableViewDataSource, UITableViewDelegate {
         
         // add observer to dismiss keyboard
         NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name: UIKeyboardWillHideNotification, object: nil)
+            selector: #selector(ProdTable.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ProdTable.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
         
         // Set background of the tableview and hide cell seperator lines
 //        setTableViewBackgroundGradient(tableView, colorWithHexString("4294f4"), colorWithHexString("1861b7"))
@@ -119,7 +119,7 @@ class ProdTable: UIViewController,  UITableViewDataSource, UITableViewDelegate {
     func keyboardWillShow(notification: NSNotification) {
         if keyboardDismissTapGesture == nil
         {
-            keyboardDismissTapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissKeyboard:"))
+            keyboardDismissTapGesture = UITapGestureRecognizer(target: self, action: #selector(ProdTable.dismissKeyboard(_:)))
             self.view.addGestureRecognizer(keyboardDismissTapGesture!)
         }
     }

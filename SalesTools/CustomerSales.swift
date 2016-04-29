@@ -15,6 +15,8 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
     @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var menuButton: UIBarButtonItem!    
     @IBOutlet weak var btnExportOutlet: UIButton!
+    @IBOutlet weak var viewBar: UIView!
+    
     var Products = [custProd]()
     var embededViewController: ConTable? = nil
     var notConnectedBanner: Banner?
@@ -85,7 +87,7 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
         if  self.revealViewController() != nil
         {
             menuButton.target = self.revealViewController()
-            menuButton.action = "revealToggle:"            
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))            
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
     }
@@ -151,6 +153,7 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
                     self.lblRows.text = "Records found: " + "\(fetchedResults.count)"
                     self.embededViewController!.items = self.Products
                     self.btnExportOutlet.hidden = false
+                    self.viewBar.hidden = false
 
                 } else
                 {
@@ -307,6 +310,7 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
         Products.removeAll()
         embededViewController!.items = Products
         btnExportOutlet.hidden = true
+        self.viewBar.hidden = true
     }
     
     func showAlert(msg: String)

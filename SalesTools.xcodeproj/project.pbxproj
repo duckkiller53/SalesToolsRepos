@@ -14,6 +14,7 @@
 		5520A5341C6258F5007D4B6E /* CustomerSalesDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5520A5331C6258F5007D4B6E /* CustomerSalesDetail.swift */; };
 		5520A5561C629541007D4B6E /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5520A5551C629541007D4B6E /* Utilities.swift */; };
 		5521EB211C6FC21000A364CB /* ColorsAndGradients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5521EB201C6FC21000A364CB /* ColorsAndGradients.swift */; };
+		5526FE391CC938A700F5E7B2 /* ARBalanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5526FE381CC938A700F5E7B2 /* ARBalanceController.swift */; };
 		5532592E1C5BD4D500120905 /* SalesValuesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5532592D1C5BD4D500120905 /* SalesValuesController.swift */; };
 		55340F481C5929D900A4BDCB /* custProd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55340F471C5929D900A4BDCB /* custProd.swift */; };
 		55340F4A1C592BC500A4BDCB /* ResponseJsonObjectSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55340F491C592BC500A4BDCB /* ResponseJsonObjectSerializable.swift */; };
@@ -22,10 +23,15 @@
 		553FCEA31C7FA5F3005B929E /* CustLookupTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553FCEA21C7FA5F3005B929E /* CustLookupTable.swift */; };
 		5540A8051C47FA12002B1088 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5540A8041C47FA12002B1088 /* Media.xcassets */; };
 		554BFA311C67A9F600139145 /* customerAR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554BFA301C67A9F600139145 /* customerAR.swift */; };
+		5563040E1CC7DDEA0018BFB0 /* ARBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5563040D1CC7DDEA0018BFB0 /* ARBalance.swift */; };
+		556304101CC7E36E0018BFB0 /* Invoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5563040F1CC7E36E0018BFB0 /* Invoice.swift */; };
+		556304121CC80F380018BFB0 /* LineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556304111CC80F380018BFB0 /* LineItem.swift */; };
 		5578C9961C581ECC0060E92D /* CustomerLookUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5578C9951C581ECC0060E92D /* CustomerLookUp.swift */; };
 		5578C9981C5824710060E92D /* CustomerAR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5578C9971C5824710060E92D /* CustomerAR.swift */; };
 		5578C99A1C5824820060E92D /* LogIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5578C9991C5824820060E92D /* LogIn.swift */; };
 		5579F2D31C5D35A3003F87D3 /* ConTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5579F2D21C5D35A3003F87D3 /* ConTable.swift */; };
+		557FA1621CCFD08900726859 /* ARBalanceLineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557FA1611CCFD08900726859 /* ARBalanceLineItem.swift */; };
+		5589CA8E1CD1517900871976 /* ARBalanceDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5589CA8D1CD1517900871976 /* ARBalanceDetail.swift */; };
 		558C07C21C8F5EF700273592 /* ExportRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558C07C11C8F5EF700273592 /* ExportRouter.swift */; };
 		55983F861C7E1117001FD304 /* ProdLookupDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55983F851C7E1117001FD304 /* ProdLookupDetail.swift */; };
 		55983F881C7E1EA5001FD304 /* ProdLookupTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55983F871C7E1EA5001FD304 /* ProdLookupTable.swift */; };
@@ -37,6 +43,7 @@
 		55BDC4151C59681E00DE1DE4 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BDC4141C59681E00DE1DE4 /* APIManager.swift */; };
 		55BDC4171C59683700DE1DE4 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BDC4161C59683700DE1DE4 /* Router.swift */; };
 		55BDC4191C59686000DE1DE4 /* AlamofireRequest+JSONSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BDC4181C59686000DE1DE4 /* AlamofireRequest+JSONSerializable.swift */; };
+		55EC0D961CCAA4C100FDCC61 /* ARBalanceInvoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EC0D951CCAA4C100FDCC61 /* ARBalanceInvoice.swift */; };
 		55EEABB11C46A0DF00FE0BD9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EEABB01C46A0DF00FE0BD9 /* AppDelegate.swift */; };
 		55EEABB61C46A0DF00FE0BD9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55EEABB41C46A0DF00FE0BD9 /* Main.storyboard */; };
 		55EEABC71C46A1F000FE0BD9 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55EEABC61C46A1F000FE0BD9 /* SWRevealViewController.m */; };
@@ -58,6 +65,7 @@
 		5520A5331C6258F5007D4B6E /* CustomerSalesDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomerSalesDetail.swift; sourceTree = "<group>"; };
 		5520A5551C629541007D4B6E /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		5521EB201C6FC21000A364CB /* ColorsAndGradients.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorsAndGradients.swift; sourceTree = "<group>"; };
+		5526FE381CC938A700F5E7B2 /* ARBalanceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARBalanceController.swift; sourceTree = "<group>"; };
 		5532592D1C5BD4D500120905 /* SalesValuesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SalesValuesController.swift; sourceTree = "<group>"; };
 		55340F471C5929D900A4BDCB /* custProd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = custProd.swift; sourceTree = "<group>"; };
 		55340F491C592BC500A4BDCB /* ResponseJsonObjectSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseJsonObjectSerializable.swift; sourceTree = "<group>"; };
@@ -66,10 +74,15 @@
 		553FCEA21C7FA5F3005B929E /* CustLookupTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustLookupTable.swift; sourceTree = "<group>"; };
 		5540A8041C47FA12002B1088 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		554BFA301C67A9F600139145 /* customerAR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = customerAR.swift; sourceTree = "<group>"; };
+		5563040D1CC7DDEA0018BFB0 /* ARBalance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARBalance.swift; sourceTree = "<group>"; };
+		5563040F1CC7E36E0018BFB0 /* Invoice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Invoice.swift; sourceTree = "<group>"; };
+		556304111CC80F380018BFB0 /* LineItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineItem.swift; sourceTree = "<group>"; };
 		5578C9951C581ECC0060E92D /* CustomerLookUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomerLookUp.swift; sourceTree = "<group>"; };
 		5578C9971C5824710060E92D /* CustomerAR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomerAR.swift; path = ../CustomerAR.swift; sourceTree = "<group>"; };
 		5578C9991C5824820060E92D /* LogIn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LogIn.swift; path = ../LogIn.swift; sourceTree = "<group>"; };
 		5579F2D21C5D35A3003F87D3 /* ConTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConTable.swift; sourceTree = "<group>"; };
+		557FA1611CCFD08900726859 /* ARBalanceLineItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARBalanceLineItem.swift; sourceTree = "<group>"; };
+		5589CA8D1CD1517900871976 /* ARBalanceDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARBalanceDetail.swift; sourceTree = "<group>"; };
 		558C07C11C8F5EF700273592 /* ExportRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportRouter.swift; sourceTree = "<group>"; };
 		55983F851C7E1117001FD304 /* ProdLookupDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProdLookupDetail.swift; sourceTree = "<group>"; };
 		55983F871C7E1EA5001FD304 /* ProdLookupTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProdLookupTable.swift; sourceTree = "<group>"; };
@@ -81,6 +94,7 @@
 		55BDC4141C59681E00DE1DE4 /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		55BDC4161C59683700DE1DE4 /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		55BDC4181C59686000DE1DE4 /* AlamofireRequest+JSONSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AlamofireRequest+JSONSerializable.swift"; sourceTree = "<group>"; };
+		55EC0D951CCAA4C100FDCC61 /* ARBalanceInvoice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARBalanceInvoice.swift; sourceTree = "<group>"; };
 		55EEABAD1C46A0DF00FE0BD9 /* SalesTools.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SalesTools.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55EEABB01C46A0DF00FE0BD9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55EEABB51C46A0DF00FE0BD9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -151,14 +165,14 @@
 		55340F421C59280800A4BDCB /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				55EEABD21C46C79200FE0BD9 /* MenuTableViewController.swift */,
-				55EEABCA1C46B22A00FE0BD9 /* MainViewController.swift */,
+				55DF6BB51C6BD93700627BF7 /* Login */,
+				55E81BEB1CD3A47A00165004 /* SideBarMenu */,
 				5504B73D1C5A7389009BF456 /* CustomerSales */,
 				55020AC41C63BA4500ECBE49 /* ProductSales */,
 				550533781C650561006F2C23 /* ProductLookup */,
 				559899E01C65408A0076B5B8 /* CustomerLookup */,
 				554BFA2F1C67A97D00139145 /* CustomerAR */,
-				55DF6BB51C6BD93700627BF7 /* Login */,
+				556304131CC814810018BFB0 /* ARBalance */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -173,6 +187,9 @@
 				559899E11C6554210076B5B8 /* customer.swift */,
 				554BFA301C67A9F600139145 /* customerAR.swift */,
 				550F15BF1C6AA0940020D8EF /* appUser.swift */,
+				5563040D1CC7DDEA0018BFB0 /* ARBalance.swift */,
+				5563040F1CC7E36E0018BFB0 /* Invoice.swift */,
+				556304111CC80F380018BFB0 /* LineItem.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -211,6 +228,17 @@
 			name = CustomerAR;
 			sourceTree = "<group>";
 		};
+		556304131CC814810018BFB0 /* ARBalance */ = {
+			isa = PBXGroup;
+			children = (
+				5526FE381CC938A700F5E7B2 /* ARBalanceController.swift */,
+				55EC0D951CCAA4C100FDCC61 /* ARBalanceInvoice.swift */,
+				557FA1611CCFD08900726859 /* ARBalanceLineItem.swift */,
+				5589CA8D1CD1517900871976 /* ARBalanceDetail.swift */,
+			);
+			name = ARBalance;
+			sourceTree = "<group>";
+		};
 		559899E01C65408A0076B5B8 /* CustomerLookup */ = {
 			isa = PBXGroup;
 			children = (
@@ -228,6 +256,15 @@
 				5578C9991C5824820060E92D /* LogIn.swift */,
 			);
 			name = Login;
+			sourceTree = "<group>";
+		};
+		55E81BEB1CD3A47A00165004 /* SideBarMenu */ = {
+			isa = PBXGroup;
+			children = (
+				55EEABD21C46C79200FE0BD9 /* MenuTableViewController.swift */,
+				55EEABCA1C46B22A00FE0BD9 /* MainViewController.swift */,
+			);
+			name = SideBarMenu;
 			sourceTree = "<group>";
 		};
 		55EEABA41C46A0DF00FE0BD9 = {
@@ -427,7 +464,9 @@
 				553FCEA11C7FA5C7005B929E /* CustValuesController.swift in Sources */,
 				55AF69D61C63BF7700F74DA4 /* ProcuctDetail.swift in Sources */,
 				55020AC61C63BA7F00ECBE49 /* ProdTable.swift in Sources */,
+				556304101CC7E36E0018BFB0 /* Invoice.swift in Sources */,
 				5532592E1C5BD4D500120905 /* SalesValuesController.swift in Sources */,
+				557FA1621CCFD08900726859 /* ARBalanceLineItem.swift in Sources */,
 				55EEABB11C46A0DF00FE0BD9 /* AppDelegate.swift in Sources */,
 				558C07C21C8F5EF700273592 /* ExportRouter.swift in Sources */,
 				55BDC4151C59681E00DE1DE4 /* APIManager.swift in Sources */,
@@ -437,11 +476,13 @@
 				559899E21C6554210076B5B8 /* customer.swift in Sources */,
 				5578C99A1C5824820060E92D /* LogIn.swift in Sources */,
 				550F15C61C6ABD300020D8EF /* PersistenceManager.swift in Sources */,
+				5589CA8E1CD1517900871976 /* ARBalanceDetail.swift in Sources */,
 				553FCEA31C7FA5F3005B929E /* CustLookupTable.swift in Sources */,
 				55BDC4171C59683700DE1DE4 /* Router.swift in Sources */,
 				55340F4A1C592BC500A4BDCB /* ResponseJsonObjectSerializable.swift in Sources */,
 				55EEABD31C46C79200FE0BD9 /* MenuTableViewController.swift in Sources */,
 				55340F481C5929D900A4BDCB /* custProd.swift in Sources */,
+				55EC0D961CCAA4C100FDCC61 /* ARBalanceInvoice.swift in Sources */,
 				553FCE9F1C7F9E04005B929E /* CustLookupDetail.swift in Sources */,
 				5520A5561C629541007D4B6E /* Utilities.swift in Sources */,
 				55983F861C7E1117001FD304 /* ProdLookupDetail.swift in Sources */,
@@ -452,8 +493,11 @@
 				55BDC4191C59686000DE1DE4 /* AlamofireRequest+JSONSerializable.swift in Sources */,
 				55983F881C7E1EA5001FD304 /* ProdLookupTable.swift in Sources */,
 				55EEABCD1C46BDAE00FE0BD9 /* CustomerSales.swift in Sources */,
+				556304121CC80F380018BFB0 /* LineItem.swift in Sources */,
 				55983F8A1C7E266B001FD304 /* ProductValuesController.swift in Sources */,
+				5526FE391CC938A700F5E7B2 /* ARBalanceController.swift in Sources */,
 				55020AC81C63BBDD00ECBE49 /* salesProd.swift in Sources */,
+				5563040E1CC7DDEA0018BFB0 /* ARBalance.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

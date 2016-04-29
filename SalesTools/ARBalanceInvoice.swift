@@ -1,19 +1,19 @@
 //
-//  CustLookupTable.swift
+//  ARBalanceTable.swift
 //  SalesTools
 //
-//  Created by William Volm on 2/25/16.
 //  Copyright © 2016 Dave LaPorte. All rights reserved.
 //
 
 import UIKit
 
-class CustLookupTable: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ARBalanceInvoice: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
     
     @IBOutlet weak var tableView: UITableView!
     
     // Observer Property
-    var items: [customer] = [] {
+    var items: [Invoice] = [] {
         didSet {
             self.tableView.reloadData()
         }
@@ -30,6 +30,7 @@ class CustLookupTable: UIViewController, UITableViewDataSource, UITableViewDeleg
         tableView.tableFooterView = UIView(frame:CGRectZero)
         tableView.separatorColor = UIColor.redColor()
     }
+
     
     // MARK:  TableView methods
     
@@ -51,8 +52,8 @@ class CustLookupTable: UIViewController, UITableViewDataSource, UITableViewDeleg
         {
             let r = items[indexPath.row]
             
-            cell.textLabel?.text = "\(Int(r.custnum))"
-            cell.detailTextLabel!.text = r.custName!
+            cell.textLabel?.text = "Customer Invoice# \(Int(r.invoiceNum))"
+            cell.detailTextLabel!.text = "DueDate " + r.dueDate
         }
         
         // This allows the background color of the cells to show through the cells.
@@ -66,15 +67,21 @@ class CustLookupTable: UIViewController, UITableViewDataSource, UITableViewDeleg
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
-        if segue.identifier == "custDetail"
+        if segue.identifier == "lineitems"
         {
-            if let destinationVC = segue.destinationViewController as? CustLookupDetail
+            if let destinationVC = segue.destinationViewController as? ARBalanceLineItem
             {
                 let selectedRow = tableView.indexPathForSelectedRow!.row
-                destinationVC.Customer = items[selectedRow]
-            }            
+                destinationVC.lineitems = items[selectedRow].lineItems
+                
+                destinationVC.ordernum = "\(Int(items[selectedRow].invoiceNum))"
+                destinationVC.numlines = "\(items[selectedRow].lineItems.count)"
+            }
         }
     }
+
+    
+    
 
 
 }
