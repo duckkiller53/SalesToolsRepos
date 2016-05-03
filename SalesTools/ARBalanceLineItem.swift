@@ -92,22 +92,3 @@ class ARBalanceLineItem: UIViewController, UITableViewDataSource, UITableViewDel
 
 
 }
-
-//class Drawing: UIView {
-//    
-//    override func drawRect(rect: CGRect) {
-//        
-//        // Set of the context for drawing
-//        let context = UIGraphicsGetCurrentContext()
-//        CGContextSetLineWidth(context, 3.0)
-//        CGContextSetStrokeColorWithColor(context, UIColor.redColor().CGColor)
-//        
-//        // Create a path
-//        CGContextMoveToPoint(context, 0, 30)
-//        CGContextAddLineToPoint(context, UIScreen.mainScreen().bounds.width, 30)
-//        
-//        // Draw the path
-//        CGContextStrokePath(context)
-//    }
-//    
-//}

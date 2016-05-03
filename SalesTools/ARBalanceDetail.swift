@@ -47,7 +47,7 @@ class ARBalanceDetail: UIViewController {
         lineDsp.text = "Line Number " + "(\(lineItem!.lineNum))"
         lblProduct.text = "\(lineItem!.prod)"
         lblDescrip.text = lineItem!.descrip.trunc(50)
-        lblCustNum.text = "\(lineItem!.custNum)"
+        lblCustNum.text = "\(Int(lineItem!.custNum))"
         lblOrdDate.text = lineItem!.orderDate
         lblQty.text = "\(lineItem!.qty)"
         lblWhse.text = lineItem!.whse

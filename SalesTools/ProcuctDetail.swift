@@ -55,9 +55,9 @@ class ProductDetail: UIViewController {
             lblProduct.text = prodNum
             lblCustName.text = Product!.custName
             lblOrderNum.text = "\(Product!.ordNum)"
-            lblQtySold.text = "\(Product!.qtySold)"
-            lblPrice.text = "\(Product!.price)"
-            lblCost.text = "\(Product!.cost)"
+            lblQtySold.text = Product!.qtySold.FormatInt(false)
+            lblPrice.text = Product!.price.FormatDouble(true)
+            lblCost.text = Product!.cost.FormatDouble(true)
             lblDateSold.text = Product!.dateSold
         }
         

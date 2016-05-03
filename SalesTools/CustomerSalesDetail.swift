@@ -56,11 +56,11 @@ class CustomerSalesDetail: UIViewController {
 
             lblProduct.text = Product?.prod
             lblDescription.text = (Product?.descrip1)! + " " + (Product?.descrip2)!
-            lblQtySold.text = "\(Product!.qtySold)"
-            lblQtyOnHand.text = "\(Product!.qtyOnHand)"
-            lblQtyOnOrder.text = "\(Product!.qtyOnOrder)"
-            lblQtyCommit.text = "\(Product!.qtyCommit)"
-            lblQtyAvail.text = "\(Product!.qtyAvail)"
+            lblQtySold.text = Product!.qtySold.FormatInt(false)
+            lblQtyOnHand.text = Product!.qtyOnHand.FormatInt(false)
+            lblQtyOnOrder.text = Product!.qtyOnOrder.FormatInt(false)
+            lblQtyCommit.text = Product!.qtyCommit.FormatInt(false)
+            lblQtyAvail.text = Product!.qtyAvail.FormatInt(false)
             lblWhse.text = Product!.whse
             
             lblLastInvDate.text = Product!.lastINVDate

@@ -33,6 +33,7 @@ class ARBalanceController: UIViewController {
     @IBAction func btnSearch(sender: AnyObject) {
         
         txtCustNum.resignFirstResponder()
+        clearForm()
         
         if let custnum = txtCustNum.text
         {
@@ -184,15 +185,17 @@ class ARBalanceController: UIViewController {
         lblCurrent.text = ""
         lblAROver.text = ""
         self.viewBar.hidden = true
+        embededViewController!.items = [Invoice]()
     }
     
     func LoadControls(cust: ARBalance)
     {
         lblCustNumDisp.text = "\(Int(cust.custnum))"
         lblCustName.text = cust.custName
-        lblARTotBal.text = "\(cust.arTotBal)"
-        lblCurrent.text = "\(cust.current)"
-        lblAROver.text = "\(cust.arOver)"
+        
+        lblARTotBal.text = Int(cust.arTotBal).FormatInt(true)
+        lblCurrent.text = Int(cust.current).FormatInt(true)
+        lblAROver.text = Int(cust.arOver).FormatInt(true)
         self.embededViewController!.items = self.arbalance!.invoices
         self.viewBar.hidden = false
     }

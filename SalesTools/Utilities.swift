@@ -75,6 +75,33 @@ extension String {
     }
 }
 
+extension Int {
+    func FormatInt(asCurrency: Bool) -> String {
+        let fmt = NSNumberFormatter()
+        fmt.numberStyle = .DecimalStyle
+        
+        if asCurrency {
+            return "$" + fmt.stringFromNumber(self)!
+        } else {
+            return fmt.stringFromNumber(self)!
+        }
+    }
+}
+
+extension Double {
+    func FormatDouble(asCurrency: Bool) -> String {
+        let fmt = NSNumberFormatter()
+        fmt.numberStyle = .DecimalStyle
+        
+        if asCurrency {
+            return "$" + fmt.stringFromNumber(self)!
+        } else {
+            return fmt.stringFromNumber(self)!
+        }
+    }
+}
+
+
 // MARK: utilities
 
 func activityIndicator(state : Bool) {

@@ -44,10 +44,10 @@ class ProdLookupDetail: UIViewController {
                 
             lblProdNum.text = prod.prod
             lblDescription.text = prod.descrip1! + " " + prod.descrip2!
-            lblOnHand.text = "\(prod.qtyOnHand)"
-            lblOnOrder.text = "\(prod.qtyOnOrder)"
-            lblQtyCommit.text = "\(prod.qtyCommit)"
-            lblQtyAvail.text = "\(prod.qtyAvail)"
+            lblOnHand.text = prod.qtyOnHand.FormatInt(false)
+            lblOnOrder.text = prod.qtyOnOrder.FormatInt(false)
+            lblQtyCommit.text = prod.qtyCommit.FormatInt(false)
+            lblQtyAvail.text = prod.qtyAvail.FormatInt(false)
             lblWhse.text = prod.whse
             lblLastInvDate.text = prod.lastINVDate
             lblLastRcvDate.text = prod.lastINVDate

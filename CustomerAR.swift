@@ -208,17 +208,17 @@ class CustomerAR: UIViewController {
         lblCustNum.text = "\(Int(cust.custnum))"
         lblCustName.text = cust.custName
         lblCycleCD.text = GetARArea(cust.arArea!)
-        lblArAmt.text = "\(cust.arAmt)"
-        lblUnCashBal.text = "\(cust.unCashBal)"
-        lblCurrent.text = "\(cust.current)"
-        lblPastDue30.text = "\(cust.pastDue30)"
-        lblPastDue60.text = "\(cust.pastDue60)"
-        lblPastDue90.text = "\(cust.pastDue90)"
-        lblPastDue120.text = "\(cust.pastDue120)"
-        lblServChgBal.text = "\(cust.servChgBal)"
-        lblCOD.text = "\(cust.codBal)"
-        lblMiscCrBal.text = "\(cust.misccrBal)"
-        lblFutureInvBal.text = "\(cust.futInvBal)"
+        lblArAmt.text = cust.arAmt.FormatDouble(true)
+        lblUnCashBal.text = cust.unCashBal.FormatDouble(true)
+        lblCurrent.text = cust.current.FormatDouble(true)
+        lblPastDue30.text = cust.pastDue30.FormatDouble(true)
+        lblPastDue60.text = cust.pastDue60.FormatDouble(true)
+        lblPastDue90.text = cust.pastDue90.FormatDouble(true)
+        lblPastDue120.text = cust.pastDue120.FormatDouble(true)
+        lblServChgBal.text = cust.servChgBal.FormatDouble(true)
+        lblCOD.text = cust.codBal.FormatDouble(true)
+        lblMiscCrBal.text = cust.misccrBal.FormatDouble(true)
+        lblFutureInvBal.text = cust.futInvBal.FormatDouble(true)
     }
     
     func GetARArea(area: String) -> String
