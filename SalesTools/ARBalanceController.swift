@@ -63,13 +63,12 @@ class ARBalanceController: UIViewController {
         {
             menuButton.target = self.revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            
-            
-            // add observer to dismiss keyboard
-            NSNotificationCenter.defaultCenter().addObserver(self,selector: #selector(ARBalanceController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ARBalanceController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())         
         }
+        
+        // add observer to dismiss keyboard
+        NSNotificationCenter.defaultCenter().addObserver(self,selector: #selector(ARBalanceController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ARBalanceController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
         
     }
     
@@ -233,8 +232,7 @@ class ARBalanceController: UIViewController {
         }
         
         myAlert.addAction(okAction);
-        self.presentViewController(myAlert, animated:true, completion:nil);
-        
+        self.presentViewController(myAlert, animated:true, completion:nil);        
     }
 
 

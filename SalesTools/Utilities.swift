@@ -75,6 +75,19 @@ extension String {
     }
 }
 
+extension String {
+    func containsOnlyLetters() -> Bool
+    {
+        for chr in self.characters
+        {
+            if (!(chr >= "a" && chr <= "z") && !(chr >= "A" && chr <= "Z") ) {
+                return false
+            }
+        }
+        return true
+    }
+}
+
 extension Int {
     func FormatInt(asCurrency: Bool) -> String {
         let fmt = NSNumberFormatter()
@@ -220,6 +233,68 @@ func colorWithHexString (hex:String) -> UIColor {
     
     
     return UIColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: CGFloat(1))
+}
+
+// Usage queryStringFromArray(params, forKey: "val")
+func queryStringFromArray(array: Array<String>, forKey key: String) -> String {
+    var queryString = [String]()
+    for value in array {
+        queryString.append("\(key)=\(value)")
+    }
+    return "?" + queryString.joinWithSeparator("&")
+}
+
+/*
+Returns a percent-escaped string following RFC 3986 for a query string key or value.
+RFC 3986 states that the following characters are "reserved" characters.
+- General Delimiters: ":", "#", "[", "]", "@", "?", "/"
+- Sub-Delimiters: "!", "$", "&", "'", "(", ")", "*", "+", ",", ";", "="
+In RFC 3986 - Section 3.4, it states that the "?" and "/" characters should not be escaped to allow
+query strings to include a URL. Therefore, all "reserved" characters with the exception of "?" and "/"
+should be percent-escaped in the query string.
+- parameter string: The string to be percent-escaped.
+- returns: The percent-escaped string.
+*/
+public func escape(string: String) -> String {
+    let generalDelimitersToEncode = ":#[]@" // does not include "?" or "/" due to RFC 3986 - Section 3.4
+    let subDelimitersToEncode = "!$&'()*+,;="
+    
+    let allowedCharacterSet = NSCharacterSet.URLQueryAllowedCharacterSet().mutableCopy() as! NSMutableCharacterSet
+    allowedCharacterSet.removeCharactersInString(generalDelimitersToEncode + subDelimitersToEncode)
+    
+    var escaped = ""
+    
+    //==========================================================================================================
+    //
+    //  Batching is required for escaping due to an internal bug in iOS 8.1 and 8.2. Encoding more than a few
+    //  hundred Chinese characters causes various malloc error crashes. To avoid this issue until iOS 8 is no
+    //  longer supported, batching MUST be used for encoding. This introduces roughly a 20% overhead. For more
+    //  info, please refer to:
+    //
+    //      - https://github.com/Alamofire/Alamofire/issues/206
+    //
+    //==========================================================================================================
+    
+    if #available(iOS 8.3, OSX 10.10, *) {
+        escaped = string.stringByAddingPercentEncodingWithAllowedCharacters(allowedCharacterSet) ?? string
+    } else {
+        let batchSize = 50
+        var index = string.startIndex
+        
+        while index != string.endIndex {
+            let startIndex = index
+            let endIndex = index.advancedBy(batchSize, limit: string.endIndex)
+            let range = startIndex..<endIndex
+            
+            let substring = string.substringWithRange(range)
+            
+            escaped += substring.stringByAddingPercentEncodingWithAllowedCharacters(allowedCharacterSet) ?? substring
+            
+            index = endIndex
+        }
+    }
+    
+    return escaped
 }
 
 

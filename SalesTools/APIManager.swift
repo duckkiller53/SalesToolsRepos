@@ -52,6 +52,11 @@ class APIManager {
         getARBalance(Router.GetARBal(custid), completionHandler: completionHandler)
     }
     
+    func getHierachy(params: [String], completionHandler: (Result<[hierachy], NSError>) -> Void)
+    {
+        getHierachy(QSRouter.GetHeirachy(params), completionHandler: completionHandler)
+    }
+    
     func validateLogin(completionHandler: (Result<String, NSError>) -> Void)
     {
         testLogin(Router.GetLogin(),  completionHandler: completionHandler)
@@ -235,7 +240,75 @@ class APIManager {
                 // End handler
                 completionHandler(.Success(arbalance))
         }
-    }    
+    }
+    
+    //  ********  
+    
+    func getHierachyTest(params: String, completionHandler: (Result<[hierachy], NSError>) -> Void)
+    {
+        
+        let user = "dlaporte"
+        let password = "quantex1"
+        let credentialData = "\(user):\(password)".dataUsingEncoding(NSUTF8StringEncoding)!
+        let base64Credentials = credentialData.base64EncodedStringWithOptions([])
+        let headers = ["Authorization": "Basic \(base64Credentials)"]
+        
+        let url = "https://volmac-web.volmbag.com/SalesTools/api/SalesTools/GetHeirachy/" + params
+        
+        Alamofire.request(.GET, url, headers: headers)
+            .validate()
+            .responseArray { (response:Response<[hierachy], NSError>) in
+                // Begin handler
+                
+                if let urlResponse = response.response,
+                    authError = self.checkUnauthorized(urlResponse) {
+                    completionHandler(.Failure(authError))
+                    return
+                }
+                
+                
+                guard response.result.error == nil,
+                    let hiarch = response.result.value else {
+                        print(response.result.error)
+                        // completion bubbles up with error to getHierachy
+                        completionHandler(response.result)
+                        return
+                }
+                
+                // End handler
+                completionHandler(.Success(hiarch)) // bubbles up to getHierachy
+        }
+    }
+    
+    func getHierachy(urlRequest: URLRequestConvertible, completionHandler: (Result<[hierachy], NSError>) -> Void)
+    {
+    
+            alamofireManager.request(urlRequest)
+            .validate()
+            .responseArray { (response:Response<[hierachy], NSError>) in
+                // Begin handler
+                
+                if let urlResponse = response.response,
+                    authError = self.checkUnauthorized(urlResponse) {
+                    completionHandler(.Failure(authError))
+                    return
+                }
+                
+                
+                guard response.result.error == nil,
+                    let hiarch = response.result.value else {
+                        print(response.result.error)
+                        // completion bubbles up with error to getHierachy
+                        completionHandler(response.result)
+                        return
+                }
+                
+                // End handler
+                completionHandler(.Success(hiarch)) // bubbles up to getHierachy
+          }
+    }
+    
+    //  ********
     
     func testLogin(urlRequest: URLRequestConvertible, completionHandler: (Result<String, NSError>) -> Void)
     {
