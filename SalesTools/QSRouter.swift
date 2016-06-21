@@ -19,8 +19,13 @@ enum QSRouter: URLRequestConvertible {
         // set up URL as components
         let urlComponents = NSURLComponents()
         urlComponents.scheme = "https";
+<<<<<<< HEAD
         urlComponents.host = "volmac-web.volmbag.com";
         urlComponents.path = "/SalesTools/api/SalesTools/GetHierachy";
+=======
+        urlComponents.host = "MyDomain.com";
+        urlComponents.path = "/SalesTools/api/SalesTools/GetHeirachy";
+>>>>>>> a2b80215d82dbd5c2139670a85b3082051fa6d7d
         
         switch self
         {
