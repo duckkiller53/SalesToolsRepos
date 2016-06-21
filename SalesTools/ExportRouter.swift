@@ -16,6 +16,7 @@ enum ExportRouter {
     case ExportSalesByProd(String)
     case ExportProdSearch(String, String, String, String)
     case ExportCustSearch(String, String, String, String)
+    case ExportSalesByCategory(String, String)
     
     var endpoint: String {
         var relativePath = ""
@@ -29,6 +30,8 @@ enum ExportRouter {
             relativePath = "SalesTools/api/Export/ExportProdSearch/\(id)/\(descrip)/\(active)/\(whse)"
         case .ExportCustSearch(let id, let name, let city, let state):
             relativePath = "SalesTools/api/Export/ExportCustSearch/\(id)/\(name)/\(city)/\(state)"
+        case .ExportSalesByCategory(let rep, let category):
+            relativePath = "SalesTools/api/Export/ExportSalesByProdCat/\(rep)/\(category)"
         }
         
         return Router.baseURLString + "/" + relativePath

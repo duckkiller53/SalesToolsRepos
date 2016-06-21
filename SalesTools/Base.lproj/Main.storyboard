@@ -482,7 +482,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Heirachy Sales" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2p0-9X-gF6">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Hierachy Sales" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2p0-9X-gF6">
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -2006,6 +2006,9 @@
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="TuE-VQ-ieK">
                                 <rect key="frame" x="169" y="408" width="51" height="31"/>
+                                <connections>
+                                    <action selector="toggleReps:" destination="4Ds-7x-dPD" eventType="valueChanged" id="EFn-kC-XnU"/>
+                                </connections>
                             </switch>
                             <textField opaque="NO" clipsSubviews="YES" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SPe-b0-itZ">
                                 <rect key="frame" x="236" y="408" width="61" height="30"/>
@@ -2019,7 +2022,7 @@
                                 </constraints>
                             </imageView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="hf6-OZ-YJ8">
-                                <rect key="frame" x="189" y="289" width="37" height="37"/>
+                                <rect key="frame" x="173" y="289" width="37" height="37"/>
                             </activityIndicatorView>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CYY-fx-0PR">
                                 <rect key="frame" x="0.0" y="473" width="375" height="194"/>
@@ -2082,7 +2085,7 @@
                             <constraint firstAttribute="trailing" secondItem="CYY-fx-0PR" secondAttribute="trailing" id="G61-wY-H5Y"/>
                             <constraint firstItem="5cf-Ho-8vP" firstAttribute="centerY" secondItem="ouz-QZ-mFw" secondAttribute="centerY" id="J1C-FW-5IM"/>
                             <constraint firstItem="KVF-pc-4kN" firstAttribute="trailing" secondItem="g7a-Z3-YPd" secondAttribute="trailing" id="N5P-TO-yOJ"/>
-                            <constraint firstItem="hf6-OZ-YJ8" firstAttribute="leading" secondItem="5cf-Ho-8vP" secondAttribute="trailing" constant="24" id="OAT-SN-T0v"/>
+                            <constraint firstItem="hf6-OZ-YJ8" firstAttribute="leading" secondItem="5cf-Ho-8vP" secondAttribute="trailing" constant="8" id="OAT-SN-T0v"/>
                             <constraint firstItem="EKH-z4-kai" firstAttribute="leading" secondItem="muS-9P-dlq" secondAttribute="trailing" constant="12" id="PVn-eq-bAX"/>
                             <constraint firstItem="KVF-pc-4kN" firstAttribute="leading" secondItem="bgA-es-Qkr" secondAttribute="trailing" constant="13" id="Q6x-Rf-auD"/>
                             <constraint firstItem="6zz-go-pkZ" firstAttribute="trailing" secondItem="ouz-QZ-mFw" secondAttribute="trailing" id="S6g-xS-bGU"/>

@@ -88,6 +88,12 @@ class APIManager {
         GetCSVFile(endpoint, completionHandler: completionHandler)
     }
     
+    func ExportSalesByCategory(rep: String, category: String, completionHandler: (Result<NSURL, NSError>) -> Void) {
+        let router = ExportRouter.ExportSalesByCategory(rep, category)
+        let endpoint = router.endpoint
+        GetCSVFile(endpoint, completionHandler: completionHandler)
+    }
+    
     // MARK:  AlamoFire API Calls
     
     func getCustSales(urlRequest: URLRequestConvertible, completionHandler: (Result<[custProd], NSError>) -> Void) {
@@ -242,44 +248,6 @@ class APIManager {
         }
     }
     
-    //  ********  
-    
-    func getHierachyTest(params: String, completionHandler: (Result<[hierachy], NSError>) -> Void)
-    {
-        
-        let user = "dlaporte"
-        let password = "quantex1"
-        let credentialData = "\(user):\(password)".dataUsingEncoding(NSUTF8StringEncoding)!
-        let base64Credentials = credentialData.base64EncodedStringWithOptions([])
-        let headers = ["Authorization": "Basic \(base64Credentials)"]
-        
-        let url = "https://volmac-web.volmbag.com/SalesTools/api/SalesTools/GetHeirachy/" + params
-        
-        Alamofire.request(.GET, url, headers: headers)
-            .validate()
-            .responseArray { (response:Response<[hierachy], NSError>) in
-                // Begin handler
-                
-                if let urlResponse = response.response,
-                    authError = self.checkUnauthorized(urlResponse) {
-                    completionHandler(.Failure(authError))
-                    return
-                }
-                
-                
-                guard response.result.error == nil,
-                    let hiarch = response.result.value else {
-                        print(response.result.error)
-                        // completion bubbles up with error to getHierachy
-                        completionHandler(response.result)
-                        return
-                }
-                
-                // End handler
-                completionHandler(.Success(hiarch)) // bubbles up to getHierachy
-        }
-    }
-    
     func getHierachy(urlRequest: URLRequestConvertible, completionHandler: (Result<[hierachy], NSError>) -> Void)
     {
     
@@ -308,7 +276,6 @@ class APIManager {
           }
     }
     
-    //  ********
     
     func testLogin(urlRequest: URLRequestConvertible, completionHandler: (Result<String, NSError>) -> Void)
     {

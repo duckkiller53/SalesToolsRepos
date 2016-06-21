@@ -9,8 +9,9 @@
 import UIKit
 import Alamofire
 import BRYXBanner
+import QuickLook
 
-class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate
+class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, QLPreviewControllerDataSource, QLPreviewControllerDelegate
 {
    
     @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!
@@ -29,6 +30,8 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     var hierachResult = [hierachy]()
     var textTag = 0
     var results = [String]()
+    var path: NSURL?
+    var salesRep: String?
     
 
     override func viewDidLoad()
@@ -37,6 +40,8 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         
         // remove the inset to tableview due to nav controller
         self.automaticallyAdjustsScrollViewInsets = false
+        txtRep.delegate = self
+
         
         //clearForm()
         
@@ -47,11 +52,7 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         
-        pickerView.hidden = true
-        self.ActivityIndicator.hidden = true
-        self.ActivityIndicator.stopAnimating()        
-        toggleReportControls(true)        
-        txtRep.delegate = self
+        clearForm()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -63,6 +64,27 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         drawBackGroundGradient(self, topColor: colorWithHexString("4294f4"), bottomColor: colorWithHexString("1861b7"))
         
     }
+    
+    @IBAction func btnExport(sender: AnyObject)
+    {
+        pickerView.hidden = true
+        
+        let salesRep = toggleReps.on  && txtRep.text != "" ? txtRep.text : "ALL"
+        let category = txtHeirachy5.text! != "" ? txtHeirachy5.text : ""
+        
+        ExportToCSV(salesRep!, prodcat: category!)
+    }
+    
+    @IBAction func toggleReps(sender: AnyObject) {
+        
+        if toggleReps.on {
+            txtRep.text = ""
+            txtRep.hidden = false
+        } else {
+            txtRep.hidden = true
+        }
+    }
+
     
     /*
         Note:  To use this funciton you need to reference UITextFieldDelegate
@@ -86,6 +108,7 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             {
             case 1:
                 textTag = 1
+                txtHeirachy1.text = ""
                 
                 getHierachy(["1", "", "", "", ""])
                 pickerView.hidden = false
@@ -93,8 +116,10 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
                 txtHeirachy2.text = ""
                 txtHeirachy3.text = ""
                 txtHeirachy4.text = ""
+                txtHeirachy5.text = ""
             case 2:
                 textTag = 2
+                txtHeirachy2.text = ""
                 
                 if txtHeirachy1.text != ""
                 {
@@ -109,8 +134,10 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
                 
                 txtHeirachy3.text = ""
                 txtHeirachy4.text = ""
+                txtHeirachy5.text = ""
             case 3:
                 textTag = 3
+                txtHeirachy3.text = ""
                 
                 if txtHeirachy2.text != ""
                 {
@@ -125,8 +152,10 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
                 }
                 
                 txtHeirachy4.text = ""
+                txtHeirachy5.text = ""
             case 4:
                 textTag = 4
+                txtHeirachy4.text = ""
                 
                 if txtHeirachy3.text != ""
                 {
@@ -141,8 +170,11 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
                     pickerView.hidden = true
                 }
                 
+                txtHeirachy5.text = ""
             case 5:
                 textTag = 5
+                txtHeirachy5.text = ""
+//                toggleReportControls(false)
                 
                 if txtHeirachy4.text != ""
                 {
@@ -167,11 +199,6 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             self.ActivityIndicator.hidden = true
             self.ActivityIndicator.stopAnimating()
         }
-    }
-    
-    @IBAction func btnExport(sender: AnyObject)
-    {
-        pickerView.hidden = true
     }
     
     // MARK: GET API DATA
@@ -250,6 +277,83 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         
     }
     
+    
+    
+    // ExportToCSV
+    func ExportToCSV(rep: String, prodcat: String)
+    {
+        
+        let completionHandler: (Result<NSURL, NSError>) -> Void =
+            { (result) in
+                
+                
+                self.ActivityIndicator.hidden = true
+                self.ActivityIndicator.stopAnimating()
+                
+                // Test if error is unauthorized or no connection
+                guard result.error == nil else
+                {
+                    print("Bad file path")
+                    
+                    if let error = result.error
+                    {
+                        if error.domain == NSURLErrorDomain
+                        {
+                            // If we already are showing a banner, dismiss it and create new
+                            if let existingBanner = self.notConnectedBanner
+                            {
+                                existingBanner.dismiss()
+                            }
+                            
+                            if error.code == NSURLErrorUserAuthenticationRequired
+                            {
+                                self.notConnectedBanner = Banner(title: "Login Failed",
+                                                                 subtitle: "Please login and try again",
+                                                                 image: nil,
+                                                                 backgroundColor: UIColor.orangeColor())
+                                
+                            } else if error.code == NSURLErrorNotConnectedToInternet {
+                                
+                                self.notConnectedBanner = Banner(title: "No Internet Connection",
+                                                                 subtitle: "Could not load data." +
+                                    " Try again when you're connected to the internet",
+                                                                 image: nil,
+                                                                 backgroundColor: UIColor.redColor())
+                            }
+                            
+                            self.notConnectedBanner?.dismissesOnSwipe = true
+                            self.notConnectedBanner?.show(duration: nil)
+                        }
+                        
+                    }
+                    
+                    return
+                }
+                
+                // No Errors Load Data
+                if let URL = result.value {
+                    self.path = URL
+                } else {
+                    self.path = nil
+                    self.showAlert("Error Createing file!")
+                    return
+                }
+                
+                // Note: pushViewController loads it on stack.
+                
+                let preview = QLPreviewController()
+                preview.dataSource = self
+                self.navigationController?.pushViewController(preview, animated: true)
+        }
+        
+        ActivityIndicator.startAnimating()
+        ActivityIndicator.hidden = false
+        
+        APIManager.sharedInstance.ExportSalesByCategory(rep, category: prodcat, completionHandler: completionHandler)
+        
+    }
+
+    
     func LoadControls(result: [hierachy])
     {
         // clear results
@@ -308,16 +412,35 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         }
     }
     
+    
+    // MARK:  Quick View Controller
+    
+    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
+        return 1
+    }
+    
+    func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {
+        
+        return self.path!
+    }    
 
     // MARK: Utility functions
+    
+    func clearForm()
+    {
+        pickerView.hidden = true
+        self.ActivityIndicator.hidden = true
+        self.ActivityIndicator.stopAnimating()
+        toggleReportControls(true)
+    }
     
     func toggleReportControls(toggle: Bool)
     {
         lblAllReps.hidden = toggle
         toggleReps.hidden = toggle
-        txtRep.hidden = toggle
         btnReport.hidden = toggle
         txtRep.text = ""
+        txtRep.hidden = true
     }
     
     // Fires when user clicks on ViewController.
