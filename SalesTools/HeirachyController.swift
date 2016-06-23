@@ -15,6 +15,7 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
 {
    
     @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!
+    var keyboardDismissTapGesture: UIGestureRecognizer?
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var txtHeirachy1: UITextField!
     @IBOutlet weak var txtHeirachy2: UITextField!
@@ -24,14 +25,144 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     @IBOutlet weak var pickerView: UIPickerView!
     @IBOutlet weak var lblAllReps: UILabel!
     @IBOutlet weak var toggleReps: UISwitch!
-    @IBOutlet weak var txtRep: UITextField!
-    @IBOutlet weak var btnReport: UIButton!
+    @IBOutlet weak var txtRep: UITextField!    
+    @IBOutlet weak var btnExport: UIButton!
+    
     var notConnectedBanner: Banner?
     var hierachResult = [hierachy]()
     var textTag = 0
     var results = [String]()
     var path: NSURL?
     var salesRep: String?
+    
+    @IBAction func btnHierachy1(sender: AnyObject) {
+        
+        self.ActivityIndicator.hidden = false
+        self.ActivityIndicator.startAnimating()
+        toggleReportControls(true)
+        
+        textTag = 1
+        txtHeirachy1.text = ""
+        
+        getHierachy(["1", "", "", "", ""])
+        pickerView.hidden = false
+        clearSelections(1)
+        
+        self.ActivityIndicator.hidden = true
+        self.ActivityIndicator.stopAnimating()
+    }
+    
+    @IBAction func btnHierachy2(sender: AnyObject) {
+        
+        self.ActivityIndicator.hidden = false
+        self.ActivityIndicator.startAnimating()
+        toggleReportControls(true)
+
+
+        textTag = 2
+        txtHeirachy2.text = ""
+        
+        if txtHeirachy1.text != ""
+        {
+            // load values for heirachy2
+            let val = txtHeirachy1.text!
+            getHierachy(["2", val, "", "", ""])
+            pickerView.hidden = false
+        }
+        else {
+            pickerView.hidden = true
+        }
+        
+        clearSelections(2)
+        self.ActivityIndicator.hidden = true
+        self.ActivityIndicator.stopAnimating()
+
+    }
+    
+    @IBAction func btnHierachy3(sender: AnyObject) {
+        
+        self.ActivityIndicator.hidden = false
+        self.ActivityIndicator.startAnimating()
+        toggleReportControls(true)
+
+
+        
+        textTag = 3
+        txtHeirachy3.text = ""
+        
+        if txtHeirachy2.text != ""
+        {
+            // load values for heirachy3
+            let val1 = txtHeirachy1.text!
+            let val2 = txtHeirachy2.text!
+            getHierachy(["3", val1, val2, "", ""])
+            pickerView.hidden = false
+            
+        } else {
+            pickerView.hidden = true
+        }
+        
+        clearSelections(3)
+        self.ActivityIndicator.hidden = true
+        self.ActivityIndicator.stopAnimating()
+    }
+    
+    @IBAction func btnHierachy4(sender: AnyObject) {
+        
+        self.ActivityIndicator.hidden = false
+        self.ActivityIndicator.startAnimating()
+        toggleReportControls(true)
+
+        
+        textTag = 4
+        txtHeirachy4.text = ""
+        
+        if txtHeirachy3.text != ""
+        {
+            // load values for heirachy4
+            let val1 = txtHeirachy1.text!
+            let val2 = txtHeirachy2.text!
+            let val3 = txtHeirachy3.text!
+            getHierachy(["4", val1, val2, val3, ""])
+            pickerView.hidden = false
+            
+        } else {
+            pickerView.hidden = true
+        }
+        
+        clearSelections(4)
+        self.ActivityIndicator.hidden = true
+        self.ActivityIndicator.stopAnimating()
+    }
+    
+    @IBAction func btnHierachy5(sender: AnyObject) {
+        
+        self.ActivityIndicator.hidden = false
+        self.ActivityIndicator.startAnimating()
+        toggleReportControls(true)
+
+        
+        textTag = 5
+        txtHeirachy5.text = ""
+
+        if txtHeirachy4.text != ""
+        {
+            // load values for heirachy4
+            let val1 = txtHeirachy1.text!
+            let val2 = txtHeirachy2.text!
+            let val3 = txtHeirachy3.text!
+            let val4 = txtHeirachy4.text!
+            getHierachy(["5", val1, val2, val3, val4])
+            pickerView.hidden = false
+
+        } else {
+            pickerView.hidden = true
+        }
+        
+        self.ActivityIndicator.hidden = true
+        self.ActivityIndicator.stopAnimating()
+
+    }
     
 
     override func viewDidLoad()
@@ -41,7 +172,6 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         // remove the inset to tableview due to nav controller
         self.automaticallyAdjustsScrollViewInsets = false
         txtRep.delegate = self
-
         
         //clearForm()
         
@@ -52,7 +182,12 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         
-        clearForm()
+        // add observer to dismiss keyboard
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: #selector(LogIn.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LogIn.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        
+        initForm()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -86,121 +221,7 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     }
 
     
-    /*
-        Note:  To use this funciton you need to reference UITextFieldDelegate
-               in the class, and make the controller the delegate for the text
-               box's that you want this function to be called for. 
-            
-               To set the controller as the delegate to a Control like a textField,
-               you can either drag each textField to the controller or call
-               self.TextField.delegate = self. in ViewDidLoad().
-    */
-    func textFieldDidBeginEditing(textField: UITextField)
-    {
-      if textField.tag != 6
-      {
-            self.ActivityIndicator.hidden = false
-            self.ActivityIndicator.startAnimating()
-            
-            toggleReportControls(true)
-            
-            switch (textField.tag)
-            {
-            case 1:
-                textTag = 1
-                txtHeirachy1.text = ""
-                
-                getHierachy(["1", "", "", "", ""])
-                pickerView.hidden = false
-                
-                txtHeirachy2.text = ""
-                txtHeirachy3.text = ""
-                txtHeirachy4.text = ""
-                txtHeirachy5.text = ""
-            case 2:
-                textTag = 2
-                txtHeirachy2.text = ""
-                
-                if txtHeirachy1.text != ""
-                {
-                    // load values for heirachy2
-                    let val = txtHeirachy1.text!
-                    getHierachy(["2", val, "", "", ""])
-                    pickerView.hidden = false
-                }
-                else {
-                    pickerView.hidden = true
-                }
-                
-                txtHeirachy3.text = ""
-                txtHeirachy4.text = ""
-                txtHeirachy5.text = ""
-            case 3:
-                textTag = 3
-                txtHeirachy3.text = ""
-                
-                if txtHeirachy2.text != ""
-                {
-                    // load values for heirachy3
-                    let val1 = txtHeirachy1.text!
-                    let val2 = txtHeirachy2.text!
-                    getHierachy(["3", val1, val2, "", ""])
-                    pickerView.hidden = false
-                    
-                } else {
-                    pickerView.hidden = true
-                }
-                
-                txtHeirachy4.text = ""
-                txtHeirachy5.text = ""
-            case 4:
-                textTag = 4
-                txtHeirachy4.text = ""
-                
-                if txtHeirachy3.text != ""
-                {
-                    // load values for heirachy4
-                    let val1 = txtHeirachy1.text!
-                    let val2 = txtHeirachy2.text!
-                    let val3 = txtHeirachy3.text!
-                    getHierachy(["4", val1, val2, val3, ""])
-                    pickerView.hidden = false
-                    
-                } else {
-                    pickerView.hidden = true
-                }
-                
-                txtHeirachy5.text = ""
-            case 5:
-                textTag = 5
-                txtHeirachy5.text = ""
-//                toggleReportControls(false)
-                
-                if txtHeirachy4.text != ""
-                {
-                    // load values for heirachy4
-                    let val1 = txtHeirachy1.text!
-                    let val2 = txtHeirachy2.text!
-                    let val3 = txtHeirachy3.text!
-                    let val4 = txtHeirachy4.text!
-                    getHierachy(["5", val1, val2, val3, val4])
-                    pickerView.hidden = false
-                    
-                } else {
-                    pickerView.hidden = true
-                }
-                
-            default:
-                print("Bad textField Tag")
-                pickerView.hidden = true
-            }
-            
-            
-            self.ActivityIndicator.hidden = true
-            self.ActivityIndicator.stopAnimating()
-        }
-    }
-    
+       
     // MARK: GET API DATA
     
     func getHierachy(params: [String])
@@ -422,15 +443,56 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {
         
         return self.path!
-    }    
+    }
+    
+    // MARK:  Hide KeyBoard code
+    
+    override func viewWillDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+        
+        super.viewWillDisappear(animated)
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        if keyboardDismissTapGesture == nil
+        {
+            keyboardDismissTapGesture = UITapGestureRecognizer(target: self, action: #selector(LogIn.dismissKeyboard(_:)))
+            self.view.addGestureRecognizer(keyboardDismissTapGesture!)
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        if keyboardDismissTapGesture != nil
+        {
+            self.view.removeGestureRecognizer(keyboardDismissTapGesture!)
+            keyboardDismissTapGesture = nil
+        }
+    }
+    
+    func dismissKeyboard(sender: AnyObject) {
+        
+        if txtRep.isFirstResponder()
+        {
+            txtRep.resignFirstResponder()
+        }         
+    }
+    
+
 
     // MARK: Utility functions
     
-    func clearForm()
-    {
+    func initForm()
+    {        
         pickerView.hidden = true
         self.ActivityIndicator.hidden = true
         self.ActivityIndicator.stopAnimating()
+        
+        txtHeirachy1.userInteractionEnabled = false
+        txtHeirachy2.userInteractionEnabled = false
+        txtHeirachy3.userInteractionEnabled = false
+        txtHeirachy4.userInteractionEnabled = false
+        txtHeirachy5.userInteractionEnabled = false
+        
         toggleReportControls(true)
     }
     
@@ -438,32 +500,39 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     {
         lblAllReps.hidden = toggle
         toggleReps.hidden = toggle
-        btnReport.hidden = toggle
+        toggleReps.on = false
+        btnExport.hidden = toggle
         txtRep.text = ""
         txtRep.hidden = true
     }
     
-    // Fires when user clicks on ViewController.
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
-    {
-        pickerView.hidden = true
-        
-        switch (textTag)
+    func clearSelections(level: Int) {
+        switch (level)
         {
         case 1:
-            txtHeirachy1.resignFirstResponder()
+            txtHeirachy2.text = ""
+            txtHeirachy3.text = ""
+            txtHeirachy4.text = ""
+            txtHeirachy5.text = ""
         case 2:
-            txtHeirachy2.resignFirstResponder()
+            txtHeirachy3.text = ""
+            txtHeirachy4.text = ""
+            txtHeirachy5.text = ""
         case 3:
-            txtHeirachy3.resignFirstResponder()
+            txtHeirachy4.text = ""
+            txtHeirachy5.text = ""
         case 4:
-            txtHeirachy4.resignFirstResponder()
+            txtHeirachy5.text = ""
         default:
-            print("Bad textField Tag")
+            txtHeirachy1.text = ""
+            txtHeirachy2.text = ""
+            txtHeirachy3.text = ""
+            txtHeirachy4.text = ""
+            txtHeirachy5.text = ""
         }
-
+        
     }
-
+    
     // Only allow alpha in txtRep
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool
     {
