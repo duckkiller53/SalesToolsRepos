@@ -147,13 +147,18 @@ class LogIn: UIViewController {
     }
     
     func dismissKeyboard(sender: AnyObject) {
+        
         if txtUserName.isFirstResponder()
         {
             txtUserName.resignFirstResponder()
         } else if txtPassword.isFirstResponder()
         {
             txtPassword.resignFirstResponder()
+        } else if txtAdminPassword.isFirstResponder()
+        {
+            txtAdminPassword.resignFirstResponder()
         }
+        
     }
     
     func SaveUser(name: String, pass: String, adminpass: String)
@@ -260,7 +265,13 @@ class LogIn: UIViewController {
             if credentials.username != "" {
                 txtUserName.text = credentials.username!
                 txtPassword.text = credentials.password!
-                txtAdminPassword.text = credentials.adminpass!
+                
+                if let pass = credentials.adminpass {
+                    txtAdminPassword.text = pass
+                } else {
+                    txtAdminPassword.text = ""
+                }
+                
                 btnLogin.setTitle("Logout", forState: .Normal)
                 btnLogin.tag = 1
             } else {
