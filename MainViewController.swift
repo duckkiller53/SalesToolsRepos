@@ -9,8 +9,7 @@ import UIKit
 class MainViewController: UIViewController {
     
     
-    @IBOutlet weak var menubutton: UIBarButtonItem!
-    
+    @IBOutlet weak var menubutton: UIBarButtonItem!    
     
     @IBAction func btnPhone(sender: AnyObject) {
         let phonenum = "17156274826"
@@ -19,7 +18,7 @@ class MainViewController: UIViewController {
     
     
     @IBAction func btnLogout(sender: AnyObject) {
-        let Person = appUser(username: "", password: "")
+        let Person = appUser(username: "", password: "", adminpass: "")
         PersistenceManager.saveObject(Person, path: .Credentials)
 
         ShowAlert("Logout Successful!")

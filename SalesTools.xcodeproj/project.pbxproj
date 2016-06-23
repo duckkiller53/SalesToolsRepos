@@ -171,6 +171,7 @@
 		55340F421C59280800A4BDCB /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				55DF6BB51C6BD93700627BF7 /* Login */,
 				55E81BEB1CD3A47A00165004 /* SideBarMenu */,
 				5504B73D1C5A7389009BF456 /* CustomerSales */,
 				55020AC41C63BA4500ECBE49 /* ProductSales */,
@@ -251,7 +252,6 @@
 			isa = PBXGroup;
 			children = (
 				557F578A1D072F1B00C9958D /* HeirachyController.swift */,
-				55DF6BB51C6BD93700627BF7 /* Login */,
 			);
 			name = Heirachy;
 			sourceTree = "<group>";

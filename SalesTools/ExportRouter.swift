@@ -1,12 +1,16 @@
 //
 //  ExportRouter.swift
 //  SalesTools
+//
+//  Created by William Volm on 3/8/16.
+//  Copyright © 2016 Dave LaPorte. All rights reserved.
+//
 
 import Foundation
 
 
 enum ExportRouter {
-    static let baseURLString:String = "https://MyDomain.com"
+    static let baseURLString:String = "https://volmac-web.volmbag.com"
     
     case ExportCustSales(Int, Bool, Bool, String)
     case ExportSalesByProd(String)

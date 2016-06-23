@@ -10,20 +10,25 @@ import UIKit
 import Alamofire
 import BRYXBanner
 
+let adminKey = "com.SalesTools.AdminKey"
 
 class LogIn: UIViewController {
 
+    
     @IBOutlet weak var menuButton: UIBarButtonItem!    
     @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!
     var keyboardDismissTapGesture: UIGestureRecognizer?
-
     var notConnectedBanner: Banner?
     var loginResult: String?
+    var hierachyToggle = false
+
+
     
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var txtUserName: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
     
+    @IBOutlet weak var txtAdminPassword: UITextField!
     
     @IBOutlet weak var btnLogin: UIButton!
     
@@ -37,7 +42,9 @@ class LogIn: UIViewController {
             // Logout User
             name = ""
             pass = ""
-            SaveUser(name!, pass: pass!)
+            hierachyToggle = false
+            
+            SaveUser(name!, pass: pass!, adminpass: "")
             self.ShowAlert("Logout Successful!")
         }
         else
@@ -67,7 +74,8 @@ class LogIn: UIViewController {
                 }
             }
             
-            SaveUser(name!, pass: pass!)
+            hierachyToggle = txtAdminPassword.text! == "volmadmin" ? true : false
+            SaveUser(name!, pass: pass!, adminpass: txtAdminPassword.text!)
             TestCredentials()
             
         }
@@ -86,7 +94,7 @@ class LogIn: UIViewController {
         
         self.ActivityIndicator.hidden = true
         self.ActivityIndicator.stopAnimating()
-
+    
     }
     
     override func viewDidLoad() {
@@ -148,11 +156,15 @@ class LogIn: UIViewController {
         }
     }
     
-    func SaveUser(name: String, pass: String)
+    func SaveUser(name: String, pass: String, adminpass: String)
     {
-        let Person = appUser(username: name, password: pass)
+        let Person = appUser(username: name, password: pass, adminpass: adminpass)
         PersistenceManager.saveObject(Person, path: .Credentials)
         TestCurrentCredentials()
+        
+        // Notify observer in MenuTableViewController to toggle menu item
+        let adminpass:[String: Bool] = ["admin": hierachyToggle]
+        NSNotificationCenter.defaultCenter().postNotificationName(adminKey, object: self, userInfo: adminpass)
     }
     
     func TestCredentials()
@@ -185,7 +197,7 @@ class LogIn: UIViewController {
                                                                  subtitle: "Please login and try again",
                                                                  image: nil,
                                                                  backgroundColor: UIColor.orangeColor())
-                                self.SaveUser("", pass: "")
+                                self.SaveUser("", pass: "", adminpass: "")
                                 
                             } else if error.code == NSURLErrorNotConnectedToInternet {
                                 
@@ -194,7 +206,7 @@ class LogIn: UIViewController {
                                     " Try again when you're connected to the internet",
                                                                  image: nil,
                                                                  backgroundColor: UIColor.redColor())
-                                self.SaveUser("", pass: "")
+                                self.SaveUser("", pass: "", adminpass: "")
                             }
                             
                             self.notConnectedBanner?.dismissesOnSwipe = true
@@ -214,7 +226,11 @@ class LogIn: UIViewController {
                         existingBanner.dismiss()
                     }
                     
-                    self.ShowAlert("Login Successful!")
+                    if self.hierachyToggle == true {
+                        self.ShowAlert("Login Successful as admin!")
+                    } else {
+                        self.ShowAlert("Login Successful!")
+                    }
                 }
                 
         }
@@ -244,16 +260,18 @@ class LogIn: UIViewController {
             if credentials.username != "" {
                 txtUserName.text = credentials.username!
                 txtPassword.text = credentials.password!
+                txtAdminPassword.text = credentials.adminpass!
                 btnLogin.setTitle("Logout", forState: .Normal)
                 btnLogin.tag = 1
             } else {
                 btnLogin.setTitle("Login", forState: .Normal)
                 txtUserName.text = ""
                 txtPassword.text = ""
+                txtAdminPassword.text = ""
                 btnLogin.tag = 0
             }
         }
     }
-
+    
 
 }

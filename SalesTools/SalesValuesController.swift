@@ -9,6 +9,10 @@
 import Foundation
 import XLForm
 
+/*
+    Note: using a delegate like this will only work for related controllers like
+          when you call a controller like SalesValuesController via a segue.
+*/
 protocol SalesParams {
     func haveAddedSearchParams(customer: Int, type: Bool, exclude: Bool, whse: String)
 }
