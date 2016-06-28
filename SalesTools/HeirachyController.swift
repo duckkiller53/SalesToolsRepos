@@ -30,15 +30,13 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     
     var notConnectedBanner: Banner?
     var hierachResult = [hierachy]()
-    var textTag = 0
     var results = [String]()
+    var textTag = 0
     var path: NSURL?
     var salesRep: String?
     
     @IBAction func btnHierachy1(sender: AnyObject) {
         
-        self.ActivityIndicator.hidden = false
-        self.ActivityIndicator.startAnimating()
         toggleReportControls(true)
         
         textTag = 1
@@ -47,17 +45,11 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         getHierachy(["1", "", "", "", ""])
         pickerView.hidden = false
         clearSelections(1)
-        
-        self.ActivityIndicator.hidden = true
-        self.ActivityIndicator.stopAnimating()
     }
     
     @IBAction func btnHierachy2(sender: AnyObject) {
         
-        self.ActivityIndicator.hidden = false
-        self.ActivityIndicator.startAnimating()
         toggleReportControls(true)
-
 
         textTag = 2
         txtHeirachy2.text = ""
@@ -74,18 +66,12 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         }
         
         clearSelections(2)
-        self.ActivityIndicator.hidden = true
-        self.ActivityIndicator.stopAnimating()
-
+        
     }
     
     @IBAction func btnHierachy3(sender: AnyObject) {
         
-        self.ActivityIndicator.hidden = false
-        self.ActivityIndicator.startAnimating()
         toggleReportControls(true)
-
-
         
         textTag = 3
         txtHeirachy3.text = ""
@@ -103,16 +89,11 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         }
         
         clearSelections(3)
-        self.ActivityIndicator.hidden = true
-        self.ActivityIndicator.stopAnimating()
     }
     
     @IBAction func btnHierachy4(sender: AnyObject) {
         
-        self.ActivityIndicator.hidden = false
-        self.ActivityIndicator.startAnimating()
         toggleReportControls(true)
-
         
         textTag = 4
         txtHeirachy4.text = ""
@@ -131,16 +112,12 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         }
         
         clearSelections(4)
-        self.ActivityIndicator.hidden = true
-        self.ActivityIndicator.stopAnimating()
+        
     }
     
     @IBAction func btnHierachy5(sender: AnyObject) {
         
-        self.ActivityIndicator.hidden = false
-        self.ActivityIndicator.startAnimating()
         toggleReportControls(true)
-
         
         textTag = 5
         txtHeirachy5.text = ""
@@ -159,9 +136,6 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             pickerView.hidden = true
         }
         
-        self.ActivityIndicator.hidden = true
-        self.ActivityIndicator.stopAnimating()
-
     }
     
 
@@ -182,11 +156,6 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         
-        // add observer to dismiss keyboard
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: #selector(LogIn.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LogIn.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
-        
         initForm()
     }
     
@@ -198,6 +167,11 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         // Create BackGround Gradient to display data.
         drawBackGroundGradient(self, topColor: colorWithHexString("4294f4"), bottomColor: colorWithHexString("1861b7"))
         
+        // add observer to dismiss keyboard
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: #selector(LogIn.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LogIn.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+
     }
     
     @IBAction func btnExport(sender: AnyObject)
@@ -219,8 +193,6 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             txtRep.hidden = true
         }
     }
-
-    
        
     // MARK: GET API DATA
     
@@ -297,7 +269,6 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         APIManager.sharedInstance.getHierachy(params, completionHandler: completionHandler)
         
     }
-    
     
     
     // ExportToCSV
@@ -477,6 +448,12 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         }         
     }
     
+//    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
+//    {
+//        if txtRep.tag == 6 {
+//            txtRep.resignFirstResponder()
+//        }
+//    }
 
 
     // MARK: Utility functions
