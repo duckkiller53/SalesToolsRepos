@@ -23,6 +23,8 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
     @IBOutlet weak var lblRows: UILabel!
     @IBOutlet weak var btnExportOutlet: UIButton!    
     @IBOutlet weak var viewBar: UIView!
+    @IBOutlet weak var imgHeader: UIImageView!
+    @IBOutlet weak var imgVolm: UIImageView!
     
     var customers = [customer]()
     var notConnectedBanner: Banner?
@@ -143,6 +145,8 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
                     self.embededViewController!.items = self.customers
                     self.btnExportOutlet.hidden = false
                     self.viewBar.hidden = false
+                    self.imgHeader.hidden = true
+                    self.imgVolm.hidden = true
                 } else
                 {
                     self.showAlert("No results were found!")
@@ -308,6 +312,8 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
         embededViewController!.items = [customer]()
         btnExportOutlet.hidden = true
         self.viewBar.hidden = true
+        imgHeader.hidden = false
+        imgVolm.hidden = false
     }
     
     func setControlColors(color: UIColor)

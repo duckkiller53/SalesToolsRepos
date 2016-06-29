@@ -18,11 +18,29 @@ class CustomerAR: UIViewController {
     var notConnectedBanner: Banner?
 
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var imgHeader: UIImageView!
     
+    @IBOutlet weak var imgVolm: UIImageView!
     
+    // Display Labels
+    @IBOutlet weak var dspCustNum: UILabel!
+    @IBOutlet weak var dspArea: UILabel!
+    @IBOutlet weak var dspOwed: UILabel!
+    @IBOutlet weak var dspUnapplied: UILabel!
+    @IBOutlet weak var dspCurrent: UILabel!
+    @IBOutlet weak var dspPast30: UILabel!
+    @IBOutlet weak var dspPast60: UILabel!
+    @IBOutlet weak var dspPast90: UILabel!
+    @IBOutlet weak var dspPast120: UILabel!
+    @IBOutlet weak var dspServcChg: UILabel!
+    @IBOutlet weak var dspCOD: UILabel!
+    @IBOutlet weak var dspMiscCredit: UILabel!
+    @IBOutlet weak var dspFutureInv: UILabel!    
+    @IBOutlet weak var btnClear: UIButton!
+    
+    // Display Data
     @IBOutlet weak var lblCust: UILabel!
     @IBOutlet weak var txtCustNum: UITextField!
-    
     @IBOutlet weak var lblCustNum: UILabel!
     @IBOutlet weak var lblCustName: UILabel!
     @IBOutlet weak var lblCycleCD: UILabel!
@@ -36,9 +54,7 @@ class CustomerAR: UIViewController {
     @IBOutlet weak var lblServChgBal: UILabel!
     @IBOutlet weak var lblCOD: UILabel!
     @IBOutlet weak var lblMiscCrBal: UILabel!
-    
     @IBOutlet weak var lblFutureInvBal: UILabel!
-    
     var custar: customerAR?
 
     
@@ -147,6 +163,8 @@ class CustomerAR: UIViewController {
             if let fetchedResult = result.value {
                 self.custar = fetchedResult
                 self.LoadControls(self.custar!)
+                self.imgHeader.hidden = true
+                self.imgVolm.hidden = true
             }
             
         }
@@ -175,6 +193,25 @@ class CustomerAR: UIViewController {
         lblCOD.text = ""
         lblMiscCrBal.text = ""
         lblFutureInvBal.text = ""
+        
+        // Display labels.
+        dspCustNum.hidden = true
+        dspArea.hidden = true
+        dspOwed.hidden = true
+        dspUnapplied.hidden = true
+        dspCurrent.hidden = true
+        dspPast30.hidden = true
+        dspPast60.hidden = true
+        dspPast90.hidden = true
+        dspPast120.hidden = true
+        dspServcChg.hidden = true
+        dspCOD.hidden = true
+        dspMiscCredit.hidden = true
+        dspFutureInv.hidden = true
+        btnClear.hidden = true
+        
+        imgVolm.hidden = false
+
     }
     
     func setControlColors(color: UIColor)
@@ -204,7 +241,8 @@ class CustomerAR: UIViewController {
     }
     
     func LoadControls(cust: customerAR)
-    {   
+    {
+        // Load Data
         lblCustNum.text = "\(Int(cust.custnum))"
         lblCustName.text = cust.custName
         lblCycleCD.text = GetARArea(cust.arArea!)
@@ -219,6 +257,22 @@ class CustomerAR: UIViewController {
         lblCOD.text = cust.codBal.FormatDouble(true)
         lblMiscCrBal.text = cust.misccrBal.FormatDouble(true)
         lblFutureInvBal.text = cust.futInvBal.FormatDouble(true)
+        
+        // Display labels.
+        dspCustNum.hidden = false
+        dspArea.hidden = false
+        dspOwed.hidden = false
+        dspUnapplied.hidden = false
+        dspCurrent.hidden = false
+        dspPast30.hidden = false
+        dspPast60.hidden = false
+        dspPast90.hidden = false
+        dspPast120.hidden = false
+        dspServcChg.hidden = false
+        dspCOD.hidden = false
+        dspMiscCredit.hidden = false
+        dspFutureInv.hidden = false
+        btnClear.hidden = false
     }
     
     func GetARArea(area: String) -> String

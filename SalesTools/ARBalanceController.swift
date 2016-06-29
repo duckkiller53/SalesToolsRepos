@@ -21,7 +21,14 @@ class ARBalanceController: UIViewController {
     @IBOutlet weak var lblAROver: UILabel!
     @IBOutlet weak var viewBar: UIView!
     
-    
+    @IBOutlet weak var imgHeader: UIImageView!    
+    @IBOutlet weak var imgVolm: UIImageView!
+
+    // Display Labels    
+    @IBOutlet weak var dspCustNum: UILabel!
+    @IBOutlet weak var dspTotBal: UILabel!
+    @IBOutlet weak var dspCurrent: UILabel!
+    @IBOutlet weak var dspAROver: UILabel!
     
     var arbalance: ARBalance?
     var notConnectedBanner: Banner?
@@ -185,6 +192,15 @@ class ARBalanceController: UIViewController {
         lblAROver.text = ""
         self.viewBar.hidden = true
         embededViewController!.items = [Invoice]()
+        imgHeader.hidden = false
+        imgVolm.hidden = false
+        
+        // Display labels
+        dspCustNum.hidden = true
+        dspTotBal.hidden = true
+        dspCurrent.hidden = true
+        dspAROver.hidden = true
+
     }
     
     func LoadControls(cust: ARBalance)
@@ -197,6 +213,15 @@ class ARBalanceController: UIViewController {
         lblAROver.text = Int(cust.arOver).FormatInt(true)
         self.embededViewController!.items = self.arbalance!.invoices
         self.viewBar.hidden = false
+        imgHeader.hidden = true
+        imgVolm.hidden = true
+        
+        // Display labels
+        dspCustNum.hidden = false
+        dspTotBal.hidden = false
+        dspCurrent.hidden = false
+        dspAROver.hidden = false
+        
     }
     
     func setControlColors(color: UIColor)

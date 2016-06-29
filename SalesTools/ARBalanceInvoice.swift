@@ -22,6 +22,9 @@ class ARBalanceInvoice: UIViewController, UITableViewDataSource, UITableViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // remove the inset to tableview due to nav controller
+        self.automaticallyAdjustsScrollViewInsets = false
+        
         // Set background of the tableview and hide cell seperator lines
         let backgroundImage = UIImage(named: "tv_background.png")
         let imageView = UIImageView(image: backgroundImage)

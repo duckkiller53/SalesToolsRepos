@@ -19,6 +19,8 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
     @IBOutlet weak var lblRows: UILabel!
     @IBOutlet weak var btnExportOutlet: UIButton!    
     @IBOutlet weak var viewBar: UIView!
+    @IBOutlet weak var imgHeader: UIImageView!
+    @IBOutlet weak var imgVolm: UIImageView!
     
     var products = [product]()
     var embededViewController: ProdLookupTable? = nil
@@ -153,6 +155,8 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
                     self.embededViewController!.items = self.products
                     self.btnExportOutlet.hidden = false
                     self.viewBar.hidden = false
+                    self.imgHeader.hidden = true
+                    self.imgVolm.hidden = true
                 } else
                 {
                     self.showAlert("No results were found!")
@@ -268,8 +272,7 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
         prodParam = prod == "" ? "null" : prod
         descripParam = descrip == "" ? "null" : descrip
         activeParam = active == true ? "A" : "I"
-        whseParam = whse == "" ? "null" : whse
-    
+        whseParam = whse == "" ? "null" : whse    
     }
     
     func GetSearchCriteria()
@@ -316,6 +319,9 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
         embededViewController!.items = products
         btnExportOutlet.hidden = true
         self.viewBar.hidden = true
+        imgHeader.hidden = false
+        imgVolm.hidden = false
+        
     }
     
     func setControlColors(color: UIColor)

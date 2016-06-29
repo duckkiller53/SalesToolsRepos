@@ -22,6 +22,8 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
     @IBOutlet weak var btnExportOutlet: UIButton!
    
     @IBOutlet weak var viewBar: UIView!
+    @IBOutlet weak var imgHeader: UIImageView!    
+    @IBOutlet weak var imgVolm: UIImageView!
     
     var Products = [salesProd]()
     var embededViewController: ProdTable? = nil
@@ -151,10 +153,13 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
                     self.embededViewController!.items = self.Products
                     self.btnExportOutlet.hidden = false
                     self.viewBar.hidden = false
+                    self.imgHeader.hidden = true
+                    self.imgVolm.hidden = true
                 } else
                 {
                     self.showAlert("No results were found!")
                     self.txtProduct.becomeFirstResponder()
+                    self.imgHeader.hidden = false
                 }
             }
             
@@ -293,6 +298,8 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
         txtProduct.resignFirstResponder()
         self.btnExportOutlet.hidden = true
         self.viewBar.hidden = true
+        imgHeader.hidden = false
+        imgVolm.hidden = false
     }
     
     func showAlert(msg: String)

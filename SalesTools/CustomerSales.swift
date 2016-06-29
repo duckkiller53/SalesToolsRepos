@@ -16,6 +16,9 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
     @IBOutlet weak var menuButton: UIBarButtonItem!    
     @IBOutlet weak var btnExportOutlet: UIButton!
     @IBOutlet weak var viewBar: UIView!
+    @IBOutlet weak var imgHeader: UIImageView!
+    
+    @IBOutlet weak var imgVolm: UIImageView!
     
     var Products = [custProd]()
     var embededViewController: ConTable? = nil
@@ -154,6 +157,7 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
                     self.embededViewController!.items = self.Products
                     self.btnExportOutlet.hidden = false
                     self.viewBar.hidden = false
+                    self.imgVolm.hidden = true
 
                 } else
                 {
@@ -249,11 +253,11 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
     
     func haveAddedSearchParams(customer: Int, type: Bool, exclude: Bool, whse: String)
     {
-        clearForm()
         lblCustomer.text = customer > 0 ? "Cust: " + String(customer) : "None"
         lblType.text = type == true ? "6/Mo" : "12/Mo"
         lblEquip.text = exclude == true ? "No Equip" : "Include Equip"
         lblWhse.text = whse > "" ? "Whse: " + whse : "None"
+        imgHeader.hidden = true
         
         custNum = customer
         reportType = type
@@ -311,6 +315,8 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
         embededViewController!.items = Products
         btnExportOutlet.hidden = true
         self.viewBar.hidden = true
+        imgHeader.hidden = false
+        imgVolm.hidden = false
     }
     
     func showAlert(msg: String)
