@@ -210,6 +210,7 @@ class CustomerAR: UIViewController {
         dspFutureInv.hidden = true
         btnClear.hidden = true
         
+        imgHeader.hidden = false
         imgVolm.hidden = false
 
     }
