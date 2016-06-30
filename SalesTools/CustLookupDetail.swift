@@ -77,7 +77,7 @@ class CustLookupDetail: UIViewController
         lblCounty.text = ""
         lblPhone.text = ""
         lblSlsRep.text = ""
-        lblContact.text = ""        
+        lblContact.text = ""
     }
 
     func setControlColors(color: UIColor)

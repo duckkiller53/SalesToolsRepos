@@ -19,23 +19,8 @@ class CustomerAR: UIViewController {
 
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var imgHeader: UIImageView!
-    
-    @IBOutlet weak var imgVolm: UIImageView!
-    
-    // Display Labels
-    @IBOutlet weak var dspCustNum: UILabel!
-    @IBOutlet weak var dspArea: UILabel!
-    @IBOutlet weak var dspOwed: UILabel!
-    @IBOutlet weak var dspUnapplied: UILabel!
-    @IBOutlet weak var dspCurrent: UILabel!
-    @IBOutlet weak var dspPast30: UILabel!
-    @IBOutlet weak var dspPast60: UILabel!
-    @IBOutlet weak var dspPast90: UILabel!
-    @IBOutlet weak var dspPast120: UILabel!
-    @IBOutlet weak var dspServcChg: UILabel!
-    @IBOutlet weak var dspCOD: UILabel!
-    @IBOutlet weak var dspMiscCredit: UILabel!
-    @IBOutlet weak var dspFutureInv: UILabel!    
+    @IBOutlet weak var imgVolm: UIImageView!    
+    @IBOutlet weak var viewDSP: UIView!   
     @IBOutlet weak var btnClear: UIButton!
     
     // Display Data
@@ -156,6 +141,7 @@ class CustomerAR: UIViewController {
                 
                 self.ShowAlert("No results were found!")
                 self.txtCustNum.becomeFirstResponder()
+                self.viewDSP.hidden = true
                 return
             }
             
@@ -165,6 +151,7 @@ class CustomerAR: UIViewController {
                 self.LoadControls(self.custar!)
                 self.imgHeader.hidden = true
                 self.imgVolm.hidden = true
+                self.viewDSP.hidden = false
             }
             
         }
@@ -193,25 +180,11 @@ class CustomerAR: UIViewController {
         lblCOD.text = ""
         lblMiscCrBal.text = ""
         lblFutureInvBal.text = ""
-        
-        // Display labels.
-        dspCustNum.hidden = true
-        dspArea.hidden = true
-        dspOwed.hidden = true
-        dspUnapplied.hidden = true
-        dspCurrent.hidden = true
-        dspPast30.hidden = true
-        dspPast60.hidden = true
-        dspPast90.hidden = true
-        dspPast120.hidden = true
-        dspServcChg.hidden = true
-        dspCOD.hidden = true
-        dspMiscCredit.hidden = true
-        dspFutureInv.hidden = true
         btnClear.hidden = true
         
         imgHeader.hidden = false
         imgVolm.hidden = false
+        viewDSP.hidden = true
 
     }
     
@@ -258,21 +231,6 @@ class CustomerAR: UIViewController {
         lblCOD.text = cust.codBal.FormatDouble(true)
         lblMiscCrBal.text = cust.misccrBal.FormatDouble(true)
         lblFutureInvBal.text = cust.futInvBal.FormatDouble(true)
-        
-        // Display labels.
-        dspCustNum.hidden = false
-        dspArea.hidden = false
-        dspOwed.hidden = false
-        dspUnapplied.hidden = false
-        dspCurrent.hidden = false
-        dspPast30.hidden = false
-        dspPast60.hidden = false
-        dspPast90.hidden = false
-        dspPast120.hidden = false
-        dspServcChg.hidden = false
-        dspCOD.hidden = false
-        dspMiscCredit.hidden = false
-        dspFutureInv.hidden = false
         btnClear.hidden = false
     }
     

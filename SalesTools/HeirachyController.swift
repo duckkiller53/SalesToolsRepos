@@ -16,7 +16,9 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
    
     @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!
     var keyboardDismissTapGesture: UIGestureRecognizer?
-    @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var menuButton: UIBarButtonItem!    
+    @IBOutlet weak var imgVolm: UIImageView!
+    
     @IBOutlet weak var txtHeirachy1: UITextField!
     @IBOutlet weak var txtHeirachy2: UITextField!
     @IBOutlet weak var txtHeirachy3: UITextField!
@@ -45,6 +47,7 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         getHierachy(["1", "", "", "", ""])
         pickerView.hidden = false
         clearSelections(1)
+        
     }
     
     @IBAction func btnHierachy2(sender: AnyObject) {
@@ -491,6 +494,7 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             txtHeirachy3.text = ""
             txtHeirachy4.text = ""
             txtHeirachy5.text = ""
+            imgVolm.hidden = true
         case 2:
             txtHeirachy3.text = ""
             txtHeirachy4.text = ""

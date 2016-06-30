@@ -155,7 +155,6 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
                     self.embededViewController!.items = self.products
                     self.btnExportOutlet.hidden = false
                     self.viewBar.hidden = false
-                    self.imgHeader.hidden = true
                     self.imgVolm.hidden = true
                 } else
                 {
@@ -272,7 +271,8 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
         prodParam = prod == "" ? "null" : prod
         descripParam = descrip == "" ? "null" : descrip
         activeParam = active == true ? "A" : "I"
-        whseParam = whse == "" ? "null" : whse    
+        whseParam = whse == "" ? "null" : whse
+        imgHeader.hidden = true
     }
     
     func GetSearchCriteria()

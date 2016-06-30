@@ -160,6 +160,7 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
                     self.showAlert("No results were found!")
                     self.txtProduct.becomeFirstResponder()
                     self.imgHeader.hidden = false
+                    self.imgVolm.hidden = false
                 }
             }
             
@@ -288,6 +289,8 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
         txtProduct.resignFirstResponder()
         self.btnExportOutlet.hidden = true
         self.viewBar.hidden = true
+        imgHeader.hidden = false
+        imgVolm.hidden = false
     }
     
     func clearForm()

@@ -265,6 +265,7 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
         lblCustName.text = custname == "null" ? "None" : custname
         lblCity.text = city == "null" ? "None" : city
         lblState.text = state == "null" ? "None" : state
+        imgHeader.hidden = true
     }
 
     
@@ -314,6 +315,7 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
         self.viewBar.hidden = true
         imgHeader.hidden = false
         imgVolm.hidden = false
+    
     }
     
     func setControlColors(color: UIColor)
