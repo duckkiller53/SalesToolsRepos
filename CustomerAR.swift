@@ -20,7 +20,8 @@ class CustomerAR: UIViewController {
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var imgHeader: UIImageView!
     @IBOutlet weak var imgVolm: UIImageView!    
-    @IBOutlet weak var viewDSP: UIView!   
+    @IBOutlet weak var viewDSP: UIView!    
+    @IBOutlet weak var btnSearch: UIButton!
     @IBOutlet weak var btnClear: UIButton!
     
     // Display Data
@@ -51,15 +52,17 @@ class CustomerAR: UIViewController {
         {
             if !custnum.isEmpty
             {
-                GetCustomerAR(custnum.trim())
+                getCustomerAR(custnum.trim())
+            } else {
+                showAlert("Please enter a customer number!")
             }
         }
 
     }
     
-    @IBAction func btnClearForm(sender: AnyObject) {
+    @IBAction func btnClear(sender: AnyObject) {
         clearForm()
-    }  
+    }
     
     override func viewWillAppear(animated: Bool) {
         // Setup Nav bar color scheme
@@ -93,7 +96,7 @@ class CustomerAR: UIViewController {
     
     // MARK: GET API DATA
     
-    func GetCustomerAR(custnum: String)
+    func getCustomerAR(custnum: String)
     {
         
         let completionHandler: (Result<customerAR, NSError>) -> Void =
@@ -139,26 +142,30 @@ class CustomerAR: UIViewController {
                     
                 }                
                 
-                self.ShowAlert("No results were found!")
+                self.showAlert("No results were found!")
                 self.txtCustNum.becomeFirstResponder()
                 self.viewDSP.hidden = true
+                self.toggleButtons(true)
                 return
             }
             
             // No Errors Load Data
             if let fetchedResult = result.value {
                 self.custar = fetchedResult
-                self.LoadControls(self.custar!)
+                self.loadControls(self.custar!)
                 self.imgHeader.hidden = true
                 self.imgVolm.hidden = true
                 self.viewDSP.hidden = false
             }
+            
+            self.toggleButtons(true)
             
         }
         
         
         ActivityIndicator.startAnimating()
         ActivityIndicator.hidden = false
+        toggleButtons(false)
         
         APIManager.sharedInstance.getCustomerAR(custnum, completionHandler: completionHandler)
         
@@ -166,6 +173,7 @@ class CustomerAR: UIViewController {
     
     func clearForm()
     {
+        txtCustNum.text = ""
         lblCustNum.text = ""
         lblCustName.text = ""
         lblCycleCD.text = ""
@@ -180,12 +188,22 @@ class CustomerAR: UIViewController {
         lblCOD.text = ""
         lblMiscCrBal.text = ""
         lblFutureInvBal.text = ""
-        btnClear.hidden = true
-        
         imgHeader.hidden = false
         imgVolm.hidden = false
         viewDSP.hidden = true
 
+    }
+    
+    func toggleButtons(toggle: Bool) {
+        btnSearch.enabled = toggle
+        txtCustNum.enabled = toggle
+        btnClear.enabled = toggle
+        
+        if toggle {
+            txtCustNum.backgroundColor = UIColor.whiteColor()
+        } else {
+            txtCustNum.backgroundColor = colorWithHexString("D3D3D3")
+        }
     }
     
     func setControlColors(color: UIColor)
@@ -214,12 +232,12 @@ class CustomerAR: UIViewController {
         ActivityIndicator.color = DefaultTint
     }
     
-    func LoadControls(cust: customerAR)
+    func loadControls(cust: customerAR)
     {
         // Load Data
         lblCustNum.text = "\(Int(cust.custnum))"
         lblCustName.text = cust.custName
-        lblCycleCD.text = GetARArea(cust.arArea!)
+        lblCycleCD.text = getARArea(cust.arArea!)
         lblArAmt.text = cust.arAmt.FormatDouble(true)
         lblUnCashBal.text = cust.unCashBal.FormatDouble(true)
         lblCurrent.text = cust.current.FormatDouble(true)
@@ -231,10 +249,9 @@ class CustomerAR: UIViewController {
         lblCOD.text = cust.codBal.FormatDouble(true)
         lblMiscCrBal.text = cust.misccrBal.FormatDouble(true)
         lblFutureInvBal.text = cust.futInvBal.FormatDouble(true)
-        btnClear.hidden = false
     }
     
-    func GetARArea(area: String) -> String
+    func getARArea(area: String) -> String
     {
         var returnArea: String = ""
         
@@ -257,7 +274,7 @@ class CustomerAR: UIViewController {
         
     }
     
-    func ShowAlert(msg: String)
+    func showAlert(msg: String)
     {
         let myAlert = UIAlertController(title:"SalesTools", message: msg, preferredStyle: UIAlertControllerStyle.Alert);
         

@@ -102,12 +102,7 @@ class CustValuesController: XLFormViewController
         row.cellConfigAtConfigure["textField.placeholder"] = "ie: WI"
         row.cellConfigAtConfigure["textField.textAlignment"] = NSTextAlignment.Left.rawValue
         row.required = false
-        section.addFormRow(row)
-
-
-        
-        
-        
+        section.addFormRow(row)        
         
         self.form = form
     }

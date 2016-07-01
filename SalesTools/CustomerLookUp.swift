@@ -21,7 +21,10 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
     @IBOutlet weak var lblCity: UILabel!
     @IBOutlet weak var lblState: UILabel!
     @IBOutlet weak var lblRows: UILabel!
-    @IBOutlet weak var btnExportOutlet: UIButton!    
+    @IBOutlet weak var btnExportOutlet: UIButton!
+    @IBOutlet weak var btnCriteria: UIButton!
+    @IBOutlet weak var btnClear: UIButton!    
+    @IBOutlet weak var btnSearch: UIButton!
     @IBOutlet weak var viewBar: UIView!
     @IBOutlet weak var imgHeader: UIImageView!
     @IBOutlet weak var imgVolm: UIImageView!
@@ -38,7 +41,7 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
     
     
     @IBAction func btnCriteria(sender: AnyObject) {
-        GetSearchCriteria()
+        getSearchCriteria()
     }
     
     @IBAction func btnClear(sender: AnyObject) {
@@ -48,12 +51,12 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
     @IBAction func btnSearch(sender: AnyObject) {
         
         clearResults()
-        GetCustSearch(custidParam!, name: nameParam!, custcity: cityParam!, custstate: stateParam!)
+        getCustSearch(custidParam!, name: nameParam!, custcity: cityParam!, custstate: stateParam!)
     }
     
     
     @IBAction func btnExport(sender: AnyObject) {
-        ExportCustSearch(custidParam!, name: nameParam!, custcity: cityParam!, custstate: stateParam!)
+        exportCustSearch(custidParam!, name: nameParam!, custcity: cityParam!, custstate: stateParam!)
     }
         
     override func viewWillAppear(animated: Bool) {
@@ -86,7 +89,7 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
     
     // MARK: GET API DATA
     
-    func GetCustSearch(id: String, name: String, custcity: String, custstate: String)
+    func getCustSearch(id: String, name: String, custcity: String, custstate: String)
     {
         
         let completionHandler: (Result<[customer], NSError>) -> Void =
@@ -133,6 +136,7 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
                 }
                 
                 self.showAlert("No results were found!")
+                self.toggleButtons(true)
                 return
             }
             
@@ -150,14 +154,17 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
                 } else
                 {
                     self.showAlert("No results were found!")
+                    self.toggleButtons(true)
                 }
             }
-
+            
+            self.toggleButtons(true)
             
         }
         
         ActivityIndicator.startAnimating()
         ActivityIndicator.hidden = false
+        toggleButtons(false)
         
         APIManager.sharedInstance.getCustomerSearch(id, custname: name, city: custcity, state: custstate, completionHandler: completionHandler)
         
@@ -166,7 +173,7 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
     // Export To CSV
     
     
-    func ExportCustSearch(id: String, name: String, custcity: String, custstate: String)
+    func exportCustSearch(id: String, name: String, custcity: String, custstate: String)
     {
         
         let completionHandler: (Result<NSURL, NSError>) -> Void =
@@ -213,6 +220,7 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
                     
                 }
                 
+                self.btnExportOutlet.enabled = true
                 return
             }
             
@@ -222,6 +230,7 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
             } else {
                 self.path = nil
                 self.showAlert("Error Createing file!")
+                self.btnExportOutlet.enabled = true
                 return
             }
             
@@ -229,11 +238,13 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
             
             let preview = QLPreviewController()
             preview.dataSource = self
+            self.btnExportOutlet.enabled = true
             self.navigationController?.pushViewController(preview, animated: true)
         }
         
         ActivityIndicator.startAnimating()
         ActivityIndicator.hidden = false
+        btnExportOutlet.enabled = false
         
         APIManager.sharedInstance.ExportCustomerSearch(id, custname: name, city: custcity, state: custstate, completionHandler: completionHandler)
         
@@ -269,7 +280,7 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
     }
 
     
-    func GetSearchCriteria()
+    func getSearchCriteria()
     {
         
         let createVC = CustValuesController(nibName: nil, bundle: nil)
@@ -327,6 +338,12 @@ class CustomerLookUp: UIViewController, QLPreviewControllerDataSource, QLPreview
         lblRows.textColor = rowsFoundTint
         ActivityIndicator.hidden = true
         ActivityIndicator.color = DefaultTint
+    }
+    
+    func toggleButtons(toggle: Bool) {
+        btnClear.enabled = toggle
+        btnSearch.enabled = toggle
+        btnCriteria.enabled = toggle
     }
         
     func showAlert(msg: String)

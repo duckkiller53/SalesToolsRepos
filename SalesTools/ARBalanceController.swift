@@ -20,6 +20,8 @@ class ARBalanceController: UIViewController {
     @IBOutlet weak var lblCurrent: UILabel!
     @IBOutlet weak var lblAROver: UILabel!
     @IBOutlet weak var viewBar: UIView!
+    @IBOutlet weak var btnSearch: UIButton!
+    @IBOutlet weak var btnClear: UIButton!
     
     @IBOutlet weak var imgHeader: UIImageView!    
     @IBOutlet weak var imgVolm: UIImageView!
@@ -46,10 +48,17 @@ class ARBalanceController: UIViewController {
         {
             if !custnum.isEmpty
             {
-                GetARBalance(custnum.trim())
+                getARBalance(custnum.trim())
+            } else {
+                showAlert("Please enter a cutomer number!")
             }
         }
     }    
+    
+    @IBAction func btnClear(sender: AnyObject) {
+        txtCustNum.text = ""
+        clearForm()
+    }
     
     override func viewWillAppear(animated: Bool) {
        
@@ -81,7 +90,7 @@ class ARBalanceController: UIViewController {
     
     // MARK: GET API DATA
     
-    func GetARBalance(custid: String)
+    func getARBalance(custid: String)
     {
         
         let completionHandler: (Result<ARBalance, NSError>) -> Void =
@@ -128,18 +137,22 @@ class ARBalanceController: UIViewController {
                     }
                     
                     self.showAlert("No results were found!")
+                    self.toggleButtons(true)
                     return
                 }
                 
                 // No Errors Load Data
                 if let fetchedResult = result.value {
                     self.arbalance = fetchedResult
-                    self.LoadControls(self.arbalance!)
+                    self.loadControls(self.arbalance!)
                 }
+                
+                self.toggleButtons(true)
         }
         
         ActivityIndicator.startAnimating()
         ActivityIndicator.hidden = false
+        toggleButtons(false)
         
         APIManager.sharedInstance.getARBalance(custid, completionHandler: completionHandler)
         
@@ -185,6 +198,7 @@ class ARBalanceController: UIViewController {
 
     
     func clearForm() {
+        
         lblCustNumDisp.text = ""
         lblCustName.text = ""
         lblARTotBal.text = ""
@@ -200,10 +214,21 @@ class ARBalanceController: UIViewController {
         dspTotBal.hidden = true
         dspCurrent.hidden = true
         dspAROver.hidden = true
-
+        
     }
     
-    func LoadControls(cust: ARBalance)
+    func toggleButtons(toggle: Bool) {
+        btnSearch.enabled = toggle
+        btnClear.enabled = toggle
+        
+        if toggle {
+            txtCustNum.backgroundColor = UIColor.whiteColor()
+        } else {
+            txtCustNum.backgroundColor = colorWithHexString("D3D3D3")
+        }
+    }
+    
+    func loadControls(cust: ARBalance)
     {
         lblCustNumDisp.text = "\(Int(cust.custnum))"
         lblCustName.text = cust.custName

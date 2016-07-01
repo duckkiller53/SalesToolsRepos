@@ -15,6 +15,10 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
     @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var menuButton: UIBarButtonItem!    
     @IBOutlet weak var btnExportOutlet: UIButton!
+    @IBOutlet weak var btnClear: UIButton!    
+    @IBOutlet weak var btnSearch: UIButton!
+    @IBOutlet weak var btnCriteria: UIButton!
+    
     @IBOutlet weak var viewBar: UIView!
     @IBOutlet weak var imgHeader: UIImageView!
     
@@ -37,7 +41,7 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
     @IBOutlet weak var lblEquip: UILabel!
     
     @IBAction func btnCriteria(sender: AnyObject) {
-        GetSearchCriteria()
+        getSearchCriteria()
     }
     
     @IBAction func btnClear(sender: AnyObject) {
@@ -53,7 +57,7 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
         }
         
         clearResults()
-        GetCustProducts(custNum, type: reportType, exclude_equip: exclude,  whse: whseID)
+        getCustProducts(custNum, type: reportType, exclude_equip: exclude,  whse: whseID)
         
     }    
     
@@ -65,7 +69,7 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
             return
         }
         
-        ExportToCSV(custNum, type: reportType, exclude_equip: exclude,  whse: whseID)
+        exportToCSV(custNum, type: reportType, exclude_equip: exclude,  whse: whseID)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -97,7 +101,7 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
     
     // MARK: GET API DATA
     
-    func GetCustProducts(cust: Int, type: Bool, exclude_equip: Bool, whse: String)
+    func getCustProducts(cust: Int, type: Bool, exclude_equip: Bool, whse: String)
     {        
         
         let completionHandler: (Result<[custProd], NSError>) -> Void =
@@ -162,22 +166,24 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
                 } else
                 {
                     self.showAlert("No results were found!")
+                    self.toggleButtons(true)
                 }
             }
 
-            
+            self.toggleButtons(true)
             
         }
         
         ActivityIndicator.startAnimating()
         ActivityIndicator.hidden = false
+        toggleButtons(false)
         
         APIManager.sharedInstance.getCustSales(cust, type: type, exclude_equip: exclude_equip, whse: whse, completionHandler: completionHandler)
         
     }
     
     // ExportToCSV
-    func ExportToCSV(cust: Int, type: Bool, exclude_equip: Bool, whse: String)
+    func exportToCSV(cust: Int, type: Bool, exclude_equip: Bool, whse: String)
     {
         
         let completionHandler: (Result<NSURL, NSError>) -> Void =
@@ -233,6 +239,7 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
             } else {
                 self.path = nil
                 self.showAlert("Error Createing file!")
+                self.btnExportOutlet.enabled = true
                 return
             }
             
@@ -240,11 +247,13 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
             
             let preview = QLPreviewController()
             preview.dataSource = self
+            self.btnExportOutlet.enabled = true
             self.navigationController?.pushViewController(preview, animated: true)
         }
         
         ActivityIndicator.startAnimating()
         ActivityIndicator.hidden = false
+        btnExportOutlet.enabled = false
         
         APIManager.sharedInstance.ExportCustSales(cust, type: type, exclude_equip: exclude_equip, whse: whse, completionHandler: completionHandler)
         
@@ -264,7 +273,7 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
         whseID = whse
     }
     
-    func GetSearchCriteria()
+    func getSearchCriteria()
     {
         let createVC = SalesValuesController(nibName: nil, bundle: nil)
         createVC.delegate = self
@@ -311,12 +320,20 @@ class CustomerSales: UIViewController, QLPreviewControllerDataSource, QLPreviewC
         lblWhse.text = ""
         lblRows.text = ""
         lblEquip.text = ""
+        custNum = 0
+        whseID = ""        
         Products.removeAll()
         embededViewController!.items = Products
         btnExportOutlet.hidden = true
         self.viewBar.hidden = true
         imgHeader.hidden = false
         imgVolm.hidden = false
+    }
+    
+    func toggleButtons(toggle: Bool) {
+        btnClear.enabled = toggle
+        btnSearch.enabled = toggle
+        btnCriteria.enabled = toggle
     }
     
     func showAlert(msg: String)

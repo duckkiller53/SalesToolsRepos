@@ -184,7 +184,7 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         let salesRep = toggleReps.on  && txtRep.text != "" ? txtRep.text : "ALL"
         let category = txtHeirachy5.text! != "" ? txtHeirachy5.text : ""
         
-        ExportToCSV(salesRep!, prodcat: category!)
+        exportToCSV(salesRep!, prodcat: category!)
     }
     
     @IBAction func toggleReps(sender: AnyObject) {
@@ -275,7 +275,7 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     
     
     // ExportToCSV
-    func ExportToCSV(rep: String, prodcat: String)
+    func exportToCSV(rep: String, prodcat: String)
     {
         
         let completionHandler: (Result<NSURL, NSError>) -> Void =
@@ -450,14 +450,6 @@ class HeirachyController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             txtRep.resignFirstResponder()
         }         
     }
-    
-//    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
-//    {
-//        if txtRep.tag == 6 {
-//            txtRep.resignFirstResponder()
-//        }
-//    }
-
 
     // MARK: Utility functions
     

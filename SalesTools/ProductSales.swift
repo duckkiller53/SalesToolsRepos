@@ -24,6 +24,9 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
     @IBOutlet weak var viewBar: UIView!
     @IBOutlet weak var imgHeader: UIImageView!    
     @IBOutlet weak var imgVolm: UIImageView!
+    @IBOutlet weak var btnClear: UIButton!
+    @IBOutlet weak var btnSearch: UIButton!
+    
     
     var Products = [salesProd]()
     var embededViewController: ProdTable? = nil
@@ -45,7 +48,7 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
         if let prod = txtProduct.text
         {
             embededViewController!.prodNum = txtProduct.text
-            GetProductSales(prod.trim())
+            getProductSales(prod.trim())
         }
     }
     
@@ -59,7 +62,7 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
         
         if let prod = txtProduct.text
         {
-            ExportProductSales(prod)
+            exportProductSales(prod)
         }
     }
     
@@ -81,6 +84,7 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
         super.viewDidLoad()
         
         clearForm()
+        
         // remove the inset to tableview due to nav controller
         self.automaticallyAdjustsScrollViewInsets = false
         
@@ -95,7 +99,7 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
     
     // MARK: GET API DATA
     
-    func GetProductSales(prod: String)
+    func getProductSales(prod: String)
     {        
         
         let completionHandler: (Result<[salesProd], NSError>) -> Void =
@@ -141,6 +145,7 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
                     
                 }
                 self.showAlert("No results were found")
+                self.toggleButtons(true)
                 return
             }
             
@@ -164,10 +169,13 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
                 }
             }
             
+            self.toggleButtons(true)
+            
         }
         
         ActivityIndicator.startAnimating()
         ActivityIndicator.hidden = false
+        toggleButtons(false)
         
         APIManager.sharedInstance.getProdSales(prod, completionHandler: completionHandler)
         
@@ -176,7 +184,7 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
     // Export To CSV
     
     
-    func ExportProductSales(prod: String)
+    func exportProductSales(prod: String)
     {
         
         let completionHandler: (Result<NSURL, NSError>) -> Void =
@@ -223,6 +231,7 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
                     
                 }
                 
+                self.btnExportOutlet.enabled = true
                 return
             }
             
@@ -232,6 +241,7 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
             } else {
                 self.path = nil
                 self.showAlert("Error Createing file!")
+                self.btnExportOutlet.enabled = true
                 return
             }
             
@@ -239,11 +249,13 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
             
             let preview = QLPreviewController()
             preview.dataSource = self
+            self.btnExportOutlet.enabled = true
             self.navigationController?.pushViewController(preview, animated: true)
         }
         
         ActivityIndicator.startAnimating()
         ActivityIndicator.hidden = false
+        btnExportOutlet.enabled = false
         
         APIManager.sharedInstance.ExportProdSales(prod, completionHandler: completionHandler)
         
@@ -289,8 +301,6 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
         txtProduct.resignFirstResponder()
         self.btnExportOutlet.hidden = true
         self.viewBar.hidden = true
-        imgHeader.hidden = false
-        imgVolm.hidden = false
     }
     
     func clearForm()
@@ -303,6 +313,18 @@ class ProductSales: UIViewController, QLPreviewControllerDataSource, QLPreviewCo
         self.viewBar.hidden = true
         imgHeader.hidden = false
         imgVolm.hidden = false
+    }
+    
+    func toggleButtons(toggle: Bool) {        
+        btnClear.enabled = toggle
+        btnSearch.enabled = toggle
+        txtProduct.enabled = toggle
+        
+        if toggle {
+            txtProduct.backgroundColor = UIColor.whiteColor()
+        } else {
+            txtProduct.backgroundColor = colorWithHexString("D3D3D3")
+        }
     }
     
     func showAlert(msg: String)

@@ -17,7 +17,11 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
     @IBOutlet weak var lblActive: UILabel!
     @IBOutlet weak var lblWhse: UILabel!
     @IBOutlet weak var lblRows: UILabel!
-    @IBOutlet weak var btnExportOutlet: UIButton!    
+    @IBOutlet weak var btnExportOutlet: UIButton!
+    @IBOutlet weak var btnCriteria: UIButton!
+    @IBOutlet weak var btnClear: UIButton!
+    @IBOutlet weak var btnSearch: UIButton!
+    
     @IBOutlet weak var viewBar: UIView!
     @IBOutlet weak var imgHeader: UIImageView!
     @IBOutlet weak var imgVolm: UIImageView!
@@ -34,7 +38,7 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
     
     
     @IBAction func btnCriteria(sender: AnyObject) {
-        GetSearchCriteria()
+        getSearchCriteria()
     }
     
     @IBAction func btnClear(sender: AnyObject) {
@@ -50,7 +54,7 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
             return
         }
 
-        GetProductSearch(prodParam!, descrip: descripParam!, isactive: activeParam!, whse: whseParam!)
+        getProductSearch(prodParam!, descrip: descripParam!, isactive: activeParam!, whse: whseParam!)
     }
     
     @IBAction func btnExport(sender: AnyObject) {
@@ -60,7 +64,7 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
             return
         }
         
-        ExportProductSearch(prodParam!, descrip: descripParam!, isactive: activeParam!, whse: whseParam!)
+        exportProductSearch(prodParam!, descrip: descripParam!, isactive: activeParam!, whse: whseParam!)
     }
     
     
@@ -96,7 +100,7 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
     
     // MARK: GET API DATA
     
-    func GetProductSearch(prod: String, descrip: String, isactive: String, whse: String)
+    func getProductSearch(prod: String, descrip: String, isactive: String, whse: String)
     {
         
         let completionHandler: (Result<[product], NSError>) -> Void =
@@ -143,6 +147,7 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
                     
                 }
                 self.showAlert("No results were found!")
+                self.toggleButtons(true)
                 return
             }
             
@@ -159,13 +164,17 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
                 } else
                 {
                     self.showAlert("No results were found!")
+                    self.toggleButtons(true)
                 }
             }
+            
+            self.toggleButtons(true)
             
         }
         
         ActivityIndicator.startAnimating()
         ActivityIndicator.hidden = false
+        toggleButtons(false)
         
         APIManager.sharedInstance.getProductSearch(prod, description: descrip, active: isactive, warehouse: whse, completionHandler: completionHandler)
         
@@ -173,7 +182,7 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
     
     // Export To CSV
     
-    func ExportProductSearch(prod: String, descrip: String, isactive: String, whse: String)
+    func exportProductSearch(prod: String, descrip: String, isactive: String, whse: String)
     {
         
         let completionHandler: (Result<NSURL, NSError>) -> Void =
@@ -220,6 +229,7 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
                     
                 }
                 
+                self.btnExportOutlet.enabled = true
                 return
             }
             
@@ -229,6 +239,7 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
             } else {
                 self.path = nil
                 self.showAlert("Error Createing file!")
+                self.btnExportOutlet.enabled = true
                 return
             }
             
@@ -236,11 +247,13 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
             
             let preview = QLPreviewController()
             preview.dataSource = self
+            self.btnExportOutlet.enabled = true
             self.navigationController?.pushViewController(preview, animated: true)
         }
         
         ActivityIndicator.startAnimating()
         ActivityIndicator.hidden = false
+        btnExportOutlet.enabled = false
         
         APIManager.sharedInstance.ExportProductSearch(prod, description: descrip, active: isactive, warehouse: whse, completionHandler: completionHandler)
         
@@ -275,7 +288,7 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
         imgHeader.hidden = true
     }
     
-    func GetSearchCriteria()
+    func getSearchCriteria()
     {
         
         let createVC = ProductValuesController(nibName: nil, bundle: nil)
@@ -333,8 +346,13 @@ class ProductLookUp: UIViewController, QLPreviewControllerDataSource, QLPreviewC
         lblRows.textColor = rowsFoundTint
         ActivityIndicator.hidden = true
         ActivityIndicator.color = DefaultTint
-    } 
-       
+    }
+    
+    func toggleButtons(toggle: Bool) {
+        btnClear.enabled = toggle
+        btnSearch.enabled = toggle
+        btnCriteria.enabled = toggle
+    }
     
     func showAlert(msg: String)
     {
